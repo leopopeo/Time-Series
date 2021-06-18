@@ -9,6 +9,7 @@ The theory of time series is often applied in economic processes, signal process
 The _main references_ is the book Brockwell et al. (2002).
 
 _Tasks:_
+
 •Implement a generator forAR(p)andMA(q)processes (Definition 3.1.1, p 74).
 •Implement the sample autocovariance function (Definition 1.4.4, p. 16).
 •Implement the Durbin Levinson Algorithm using the sample autocovariance function (p. 60-61).
