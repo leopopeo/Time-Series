@@ -1,5 +1,6 @@
 # Time-Series
 Uni HD; R-Kurs SS2021, Projekt: Time Series
+Letztes Update: 18.06.2021
 
 Dieses Projekt ist Teil der Vorlesung "Die Programmiersprache R und ihre Anwendungen in der Stochastik" der Universität Heidelberg im Sommersemester 2021.
 
