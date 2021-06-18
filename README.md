@@ -11,9 +11,15 @@ The _main references_ is the book Brockwell et al. (2002).
 _Tasks:_
 
 •Implement a generator forAR(p)andMA(q)processes (Definition 3.1.1, p 74).
+
 •Implement the sample autocovariance function (Definition 1.4.4, p. 16).
+
 •Implement the Durbin Levinson Algorithm using the sample autocovariance function (p. 60-61).
+
 •Implement the Innovation Algorithm using the sample autocovariance function (p. 62).
+
 •Implement the periodogram as an estimator of the spectral density (Definition 4.2.1, p.107).
+
 •Implement functions that create nice plots from the time series and their spectral densities and theestimate of the spectral densities.
+
 •Illustration
