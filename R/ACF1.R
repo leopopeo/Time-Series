@@ -7,6 +7,7 @@ set.seed(42)
 #' Die ist manchmal groß
 #' und manchmal klein
 covariance <- function(X, start = 1, end = length(X), h){
+  stopifnot("h ist nicht im richtigen Bereich" = (-length(X) < h | h < length(X))
   n <- end-start
   sample <- X[start:end]
   sample_mean <- mean(sample)
