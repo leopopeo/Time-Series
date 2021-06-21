@@ -61,9 +61,9 @@ Y1 = gen2(start, phi, theta, sd, I)
 plot(Y1, type ="l")
 
 Y2 = arima.sim(n = I,
-              list(ar = phi,
-                   ma = theta,
-                   sd = sd))
+               list(ar = phi,
+                    ma = theta,
+                    sd = sd))
 plot(Y2, type = "l")
 
 arima(Y1, order = c(length(phi), 0, length(theta)))
