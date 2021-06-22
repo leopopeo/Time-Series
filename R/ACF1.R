@@ -20,7 +20,7 @@ covariance <- function(X, start = 1, end = length(X), h) {
 }
 #' Dies ist die Covarianz Funktion (Title).
 #'
-#' \code{Autocovariance} berechnet die Covarianz des Eingabevektors x_1,...,x_n
+#' \code{ACF} berechnet die Covarianz des Eingabevektors x_1,...,x_n
 #'
 #'@param X Eingabevektor
 #'@param start Anfangszeitpunkt der Zeitreihe
@@ -35,9 +35,9 @@ covariance <- function(X, start = 1, end = length(X), h) {
 #'
 #'X = arima.sim(n = I, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796))
 #'
-#'Autocovariance(X, lag.max = 4, type = "correlation", plot = FALSE)
+#'ACF(X, lag.max = 4, type = "correlation", plot = FALSE)
 #'@export
-Autocovariance <- function(X, start = 1, end = length(X), type, h){
+ACF <- function(X, start = 1, end = length(X), type, h){
   if (type == "covariance") covariance(X, start, end, h)
   if (type == "correlation") covariance(X, start, end, h)/covariance(X, start, end, 0)
 }
@@ -50,10 +50,10 @@ X = arima.sim(n = I,
               sd = sqrt(0.1796))
 plot(X, type = "l")
 
-Autocovariance(X, type = "correlation", h = 1)
-Autocovariance(X, type = "correlation", h = 2)
-Autocovariance(X, type = "correlation", h = 3)
-Autocovariance(X, type = "correlation", h = 4)
+ACF(X, type = "correlation", h = 1)
+ACF(X, type = "correlation", h = 2)
+ACF(X, type = "correlation", h = 3)
+ACF(X, type = "correlation", h = 4)
 
-acf(X, lag.max = 4, type = "correlation", plot = FALSE)
+ACF(X, lag.max = 4, type = "correlation", plot = FALSE)
 
