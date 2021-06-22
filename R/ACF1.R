@@ -38,8 +38,8 @@ covariance <- function(X, start = 1, end = length(X), h) {
 #'ACF(X, lag.max = 4, type = "correlation", plot = FALSE)
 #'@export
 ACF <- function(X, start = 1, end = length(X), type, h){
-  if (type == "covariance") covariance(X, start, end, h)
-  if (type == "correlation") covariance(X, start, end, h)/covariance(X, start, end, 0)
+  if (type == "covariance") return(covariance(X, start, end, h))
+  if (type == "correlation") return(covariance(X, start, end, h)/covariance(X, start, end, 0))
 }
 
 ############Test
