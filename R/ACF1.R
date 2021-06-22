@@ -6,16 +6,20 @@ set.seed(42)
 #' Sie berechnet die Covarianz
 #' Die ist manchmal groß
 #' und manchmal klein
-covariance <- function(X, start = 1, end = length(X), h){
-  stopifnot("h ist nicht im richtigen Bereich" = (-length(X) < h | h < length(X))
-  n <- end-start
-  sample <- X[start:end]
+covariance <- function(X, start = 1, end = length(X), h) {
+  stopifnot("h ist nicht im richtigen Bereich" = (-end < h | h < end))
+  stopifnot("Eingabe ist nicht numerisch" = is.numeric(X))
+  stopifnot("Eingabe ist nicht größer als eins" = end > 0)
+  stopifnot("Start- oder Endpunkt ist nicht Integer" = (start %% 1 == 0 |
+                                                          end %% 1 == 0))
+  n <- end - start
+  sample <- X
   sample_mean <- mean(sample)
   L <- NULL
-  for (t in 1:(n-h)){
-    L <- c(L, (sample[t+h]-sample_mean)*(sample[t]-sample_mean))
+  for (t in 1:(n - abs(h))) {
+    L <- c(L, (sample[t + abs(h)] - sample_mean) * (sample[t] - sample_mean))
   }
-  return(1/n*sum(L))
+  return((1 / n) * sum(L))
 }
 
 ACF <- function(X, start = 1, end = length(X), type, h){
