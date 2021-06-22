@@ -1,18 +1,35 @@
 set.seed(1)
 
 
-I = 10000
-sd = 1
-phi = 0 #of length p
-theta  = c(0.8897, -0.4858) #of length p
-
-start = c(0.5,2.2,0.3) #of length p
+source("/Users/niklasmerz/Documents/GitHub/Time-Series/R/ACF1.R")
 
 
-reg = function(X, coeff){
-  n <- length(coeff)
-  sum(coeff*X[length(X):(length(X)-(n-1))])
+DLA <- function(X) {
+  end <- length(X)
+  L <- matrix(0, ncol = end, nrow = end)
+  L[1, 1] <-
+    ACF1(X, lag = 1) / ACF1(X, lag = 0)
+  v_n <- ACF1(X, lag = 0)
+  for (i in 2:length(X)) {
+    z <- NULL
+    v <- v_n * (1 - L[i, i])
+    for (j in 1:(end - 1) ){
+      z <- L[end - 1, j] * ACF1(X, lag = end - j)
+    }
+    z <- sum(z)
+    L[i, i] <- (ACF1(X, lag= i) - z) * (1 / (v))
+  }
+  v_n <<- v
+  return(L)
 }
+
+DLA(X)
+
+levinson(X,p=length(X))
+?levinson
+
+levinson
+
 
 "
 gen_AR <- function(start, phi, sd, I, single = F){
