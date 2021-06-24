@@ -1,8 +1,9 @@
+# Fragen von Leo: Datei umbenennen? Kommentare hinzufügen?
+
+
 set.seed(1)
 
-
 source("/Users/niklasmerz/Documents/GitHub/Time-Series/R/ACF1.R")
-
 
 DLA <- function(X) {
   end <- length(X)
@@ -26,10 +27,8 @@ DLA <- function(X) {
 DLA(X)
 
 levinson(X,p=length(X))
-?levinson
 
 levinson
-
 
 "
 gen_AR <- function(start, phi, sd, I, single = F){
@@ -43,9 +42,7 @@ gen_AR <- function(start, phi, sd, I, single = F){
   X
 }
 
-
 gen_AR(start, phi, 100)
-
 
 gen_MA <- function(theta, sd, I){
   q <- length(theta)
@@ -73,7 +70,6 @@ gen2 <- function(start, phi = 0, theta = 0, sd, I){
   X[(length(start)+1):length(X)]
 }
 
-
 Y1 = gen2(start, phi, theta, sd, I)
 plot(Y1, type ="l")
 
@@ -88,13 +84,6 @@ arima(Y2, order = c(length(phi), 0, length(theta)))
 c(phi, theta)
 
 
-
-
-
-
-
-
-
 gen <- function(start, phi = 0, theta = 0, sd, I){
   if (identical(phi, 0)){
     return(gen_MA(theta, sd, I))
@@ -106,5 +95,3 @@ gen <- function(start, phi = 0, theta = 0, sd, I){
 
 T1 = gen2(start, sd, phi, theta, I)
 plot(T1, type = "l" )
-
-

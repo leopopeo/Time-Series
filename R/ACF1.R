@@ -1,4 +1,5 @@
 # Sample ACF
+
 set.seed(42)
 
 covariance <- function(X, start = 1, end = length(X), h) {
