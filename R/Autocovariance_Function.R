@@ -1,22 +1,3 @@
-# Sample ACF
-
-set.seed(42)
-
-covariance <- function(X, start = 1, end = length(X), h) {
-  stopifnot("h ist nicht im richtigen Bereich" = (-end < h | h < end))
-  stopifnot("Eingabe ist nicht numerisch" = is.numeric(X))
-  stopifnot("Eingabe ist nicht groeßer als eins" = end > 0)
-  stopifnot("Start- oder Endpunkt ist nicht Integer" = (start %% 1 == 0 |
-                                                          end %% 1 == 0))
-  n <- end - start
-  sample <- X
-  sample_mean <- mean(sample)
-  L <- NULL
-  for (t in 1:(n - abs(h))) {
-    L <- c(L, (sample[t + abs(h)] - sample_mean) * (sample[t] - sample_mean))
-  }
-  return((1 / n) * sum(L))
-}
 #' Dies ist die Covarianz Funktion (Title).
 #'
 #' \code{ACF} berechnet die Covarianz des Eingabevektors x_1,...,x_n
@@ -24,10 +5,10 @@ covariance <- function(X, start = 1, end = length(X), h) {
 #'@param X Eingabevektor
 #'@param start Anfangszeitpunkt der Zeitreihe
 #'@param end Endzeitpunkt der Zeitreihe
-#'@param type Typ der Funktion ( Korrelation oder Kovarianz)
+#'@param type Typ der Funktion (Korrelation oder Kovarianz)
 #'@param h Tutor fragen
 #'
-#'@return Der Rückgabewert ist eine Abschätzung der Autokorrelationsfunktion für eine observierte Datenreihe {X_t}.
+#'@return Der Rückgabewert ist eine Abschätzung der Autokorrelationsfunktion für eine beobachtete Datenreihe {X_t}.
 #'
 #'@examples
 #'I <- 1000
@@ -36,6 +17,8 @@ covariance <- function(X, start = 1, end = length(X), h) {
 #'
 #'ACF(X, lag.max = 4, type = "correlation", plot = FALSE)
 #'@export
+
+# ACF Funktion
 ACF <- function(X, start = 1, end = length(X), type, h){
   if (type == "covariance") return(covariance(X, start, end, h))
   if (type == "correlation") return(covariance(X, start, end, h)/covariance(X, start, end, 0))
@@ -56,7 +39,7 @@ acf(X, lag.max = 4, type = "covariance", plot = FALSE)
 
 ACF1 <- function(x, lag=NULL){
   n <- length(x)
-  #Check for Input Paramters
+  #Check for Input Parameters
   stopifnot("Eingabe ist nicht numerisch" = is.numeric(x))
   stopifnot("Länger muss größer als 1 sein" = n>1)
   stopifnot("h ist nicht im richtigen Bereich (zwischen -n und n)" = (-n < lag | lag < n))

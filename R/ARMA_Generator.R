@@ -1,5 +1,3 @@
-# Fragen von Leo: Datei umbenennen? Kommentare hinzufügen?
-
 
 set.seed(1)
 
