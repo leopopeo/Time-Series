@@ -10,7 +10,6 @@ DLA <- function(X, start = 1, end = length(X), h) {
     L[i,i] <- (Autocovariance(i)- )
   }
 
-
   stopifnot("h ist nicht im richtigen Bereich" = (-end < h | h < end))
   stopifnot("Eingabe ist nicht numerisch" = is.numeric(X))
   stopifnot("Eingabe ist nicht groeßer als eins" = end > 0)
