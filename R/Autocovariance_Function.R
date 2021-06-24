@@ -17,53 +17,17 @@
 #'
 #'  ACF(X, lag.max = 4, type = "correlation", plot = FALSE)
 #'@export
-
-# Autokovarianzfunktion (kurz: ACF)
-#ACF <- function(X,
-                start = 1,
-                end = length(X),
-                type,
-                h) {
-  #Eingabewerte überprüfen
-  #type
- # if (type == "covariance")
-  #  return(covariance(X, start, end, h))
-  #if (type == "correlation")
-  #  return(covariance(X, start, end, h) / covariance(X, start, end, 0))
-  #else{
-  #  print("Typ ist nicht definiert.")
-#  }
-#}
-
-############Test
-I <- 100
-X = arima.sim(n = I, list(
-  ar = c(0.8897,-0.4858),
-  ma = c(-0.2279, 0.2488)
-), sd = sqrt(0.1796))
-plot(X, type = "l")
-
-ACF(X, type = "covariance", h = 1)
-ACF(X, type = "covariance", h = 2)
-ACF(X, type = "covariance", h = 3)
-ACF(X, type = "covariance", h = 4)
-
-acf(X,
-    lag.max = 4,
-    type = "covariance",
-    plot = FALSE)
-
-ACF1 <- function(x, lag = NULL) {
+ACF <- function(x, lag = NULL) {
   n <- length(x)
 
   #Eingabewerte überprüfen
   stopifnot("Eingabe ist nicht numerisch." = is.numeric(x))
   stopifnot("Die Länge des Vektors muss größer als 1 sein." = n > 1)
   stopifnot("h liegt nicht im richtigen Bereich. Der richtige Bereich liegt zwischen -n und n." = (-n < lag |
-                                                                         lag < n))
+                                                                                                     lag < n))
 
   stopifnot("lag muss NULL oder ein Integer sein." = (is.null(lag) |
-                                                             is.numeric(lag)))
+                                                        is.numeric(lag)))
   if (is.null(lag))
     lag <- n - 1
   stopifnot("lag muss NULL oder ein Integer Wert sein." = length(lag) ==
@@ -88,8 +52,25 @@ ACF1 <- function(x, lag = NULL) {
   })
   unname(res)
 }
+#alte Funktion
+# Autokovarianzfunktion (kurz: ACF)
+#ACF <- function(X,
+                #start = 1,
+                #end = length(X),
+                #ätype,
+                #h) {
+  #Eingabewerte überprüfen
+  #type
+ # if (type == "covariance")
+  #  return(covariance(X, start, end, h))
+  #if (type == "correlation")
+  #  return(covariance(X, start, end, h) / covariance(X, start, end, 0))
+  #else{
+  #  print("Typ ist nicht definiert.")
+#  }
+#}
 
-# Das hier ist ein Beispiel?
+############Test
 I <- 100
 X = arima.sim(n = I, list(
   ar = c(0.8897,-0.4858),
@@ -97,10 +78,17 @@ X = arima.sim(n = I, list(
 ), sd = sqrt(0.1796))
 plot(X, type = "l")
 
-acf(X, type = "covariance", plot = FALSE)
+ACF(X, lag = 1)
+ACF(X, lag = 2)
+ACF(X, lag= 3)
+ACF(X, lag= 4)
 
-ACF1(X, lag = 20)
-str(a)
+acf(X,
+    lag.max = 4,
+    type = "covariance",
+    plot = FALSE)
 
-ACF1(X)
+
+
+
 
