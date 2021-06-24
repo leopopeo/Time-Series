@@ -1,13 +1,13 @@
 
 
 #Implementierung des Innovations Algorithmus
-innovations_algorithm <- function(ts,){
-  #Eingabe überprüfen
-  #Timeseries ts überprüfen
+innovations_algorithm <- function(timeseries,){
+  #Eingabe ueberpruefen
+  #Timeseries timeseries ueberpruefen
 
-  # überprüfen
+  #Ueberpruefen
 
-  # überprüfen
+  #Ueberpruefen
 
 
   #Rekursive Berechnung der Koeffizienten Theta_n_1,..., Theta_n_n
