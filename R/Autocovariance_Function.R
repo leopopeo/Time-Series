@@ -85,5 +85,5 @@ X = arima.sim(n = I,list(ar = c(0.8897, -0.4858), ma = c(-0.2279, 0.2488)),sd = 
 plot(X, type = "l")
 
 acf(X, type = "covariance", plot = FALSE)
-ACF1(X)
-
+ACF1(X, lag = 20)
+str(a)
