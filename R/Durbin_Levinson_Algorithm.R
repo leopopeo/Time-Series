@@ -1,5 +1,5 @@
 
-source("/Users/niklasmerz/Documents/GitHub/Time-Series/R/ACF1.R")
+
 
 
 DLA <- function(X, start = 1, end = length(X), h) {
@@ -31,3 +31,12 @@ Autocovariance <- function(X, start = 1, end = length(X), type, h){
   if (type == "covariance") covariance(X, start, end, h)
   if (type == "correlation") covariance(X, start, end, h)/covariance(X, start, end, 0)
 }
+
+
+DLA1 <- function(data, p=NULL){
+  #
+}
+
+
+
+
