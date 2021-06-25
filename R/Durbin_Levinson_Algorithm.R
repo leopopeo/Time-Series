@@ -30,7 +30,7 @@ DLA <- function(x, len = NULL) {
 }
 
 ########Test
-PacfDL(X)
+#PacfDL(X)
 DLA(X, len=3)
-levinson(X,p=3)
+#levinson(X,p=3)
 
