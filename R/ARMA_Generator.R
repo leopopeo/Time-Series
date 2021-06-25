@@ -1,7 +1,7 @@
 
 set.seed(1)
+source("AcF1.R")
 
-source("/Users/niklasmerz/Documents/GitHub/Time-Series/R/ACF1.R")
 
 DLA <- function(X) {
   end <- length(X)
