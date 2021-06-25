@@ -1,7 +1,7 @@
 
 
 #Implementierung des Innovations Algorithmus
-innovations_algorithm <- function(timeseries,){
+#innovations_algorithm <- function(timeseries,){
   #Eingabe ueberpruefen
   #Timeseries timeseries ueberpruefen
 
@@ -18,4 +18,4 @@ innovations_algorithm <- function(timeseries,){
 
   #Berechnung
 
-}
+#}

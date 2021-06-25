@@ -13,6 +13,7 @@
 #'  X = arima.sim(n = 1000, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796))
 #'
 #'  ACF(X, lag = 4)
+#'
 #'@export
 
 ACF <- function(x, lag = NULL) {
