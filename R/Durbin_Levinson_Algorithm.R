@@ -1,4 +1,3 @@
-
 DLA <- function(x, len = NULL) {
   #Eingabewerte überprüfen
   stopifnot("Eingabe ist nicht numerisch." = is.numeric(x))

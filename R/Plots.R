@@ -1,9 +1,7 @@
-
-
 plot_timeseries <- function(timeseries){
   #Eingabe ueberpruefen
   stopifnot("Der Eingabevektor timeseries ist nicht numerisch." = is.numeric(timeseries))
-  stopifnot("Der Vektor timeseries muss wenigstens die Länge 1 haben." = length(timeseries) < 0)
+  stopifnot("Der Vektor timeseries muss wenigstens die L?nge 1 haben." = length(timeseries) < 0)
 
 
   #Timeseries plotten
