@@ -1,22 +1,20 @@
-#' Dies ist die Kovarianz-Funktion (Title).
+#'Autokovarianz-Funktion-Näherung(Title).
 #'
-#' \code{ACF} Berechnet die Kovarianz des Eingabevektors X = x_1,...,x_n
+#' \code{ACF} berechnet eine Näherung an die Autokovarianz-Funktion der Datenreihe X = x_1,...,x_n. Für mehr Informationen rufe die Vignette auf.
 #'
-#'@param X Eingabevektor
-#'@param start Anfangszeitpunkt der Zeitreihe
-#'@param end Endzeitpunkt der Zeitreihe
-#'@param type Typ der Funktion (Korrelation oder Kovarianz)
-#'@param h Tutor fragen
 #'
-#'@return Der Rückgabewert ist eine Abschätzung der Autokorrelationsfunktion für eine beobachtete Datenreihe {X_t}.
 #'
+#'@param X Eingabevektor der die observierten Daten enthält.
+#'@param lag Zeitdifferenz der Datenreihe welche die Funktion berücksichtigen soll. Der Default Wert ist die komplette Zeitreihe mit einem Wert weniger als Observationen in der Zeitreihe
+#'
+#'@return Der Rückgabewert ist ein Vektor für die Abschätzung der Autokorrelationsfunktion.
 #'@examples
-#'  I <- 1000
+#'  #Erstelle eine Zeitreihe
+#'  X = arima.sim(n = 1000, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796))
 #'
-#'  X = arima.sim(n = I, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796))
-#'
-#'  ACF(X, lag.max = 4, type = "correlation", plot = FALSE)
+#'  ACF(X, lag = 4)
 #'@export
+
 ACF <- function(x, lag = NULL) {
   n <- length(x)
 
@@ -52,23 +50,6 @@ ACF <- function(x, lag = NULL) {
   })
   unname(res)
 }
-#alte Funktion
-# Autokovarianzfunktion (kurz: ACF)
-#ACF <- function(X,
-                #start = 1,
-                #end = length(X),
-                #ätype,
-                #h) {
-  #Eingabewerte überprüfen
-  #type
- # if (type == "covariance")
-  #  return(covariance(X, start, end, h))
-  #if (type == "correlation")
-  #  return(covariance(X, start, end, h) / covariance(X, start, end, 0))
-  #else{
-  #  print("Typ ist nicht definiert.")
-#  }
-#}
 
 ############Test
 I <- 100
@@ -76,17 +57,12 @@ X = arima.sim(n = I, list(
   ar = c(0.8897,-0.4858),
   ma = c(-0.2279, 0.2488)
 ), sd = sqrt(0.1796))
-plot(X, type = "l")
 
-ACF(X, lag = 1)
-ACF(X, lag = 2)
-ACF(X, lag= 3)
 ACF(X, lag= 4)
 
-acf(X,
-    lag.max = 4,
-    type = "covariance",
-    plot = FALSE)
+acf(X,lag.max = 4,type = "covariance",plot = FALSE)
+
+
 
 
 

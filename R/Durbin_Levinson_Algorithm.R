@@ -1,42 +1,36 @@
 
+DLA <- function(x, len = NULL) {
+  #Eingabewerte überprüfen
+  stopifnot("Eingabe ist nicht numerisch." = is.numeric(x))
+  stopifnot("Die Länge des Vektors muss größer als 1 sein." = length(x) > 1)
 
 
+  stopifnot("len muss NULL oder ein Integer sein." = (is.null(len) |
+                                                        is.numeric(len)))
+  if (is.null(len))
+    len <- n - 1
+  stopifnot("len muss >= 2 sein" =  len >= 2)
+  stopifnot("len muss NULL oder ein Integer Wert sein." = length(len) == 1)
+  stopifnot("len muss NULL oder ein Integer Wert sein." = len %% 1 == 0)
 
-DLA <- function(X, start = 1, end = length(X), h) {
-  L <- matrix(0,ncol=end,nrow=end)
-  L[1,1] <- Autocovariance(1)/Autocovariance(0)
-  for(i in length(x)){
-    for( j in n-1)
-    L[i,i] <- (Autocovariance(i)- )
+  #Berechnung
+  #Start Values
+  acf_x <- ACF(x)
+  Phi_nn <- acf_x[2] / acf_x[1] #per Definition
+  Phi <- Phi_nn
+  v <- acf_x[1] * (1 - Phi_nn ^ 2) #per Definition
+
+  #Rekursion
+  for (i in 2:len) {
+    Phi_nn <- (acf_x[i + 1] - sum(Phi * acf_x[i:2])) * v ^ -1
+    Phi <- c(Phi - Phi_nn * Phi[(i - 1):1], Phi_nn)
+    v <- v * (1 - Phi_nn ^ 2)
   }
-
-  stopifnot("h ist nicht im richtigen Bereich" = (-end < h | h < end))
-  stopifnot("Eingabe ist nicht numerisch" = is.numeric(X))
-  stopifnot("Eingabe ist nicht groeßer als eins" = end > 0)
-  stopifnot("Start- oder Endpunkt ist nicht Integer" = (start %% 1 == 0 |
-                                                          end %% 1 == 0))
-  n <- end - start
-  sample <- X
-  sample_mean <- mean(sample)
-  L <- NULL
-  for (t in 1:(n - abs(h))) {
-    L <- c(L, (sample[t + abs(h)] - sample_mean) * (sample[t] - sample_mean))
-  }
-  return((1 / n) * sum(L))
+  rev(Phi)
 }
 
-
-
-Autocovariance <- function(X, start = 1, end = length(X), type, h){
-  if (type == "covariance") covariance(X, start, end, h)
-  if (type == "correlation") covariance(X, start, end, h)/covariance(X, start, end, 0)
-}
-
-
-DLA1 <- function(data, p=NULL){
-  #
-}
-
-
-
+########Test
+PacfDL(X)
+DLA(X, len=3)
+levinson(X,p=3)
 
