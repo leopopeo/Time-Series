@@ -1,12 +1,25 @@
-
+#'Periodogram
+#'
+#'\code{perio} bestimmt die spektrale Dichte des Signals. Es hilft dabei die dominaten Frequenzen einer Zeitreihe zu identifizieren. Für mehr Informationen rufe die Vignette auf.
+#'
+#'@param y Eingabevektor der die observierten Daten enthält
+#'@return Vektor der die Periodogram Werte bzw. die Zeitreihe bei den Fourierfrequenzen enthält.
+#'@examples
+#'  #Erstelle eine Zeitreihe
+#'  X = arima.sim(n = 1000, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796))
+#'
+#'  perio(X)
+#'@export
 perio <- function(y){
-  n <- length(y)-1
+  n <- length(y)
 
   #Eingabewerte überprüfen
+  stopifnot("Eingabe ist nicht numerisch." = is.numeric(y))
+  stopifnot("Die Länge des Vektors muss größer als 1 sein." = n > 1)
 
   #Berechnung
   Res <- double(n)
-  F_range <- -floor(((n-1)/2):(n/2))
+  F_range <- floor((-(n-1)/2):(n/2))
   for(w in F_range){
     sum <- 0
     for(i in 1:n){
@@ -19,7 +32,7 @@ perio <- function(y){
 
 
 #####Testing
-#library(TSA)
+library(TSA)
 I <- 100
 X = arima.sim(n = I, list(
   ar = c(0.8897,-0.4858),

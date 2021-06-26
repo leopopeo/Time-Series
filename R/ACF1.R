@@ -1,10 +1,10 @@
-#'Autokovarianz-Funktion-Näherung(Title).
+#'Autokovarianz-Funktion-Näherung.
 #'
 #' \code{ACF} berechnet eine Näherung an die Autokovarianz-Funktion der Datenreihe X = x_1,...,x_n. Für mehr Informationen rufe die Vignette auf.
 #'
 #'
 #'
-#'@param X Eingabevektor der die observierten Daten enthält.
+#'@param X Eingabevektor der die observierten Daten enthält
 #'@param lag Zeitdifferenz der Datenreihe welche die Funktion berücksichtigen soll. Der Default Wert ist die komplette Zeitreihe mit einem Wert weniger als Observationen in der Zeitreihe
 #'
 #'@return Der Rückgabewert ist ein Vektor für die Abschätzung der Autokorrelationsfunktion.
@@ -34,6 +34,7 @@ ACF <- function(x, lag = NULL) {
   stopifnot("lag muss NULL oder ein Integer Wert sein." = lag %% 1 == 0)
 
   #Berechnung
+
   # Sample mean
   x_mean <- 1 / n * sum(x)
   # if lag=0 -> return variance

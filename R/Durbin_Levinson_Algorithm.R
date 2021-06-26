@@ -1,3 +1,16 @@
+#'Durbin-Levinson Algorithm
+#'
+#'\code{DLA} berechnet durch die rekursive Durbin-Levinson Methode eine Schritt für Schritt Vorhersage für die Zeitreihe. Für mehr Informationen rufe die Vignette auf.
+#'
+#'@param x Eingabevektor der die observierten Daten enthält
+#'@param len Anzahl der Rekusionsverfahren, also wie weit vorhergesagt werden soll
+#'@return Phi Werte durch den Durbin-Levinson Algorithmus
+#'@examples
+#'  #Erstelle eine Zeitreihe
+#'  X = arima.sim(n = 1000, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796))
+#'
+#'  DLA(X, lag = 4)
+#'@export
 DLA <- function(x, len = NULL) {
   #Eingabewerte überprüfen
   stopifnot("Eingabe ist nicht numerisch." = is.numeric(x))
@@ -29,7 +42,7 @@ DLA <- function(x, len = NULL) {
 }
 
 ########Test
-#PacfDL(X)
+#library(signal)
 DLA(X, len=3)
 #levinson(X,p=3)
 
