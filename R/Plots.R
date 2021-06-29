@@ -1,9 +1,20 @@
+#'Plots
+#'
+#'@description Diese Funktion plottet eine gegebene Timeseries (deutsch: Zeitreihe).
+#'
+#'@param timeseries is ein numerischer Vektor vom Typ time series.
+#'@return Grafische Ausgabe der Timeseries.
+#'@examples
+#'plot_timeseries()
+#'plot_timeseries()
+#'@export
+
+
 #<<<<<<< HEAD
 plot_timeseries <- function(timeseries){
   #Eingabe ueberpruefen
   stopifnot("Der Eingabevektor timeseries ist nicht numerisch." = is.numeric(timeseries))
-  stopifnot("Der Vektor timeseries muss wenigstens die L?nge 1 haben." = length(timeseries) < 0)
-
+  stopifnot("Der Vektor timeseries muss wenigstens die Laenge 1 haben." = length(timeseries) > 0)
 
   #Timeseries plotten
   tibble2plot <- tibble::tibble(values = timeseries, time = length(timeseries))

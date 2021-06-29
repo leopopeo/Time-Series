@@ -10,6 +10,7 @@
 #'
 #'  perio(X)
 #'@export
+
 perio <- function(y){
   n <- length(y)
 

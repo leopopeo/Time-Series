@@ -4,13 +4,14 @@
 #'
 #'@param x Eingabevektor der die observierten Daten enthält
 #'@param len Anzahl der Rekusionsverfahren, also wie weit vorhergesagt werden soll
-#'@return Phi Werte durch den Durbin-Levinson Algorithmus
+#'@return Phi Werte erstellt durch den Durbin-Levinson Algorithmus
 #'@examples
 #'  #Erstelle eine Zeitreihe
 #'  X = arima.sim(n = 1000, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796))
 #'
 #'  DLA(X, lag = 4)
 #'@export
+
 DLA <- function(x, len = NULL) {
   #Eingabewerte überprüfen
   stopifnot("Eingabe ist nicht numerisch." = is.numeric(x))

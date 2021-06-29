@@ -12,7 +12,7 @@ DLA(x, len = NULL)
 \item{len}{Anzahl der Rekusionsverfahren, also wie weit vorhergesagt werden soll}
 }
 \value{
-Phi Werte durch den Durbin-Levinson Algorithmus
+Phi Werte erstellt durch den Durbin-Levinson Algorithmus
 }
 \description{
 \code{DLA} berechnet durch die rekursive Durbin-Levinson Methode eine Schritt für Schritt Vorhersage für die Zeitreihe. Für mehr Informationen rufe die Vignette auf.
