@@ -45,7 +45,7 @@ ACF <- function(x, lag = NULL) {
   #Formel
   zwischen_mat <-
     cbind(x, sapply(1:lag, function(k)
-      c(x[-c(1:k)], rep(NA, times = k))))
+      c(x[-(1:k)], rep(NA, times = k))))
 
   res <- apply(zwischen_mat, 2, function(x_lag) {
     1 / n * sum((x_lag[!is.na(x_lag)] - x_mean) * (x[!is.na(x_lag)] - x_mean))
@@ -62,6 +62,8 @@ X = arima.sim(n = I, list(
 
 ACF(X, lag= 4)
 
+
+#Base-R Implementation
 acf(X,lag.max = 4,type = "covariance",plot = FALSE)
 
 
