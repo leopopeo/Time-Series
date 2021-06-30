@@ -31,20 +31,20 @@
 theta_sum <- function(theta, v, n, k){
   if (k == 0) return(0)
   x = NULL
-  for (j in 1:(k-1)){
-    x <- c(x, theta[k,k-j]*theta[n,n-j]*v[j])
+  for (j in 0:(k-1)){
+    x <- c(x, theta[k,k-j]*theta[n,n-j]*v[j+1])
   }
   return(sum(x))
 }
 
-#Berechnung des Tetas
+#Berechnung des Thetas
 innovation <- function(ts, lag = NA){
   theta <- matrix(0, lag, lag)
   COV = ACF(ts, lag = lag)
   v = COV[1]
   for (n in 1:lag){
-    for (k in n:1){
-      theta[n,n-k] <- 1/v[k]*(COV[n-k+1] - theta_sum(theta, v, n, k))
+    for (k in 0:(n-1)){
+      theta[n,n-k] <- 1/v[k+1]*(COV[n-k+1] - theta_sum(theta, v, n, k))
     }
     v[n+1] <- COV[1] - theta_sum(theta, v, n, n)
   }
@@ -103,7 +103,7 @@ innovation2 <- function(ts,lag.max=NA)
   theta
 }
 
-X = arima.sim(n = I, list(
+X = arima.sim(n = 100, list(
   ar = c(0.8897,-0.4858),
   ma = c(-0.2279, 0.2488)
 ), sd = sqrt(0.1796))
