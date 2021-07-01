@@ -20,13 +20,13 @@ perio <- function(y){
 
   #Berechnung
   Res <- double(n)
-  F_range <- floor((-(n-1)/2):(n/2))
-  for(w in F_range){
+  Range <- floor((-(n-1)/2):(n/2))
+  for(w in Range){
     sum <- 0
     for(i in 1:n){
       sum <- sum + y[i]*exp(as.complex(-1i)*i*2*pi*w/n)
     }
-  Res[w+ceiling(n/2)] <- (1/n)*abs(sum)^2
+    Res[w+ceiling(n/2)] <- (1/n)*abs(sum)^2
   }
   Res
 }
