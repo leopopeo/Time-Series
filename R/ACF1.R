@@ -36,7 +36,7 @@ ACF <- function(x, lag = NULL) {
   #Berechnung
 
   # Sample mean
-  x_mean <- 1 / n * sum(x)
+  x_mean <- mean(x)
   # if lag=0 -> return variance
   if (lag == 0) {
     return(mean((x - x_mean) ^ 2))
