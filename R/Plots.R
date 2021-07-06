@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 #'Plots
 #'
 #'@description Diese Funktion plottet eine gegebene Timeseries (deutsch: Zeitreihe).
@@ -11,12 +10,6 @@
 #'@export
 
 
-=======
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-#<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
 plot_timeseries <- function(timeseries){
   #Eingabe ueberpruefen
   stopifnot("Der Eingabevektor timeseries ist nicht numerisch." = is.numeric(timeseries))
@@ -29,11 +22,7 @@ plot_timeseries <- function(timeseries){
   plt <- plt_base + lay
   plt
 }
-<<<<<<< Updated upstream
-#=======
-=======
 
->>>>>>> Stashed changes
 
 
 # plot_timeseries <- function(timeseries){
@@ -49,8 +38,4 @@ plot_timeseries <- function(timeseries){
 #   plt <- plt_base + lay
 #   plt
 # }
-<<<<<<< Updated upstream
-#>>>>>>> 3f4bb99b701e2a5f3a4066b2226502bf63819d0a
-=======
 
->>>>>>> Stashed changes

@@ -26,13 +26,13 @@ theta = c(0.8, -0.3, 0.3)
 sd = 0.2
 I = 100
 
-<<<<<<< Updated upstream
+
 #Funktion zur Berechnung der Regression
-=======
+
 #'Regression auf letzte Werte
 #'
 #'\code{reg} berechnet den nächsten Wert einer Zeitreihe als gewichtete Summe der Vorangegangenen Werte
->>>>>>> Stashed changes
+
 reg = function(X, coeff){
   n <- length(coeff)
   sum(coeff*X[length(X):(length(X)-(n-1))])
@@ -79,17 +79,16 @@ Y2 = arima.sim(n = I,
                     sd = sd))
 #plot(Y2, type = "l")
 
-<<<<<<< Updated upstream
+
 #Von Leo: Hier das habe ich ausgeklammert. Bei mir kam ne Fehlermeldung deswegen.
 'arima(Y1, order = c(length(phi), 0, length(theta)))
 arima(Y2, order = c(length(phi), 0, length(theta)))
 c(phi, theta)'
-=======
+
 arima(Y1, order = c(length(phi), 0, length(theta)),
       optim.control = list(maxit = 1000))
 arima(Y2, order = c(length(phi), 0, length(theta)),
       optim.control = list(maxit = 1000))
 c(phi, theta)
->>>>>>> Stashed changes
 
 
