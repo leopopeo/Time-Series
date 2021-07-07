@@ -1,3 +1,6 @@
+library(tidyverse)
+library(readxl)
+
 regress <- function(X, X_hat, theta, n){
   X = X[1:n]
   coeff <- theta[n,n:1]
@@ -13,14 +16,23 @@ estimate <- function(X, n){
   X_hat
 }
 
-X = arima.sim(n = 100, list(
-  ar = c(0.95),
-  ma = c(0.7, 0.25)),
-  sd = sqrt(0.1796))
-plot(X)
-X_hat = estimate(X, 50)
-plot(X)
-lines(X_hat, col = "red")
+# X = arima.sim(n = 100, list(
+#   ar = c(0.95),
+#   ma = c(0.7, 0.25)),
+#   sd = sqrt(0.1796))
+# plot(X)
+# X_hat = estimate(X, 50)
+# plot(X)
+# lines(X_hat, col = "red")
+#X = sin(1:80)
+
+tb <- read_excel("LTH.xls")
+
+
+
+
+
+
 
 ts_predict <- function(X, steps){
   X_cache <- X
@@ -32,10 +44,10 @@ ts_predict <- function(X, steps){
   X_hat
 }
 
-ts_predict(X, 1)
-X_test <- X[1:80]
-X_est = ts_predict(X_test, 1)
-plot(X_est, type = "l", col = "red")
+
+X_test <- X[1:60]
+X_est = ts_predict(X_test, 50)
+plot(X_est[60:length(X_est)], type = "l", col = "red")
 lines(X)
 
 
