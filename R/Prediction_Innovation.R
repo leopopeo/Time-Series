@@ -26,7 +26,8 @@ estimate <- function(X, n){
 # lines(X_hat, col = "red")
 #X = sin(1:80)
 
-tb <- read_excel("LTH.xls")
+#Niklas: Bitte solche Sachen immer in Klammer setzten weil der Path nicht bei allen funktioniert
+#tb <- read_excel("LTH.xls")
 
 
 

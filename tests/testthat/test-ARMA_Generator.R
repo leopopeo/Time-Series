@@ -1,3 +1,5 @@
-test_that("multiplication works", {
-  expect_equal(2 * 2, 4)
+context("Test of the implementation ’ARAM-Generator'")
+
+test_that("AR works", {
+print("Test")
 })
