@@ -7,15 +7,15 @@
 DLA(x, len = NULL)
 }
 \arguments{
-\item{x}{Eingabevektor der die observierten Daten enthält}
+\item{x}{Eingabevektor der die beobachteten Daten enthält}
 
-\item{len}{Anzahl der Rekusionsverfahren, also wie weit vorhergesagt werden soll}
+\item{len}{Horizont der Vorhersage.}
 }
 \value{
-Phi Werte erstellt durch den Durbin-Levinson Algorithmus
+Vektor mit den Vorhgesagten Werten
 }
 \description{
-\code{DLA} berechnet durch die rekursive Durbin-Levinson Methode eine Schritt für Schritt Vorhersage für die Zeitreihe. Für mehr Informationen rufe die Vignette auf.
+\code{DLA} berechnet durch die rekursive Durbin-Levinson Methode eine Vorhersage für die übergebene Zeitreihe. Für mehr Informationen rufe die Vignette auf.
 }
 \examples{
  #Erstelle eine Zeitreihe

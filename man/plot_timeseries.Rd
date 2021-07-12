@@ -7,15 +7,16 @@
 plot_timeseries(timeseries)
 }
 \arguments{
-\item{timeseries}{is ein numerischer Vektor vom Typ time series.}
+\item{timeseries}{Ein numerischer Vektor vom Typ time series.}
 }
 \value{
-Grafische Ausgabe der Timeseries.
+Plot der Zeitreihe.
 }
 \description{
 Diese Funktion plottet eine gegebene Timeseries (deutsch: Zeitreihe).
 }
 \examples{
-plot_timeseries()
-plot_timeseries()
+#Erstelle eine Zeitreihe
+X = arima.sim(n = 1000, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796))
+plot_timeseries(X)
 }

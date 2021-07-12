@@ -1,5 +1,41 @@
-library(tidyverse)
-library(readxl)
+#'ts_predict
+#'
+#'@description
+#'N-Schritt Prognose mithilfe des Innovation Algorithmus.
+#'
+#'Details
+#'
+#'@param X Die Zeitreihe
+#'@param steps Anzahl N der Schritte der Prognose
+#'
+#'@return Numerischer Vektor der Vorhersage
+#'
+#'@examples X = arima.sim(n = I, list(ar = c(0.8897,-0.4858),ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796)), 10)
+#'ts_predict(X, 4)
+#'
+#'@export
+#Implementierung des Innovations Algorithmus
+#innovations_algorithm <- function(timeseries,){
+#Eingabe ueberpruefen
+#Timeseries timeseries ueberpruefen
+ts_predict <- function(X, steps){
+  X_cache <- X
+  for (i in 1:steps){
+    n <- length(X_cache)
+    X_hat <- estimate(X_cache, n)
+    X_cache <- c(X_cache, X_hat[n+1])
+  }
+  X_hat
+}
+
+
+
+#Rekursive Berechnung der Koeffizienten Theta_n_1,..., Theta_n_n
+
+#Berechnung des mittleren quadratischen Abweichung des ersten Elements
+
+
+#Hilfsfunktion
 
 regress <- function(X, X_hat, theta, n){
   X = X[1:n]
@@ -27,23 +63,6 @@ estimate <- function(X, n){
 #X = sin(1:80)
 
 #Niklas: Bitte solche Sachen immer in Klammer setzten weil der Path nicht bei allen funktioniert
-
-
-
-
-
-
-
-
-ts_predict <- function(X, steps){
-  X_cache <- X
-  for (i in 1:steps){
-    n <- length(X_cache)
-    X_hat <- estimate(X_cache, n)
-    X_cache <- c(X_cache, X_hat[n+1])
-  }
-  X_hat
-}
 
 
 # X_test <- X[1:60]

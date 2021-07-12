@@ -2,20 +2,20 @@
 % Please edit documentation in R/ACF1.R
 \name{ACF}
 \alias{ACF}
-\title{Autokovarianz-Funktion-Näherung.}
+\title{Autokovarianz-Funktion Schätzer.}
 \usage{
 ACF(x, lag = NULL)
 }
 \arguments{
 \item{lag}{Zeitdifferenz der Datenreihe welche die Funktion berücksichtigen soll. Der Default Wert ist die komplette Zeitreihe mit einem Wert weniger als Observationen in der Zeitreihe}
 
-\item{X}{Eingabevektor der die observierten Daten enthält}
+\item{X}{Eingabevektor der die beobachteten Daten enthält}
 }
 \value{
 Der Rückgabewert ist ein Vektor für die Abschätzung der Autokorrelationsfunktion.
 }
 \description{
-\code{ACF} berechnet eine Näherung an die Autokovarianz-Funktion der Datenreihe X = x_1,...,x_n. Für mehr Informationen rufe die Vignette auf.
+\code{ACF} berechnet eine Naeherung an die Autokovarianz-Funktion der Datenreihe X = x_1,...,x_n. Für mehr Informationen rufe die Vignette auf.
 }
 \examples{
  #Erstelle eine Zeitreihe

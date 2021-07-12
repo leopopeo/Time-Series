@@ -7,13 +7,13 @@
 perio(y)
 }
 \arguments{
-\item{y}{Eingabevektor der die observierten Daten enthält}
+\item{y}{Eingabevektor der die beobachteten Daten enthält}
 }
 \value{
-Vektor der die Periodogram Werte bzw. die Zeitreihe bei den Fourierfrequenzen enthält.
+Vektor der die Periodogramwerte bzw. die Zeitreihe bei den Fourierfrequenzen enthält.
 }
 \description{
-\code{perio} bestimmt die spektrale Dichte des Signals. Es hilft dabei die dominaten Frequenzen einer Zeitreihe zu identifizieren. Für mehr Informationen rufe die Vignette auf.
+\code{perio} bestimmt die spektrale Dichte des Signals. Dadurch kann die dominaten Frequenzen einer Zeitreihe identifiziert werden. Für mehr Informationen rufe die Vignette auf.
 }
 \examples{
  #Erstelle eine Zeitreihe

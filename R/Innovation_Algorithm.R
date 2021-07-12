@@ -28,6 +28,7 @@
   #Berechnung des mittleren quadratischen Abweichung des ersten Elements
 
 
+#Hilfsfunktion
 theta_sum <- function(theta, v, n, k){
   if (k == 0) return(0)
   x = NULL
@@ -36,6 +37,7 @@ theta_sum <- function(theta, v, n, k){
   }
   return(sum(x))
 }
+
 
 #Berechnung des Thetas
 innovation <- function(ts, lag = NA){
