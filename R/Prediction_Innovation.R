@@ -27,7 +27,7 @@ estimate <- function(X, n){
 #X = sin(1:80)
 
 #Niklas: Bitte solche Sachen immer in Klammer setzten weil der Path nicht bei allen funktioniert
-#tb <- read_excel("LTH.xls")
+
 
 
 
@@ -46,36 +46,10 @@ ts_predict <- function(X, steps){
 }
 
 
-X_test <- X[1:60]
-X_est = ts_predict(X_test, 50)
-plot(X_est[60:length(X_est)], type = "l", col = "red")
-lines(X)
+# X_test <- X[1:60]
+# X_est = ts_predict(X_test, 50)
+# plot(X_est[60:length(X_est)], type = "l", col = "red")
+# lines(X)
 
 
-########################
-#Determinate Theta
-lag.max = length(X)-1
-steps = 1
-inno_result <- innovation(X,lag.max+steps-1)
-theta <- inno_result
-
-
-#Sum need to Prediction of previous Elements
-next_x_sum <- function(theta,X,x_next,i){
-  theta_ <- theta[i,i:1]
-  x_cache <- X[2:(i+1)]
-  sum(theta_*(x_cache-x_next))
-}
-x_next <- 0 # First Prediction
-#Calculate previous Elements predictionssf
-for (i in seq(steps+lag.max-2)){
-  x_next[i+1] <- next_x_sum(theta,X,x_next,i)
-}
-#Calculate lag.max+steps+1 Element prediction
-theta_ <- theta[lag.max+steps-1,steps:(lag.max+steps-1)]
-x_ <-X[(lag.max+steps):(steps+1)]
-x_next_ <- x_next[(lag.max+steps-1):steps]
-x_prediction <- sum(theta_*(x_-x_next_))
-
-x_prediction
 
