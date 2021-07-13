@@ -20,18 +20,19 @@ ACF <- function(x, lag = NULL) {
   n <- length(x)
 
   #Eingabewerte überprüfen
-  stopifnot("Eingabe ist nicht numerisch." = is.numeric(x))
-  stopifnot("Die Länge des Vektors muss größer als 1 sein." = n > 1)
-  stopifnot("h liegt nicht im richtigen Bereich. Der richtige Bereich liegt zwischen -n und n." = (-n < lag |
-                                                                                                     lag < n))
+  stopifnot("Eingabe ist kein numerischer Vektor!" = is.numeric(x))
+  stopifnot("Die Länge des Vektors muss größer als 1 sein!" = n > 1)
 
-  stopifnot("lag muss NULL oder ein Integer sein." = (is.null(lag) |
+
+  stopifnot("lag muss NULL oder ein Integer Wert sein!" = (is.null(lag) |
                                                         is.numeric(lag)))
   if (is.null(lag))
     lag <- n - 1
-  stopifnot("lag muss NULL oder ein Integer Wert sein." = length(lag) ==
+  stopifnot("lag muss NULL oder ein Integer Wert sein!" = length(lag) ==
               1)
-  stopifnot("lag muss NULL oder ein Integer Wert sein." = lag %% 1 == 0)
+  stopifnot("lag muss NULL oder ein Integer Wert sein!" = lag %% 1 == 0)
+  stopifnot("lag liegt nicht im richtigen Bereich. Der richtige Bereich liegt zwischen -n und n!" = (-n < lag &
+                                                                                                       lag < n))
 
   #Berechnung
 
