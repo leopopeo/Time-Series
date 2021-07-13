@@ -16,4 +16,6 @@ test_that("Eingabe Test", {
 test_that("ACF Implementation funktioniert", {
   X <-  arima.sim(n = 1000, list(ar = c(0.8897,-0.4858),ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796))
   expect_equal(ACF(X, lag= 4), as.vector(unclass(acf(X,lag.max = 4,type = "covariance",plot = FALSE))$acf))
+  expect_equal(ACF(X)[1], mean((X-mean(X))^2) )
+  expect_equal(ACF(X, lag= 0), mean((X-mean(X))^2))
 })

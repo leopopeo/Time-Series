@@ -4,20 +4,18 @@
 #'
 #'@param x Eingabevektor der die beobachteten Daten enthält
 #'@param len Horizont der Vorhersage.
-#'@return Vektor mit den Vorhgesagten Werten
+#'@return Vektor mit den vorhgesagten Werten
 #'@examples
 #'  #Erstelle eine Zeitreihe
 #'  X = arima.sim(n = 1000, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796))
 #'
-#'  DLA(X, lag = 4)
+#'  DLA(X, len = 4)
 #'@export
 
 DLA <- function(x, len = NULL) {
   #Eingabewerte überprüfen
   stopifnot("Eingabe ist nicht numerisch." = is.numeric(x))
   stopifnot("Die Länge des Vektors muss größer als 1 sein." = length(x) > 1)
-
-
   stopifnot("len muss NULL oder ein Integer sein." = (is.null(len) |
                                                         is.numeric(len)))
   if (is.null(len))
