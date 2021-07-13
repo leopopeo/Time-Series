@@ -13,16 +13,18 @@
 #'@export
 
 DLA <- function(x, len = NULL) {
+  n <- length(x)
+
   #Eingabewerte überprüfen
-  stopifnot("Eingabe ist nicht numerisch." = is.numeric(x))
-  stopifnot("Die Länge des Vektors muss größer als 1 sein." = length(x) > 1)
-  stopifnot("len muss NULL oder ein Integer sein." = (is.null(len) |
+  stopifnot("Eingabe ist nicht numerisch!" = is.numeric(x))
+  stopifnot("Die Länge des Vektors muss größer als 1 sei!" = length(x) > 1)
+  stopifnot("len muss NULL oder ein Integer Wert sein!"  = (is.null(len) |
                                                         is.numeric(len)))
   if (is.null(len))
-    len <- n - 1
-  stopifnot("len muss >= 2 sein" =  len >= 2)
-  stopifnot("len muss NULL oder ein Integer Wert sein." = length(len) == 1)
-  stopifnot("len muss NULL oder ein Integer Wert sein." = len %% 1 == 0)
+    len <- n -1
+  stopifnot("len muss >= 2 sein!" =  len >= 2)
+  stopifnot("len muss NULL oder ein Integer Wert sein!" = length(len) == 1)
+  stopifnot("len muss NULL oder ein Integer Wert sein!" = len %% 1 == 0)
 
   #Berechnung
   #Start Values
@@ -33,7 +35,7 @@ DLA <- function(x, len = NULL) {
 
   #Rekursion
   for (i in 2:len) {
-    Phi_nn <- (acf_x[i + 1] - sum(Phi * acf_x[i:2])) * v ^ -1
+    Phi_nn <- (acf_x[i + 1] - sum(Phi * acf_x[i:2]))/v
     Phi <- c(Phi - Phi_nn * Phi[(i - 1):1], Phi_nn)
     v <- v * (1 - Phi_nn ^ 2)
   }
@@ -43,5 +45,6 @@ DLA <- function(x, len = NULL) {
 ########Test
 #library(signal)
 DLA(X, len=3)
-#levinson(X,p=3)
+levinson(X,p=3)
+
 

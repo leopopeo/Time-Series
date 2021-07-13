@@ -15,8 +15,8 @@ perio <- function(y){
   n <- length(y)
 
   #Eingabewerte überprüfen
-  stopifnot("Eingabe ist nicht numerisch." = is.numeric(y))
-  stopifnot("Die Länge des Vektors muss größer als 1 sein." = n > 1)
+  stopifnot("Eingabe ist nicht numerisch!" = is.numeric(y))
+  stopifnot("Die Länge des Vektors muss größer als 1 sein!" = n > 1)
 
   #Berechnung
   Res <- double(n)
@@ -34,14 +34,14 @@ perio <- function(y){
 
 #Nachher löschen
 # #####Testing
-# library(TSA)
-# I <- 100
-# X = arima.sim(n = I, list(
-#   ar = c(0.8897,-0.4858),
-#   ma = c(-0.2279, 0.2488)
-# ), sd = sqrt(0.1796))
-#
-# a <- periodogram(X,plot=F)$spec
-# a
-# perio(X)
+#library(TSA)
+I <- 100
+X = arima.sim(n = I, list(
+   ar = c(0.8897,-0.4858),
+   ma = c(-0.2279, 0.2488)
+ ), sd = sqrt(0.1796))
+
+a <- periodogram(X,plot=F)
+a
+perio(X)
 
