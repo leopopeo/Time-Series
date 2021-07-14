@@ -39,12 +39,12 @@ DLA <- function(x, len = NULL) {
     Phi <- c(Phi - Phi_nn * Phi[(i - 1):1], Phi_nn)
     v <- v * (1 - Phi_nn ^ 2)
   }
-  rev(Phi)
+  Phi
 }
 
 ########Test
 #library(signal)
 DLA(X, len=3)
-levinson(X,p=3)
+#levinson(X,p=3)
 
 

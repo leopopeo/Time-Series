@@ -11,7 +11,22 @@ test_that("Eingabe testen", {
 })
 
 test_that("Durbin Levinson Algorithmus Implementation funktioniert", {
-  #nicht klar wie mit welchem ALG ich das überprüfen kann
-  expect_equal(2*4,8)
+  #Test der for-Schleife:
+  #Vorbereitung:
+  x <- c(3,5,0.5,6)
+  acf_x <- ACF(x)
+  phi <- double(3)
+  #erste Iteration
+  phi_11 <- acf_x[2]/acf_x[1]
+  v_1 <- acf_x[1]*(1-phi_11^2)
+  #zweite Iteration
+  phi_22 <- (acf_x[3]-phi_11*acf_x[2])/v_1
+  phi_21 <- phi_11-phi_22*phi_11
+  v_2 <- v_1*(1-phi_22^2)
+  #dritte Iteration
+  phi[3] <- (acf_x[4]-sum(phi_21*acf_x[3], phi_22*acf_x[2]))/v_2
+  phi[1] <- phi_21-phi[3]*phi_22
+  phi[2] <- phi_22-phi[3]*phi_21
 
+  expect_equal(DLA(x), phi)
 })

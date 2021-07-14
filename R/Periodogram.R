@@ -26,7 +26,7 @@ perio <- function(y){
     for(i in 1:n){
       sum <- sum + y[i]*exp(as.complex(-1i)*i*2*pi*w/n)
     }
-    Res[w+ceiling(n/2)] <- (1/n)*abs(sum)^2
+    Res[1+w+ceiling(n/2)] <- (1/n)*abs(sum)^2 #der Faktor:1+w+ceiling(n/2) wird gebraucht um den Vektor Res nacheinander ab dem Index 1 aufzufüllen
   }
   Res
 }
@@ -41,7 +41,7 @@ X = arima.sim(n = I, list(
    ma = c(-0.2279, 0.2488)
  ), sd = sqrt(0.1796))
 
-a <- periodogram(X,plot=F)
-a
+#a <- periodogram(X,plot=F)
+#a
 perio(X)
 
