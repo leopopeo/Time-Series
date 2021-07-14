@@ -11,7 +11,7 @@
 #'@export
 
 
-plot_timeseries <- function(timeseries){
+plot_timeseries1 <- function(timeseries){
   #Eingabe ueberpruefen
   stopifnot("Der Eingabevektor timeseries ist nicht numerisch." = is.numeric(timeseries))
   stopifnot("Der Vektor timeseries muss wenigstens die Laenge 1 haben." = length(timeseries) > 0)
@@ -41,18 +41,18 @@ plot_timeseries <- function(timeseries){
 # }
 
 #Neu von Niklas, oberer hat bei mir nicht funktioniert??
-plot_timeseries1 <- function(timeseries){
+plot_timeseries <- function(timeseries){
   #Eingabe ueberpruefen
   stopifnot("Der Eingabevektor timeseries ist nicht numerisch." = is.numeric(timeseries))
   stopifnot("Der Vektor timeseries muss wenigstens die Laenge 1 haben." = length(timeseries) > 0)
 
   #Timeseries plotten
   tibble2plot <- tibble::tibble(Wert = timeseries, Zeit = seq_along(timeseries))
-  plt_base <- ggplot2::ggplot(data = tibble2plot,mapping = aes(x = Zeit, y = Wert))
+  plt_base <- ggplot2::ggplot(data = tibble2plot,mapping = ggplot2::aes(x = Zeit, y = Wert))
   lay <- ggplot2::geom_line(color="#6a93b0")
   point <- ggplot2::geom_point(color="black")
   labs <- ggplot2::ggtitle("Zeitreihe")
-  plt <- plt_base + lay + labs + point + ggplot2::theme(plot.title = element_text(hjust = 0.5,size=15))
+  plt <- plt_base + lay + labs + point + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5,size=15))
   plt
 }
 
@@ -68,11 +68,11 @@ plot_periodogram <- function(periodogram){
 
   #Periodogram plotten
   tibble2plot <- tibble::tibble(Wert = periodogram, Frequenz = freq)
-  plt_base <- ggplot2::ggplot(data = tibble2plot,mapping = aes(x = Frequenz, y = Wert))
+  plt_base <- ggplot2::ggplot(data = tibble2plot,mapping = ggplot2::aes(x = Frequenz, y = Wert))
   lay <- ggplot2::geom_line(color="#6a93b0")
   point <- ggplot2::geom_point(color="black")
   labs <- ggplot2::ggtitle("Zeitreihe als Periodogram")
-  plt <- plt_base + lay + labs + point + ggplot2::theme(plot.title = element_text(hjust = 0.5,size=15))
+  plt <- plt_base + lay + labs + point + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5,size=15))
   plt
 }
 
