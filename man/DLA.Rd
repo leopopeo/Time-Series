@@ -12,7 +12,7 @@ DLA(x, len = NULL)
 \item{len}{Horizont der Vorhersage.}
 }
 \value{
-Vektor mit den Vorhgesagten Werten
+Vektor mit den vorhgesagten Werten
 }
 \description{
 \code{DLA} berechnet durch die rekursive Durbin-Levinson Methode eine Vorhersage für die übergebene Zeitreihe. Für mehr Informationen rufe die Vignette auf.
@@ -21,5 +21,5 @@ Vektor mit den Vorhgesagten Werten
  #Erstelle eine Zeitreihe
  X = arima.sim(n = 1000, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796))
 
- DLA(X, lag = 4)
+ DLA(X, len = 4)
 }

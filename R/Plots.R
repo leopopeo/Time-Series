@@ -1,4 +1,4 @@
-#'Plots
+#'Plot-Funktion
 #'
 #'@description Diese Funktion plottet eine gegebene Timeseries (deutsch: Zeitreihe).
 #'
@@ -56,6 +56,17 @@ plot_timeseries <- function(timeseries){
   plt
 }
 
+#'Plot-Funktion
+#'
+#'@description Diese Funktion plottet eine gegebenes PEriodogram.
+#'
+#'@param periodogram Ein numerischer Vektor welcher ein Periodogram einer Zeitreihe enthält
+#'@return Plot des Periodograms in Abhängigkeit der Fourier Frequenzen
+#'@examples
+#' #Erstelle ein Periodogram einer Zeitreihe
+#' X = perio(arima.sim(n = 1000, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796)))
+#' plot_periodogram(X)
+#'@export
 plot_periodogram <- function(periodogram){
   #Eingabe ueberpruefen
   stopifnot("Der Eingabevektor timeseries ist nicht numerisch." = is.numeric(periodogram))
