@@ -18,15 +18,7 @@
 #innovations_algorithm <- function(timeseries,){
 #Eingabe ueberpruefen
 #Timeseries timeseries ueberpruefen
-ts_predict <- function(X, steps){
-  X_cache <- X
-  for (i in 1:steps){
-    n <- length(X_cache)
-    X_hat <- estimate(X_cache, n)
-    X_cache <- c(X_cache, X_hat[n+1])
-  }
-  X_hat
-}
+
 
 
 
@@ -43,19 +35,40 @@ regress <- function(X, X_hat, theta, n){
   sum(coeff*(X-X_hat))
 }
 
-estimate <- function(X, n){
-  X_hat <- 0
-  for (k in 1:n){
-    theta = innovation(X, k)
+#Optimiert, deutlich schneller!
+estimate <- function(X, X_hat = 0, n){
+  if (X_hat[1] != 0) X_hat[1] <- 0
+  theta = matrix(0, length(X_hat), length(X_hat))
+  for (k in length(X_hat):n){
+    theta = innovation(X, theta, k)
     X_hat <- c(X_hat, regress(X, X_hat, theta, k) )
   }
   X_hat
 }
 
-# X = arima.sim(n = 100, list(
-#   ar = c(0.95),
-#   ma = c(0.7, 0.25)),
-#   sd = sqrt(0.1796))
+
+ts_predict <- function(X, steps){
+  X_cache <- X
+  X_hat <- 0
+  for (i in 1:steps){
+    n <- length(X_cache)
+    X_hat <- estimate(X_cache, X_hat, n)
+    X_cache <- c(X_cache, X_hat[n+1])
+  }
+  X_hat
+}
+
+
+set.seed(1)
+X = arima.sim(n = 200, list(
+  ar = c(0.95),
+  ma = c(0.7, 0.25)),
+  sd = sqrt(0.1796))
+start_time1 <- Sys.time()
+R = ts_predict(X, 4)
+end_time1 <- Sys.time()
+
+print(end_time1-start_time1)
 # plot(X)
 # X_hat = estimate(X, 50)
 # plot(X)

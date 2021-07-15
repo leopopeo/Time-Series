@@ -40,11 +40,18 @@ theta_sum <- function(theta, v, n, k){
 
 
 #Berechnung des Thetas
-innovation <- function(ts, lag = NA){
+innovation <- function(ts,
+                       small_theta = matrix(0, lag, lag),
+                       lag = NA){
   theta <- matrix(0, lag, lag)
+  theta[1:nrow(small_theta), 1:ncol(small_theta)] <- small_theta
+  n_start <- which(theta[,1] == 0)[1]
   COV = ACF(ts, lag = lag)
   v = COV[1]
-  for (n in 1:lag){
+  for (n in (1:n_start-1)){
+    v[n+1] <- COV[1] - theta_sum(theta, v, n, n)
+  }
+  for (n in n_start:lag){
     for (k in 0:(n-1)){
       theta[n,n-k] <- 1/v[k+1]*(COV[n-k+1] - theta_sum(theta, v, n, k))
     }
@@ -58,9 +65,25 @@ innovation <- function(ts, lag = NA){
 ########################Test
 
 
-# X = arima.sim(n = 100, list(
-#   ar = c(0.8897,-0.4858),
-#   ma = c(-0.2279, 0.2488)
-# ), sd = sqrt(0.1796))
-#
-# innovation(X, 10)
+X = arima.sim(n = 500, list(
+  ar = c(0.8897,-0.4858),
+  ma = c(-0.2279, 0.2488)
+), sd = sqrt(0.1796))
+
+
+
+
+
+R = innovation(X, lag = 200)
+
+start_time1 <- Sys.time()
+S1 = innovation(X, lag =  400)
+end_time1 <- Sys.time()
+
+start_time2 <- Sys.time()
+S2 = innovation(X, R, lag = 400)
+end_time2 <- Sys.time()
+
+
+print(end_time1 - start_time1)
+print(end_time2 - start_time2)
