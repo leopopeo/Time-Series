@@ -121,27 +121,28 @@ ts_predict <- function(X, steps){
 # }
 
 
-set.seed(1)
-# X = arima.sim(n = 200, list(
-#   ar = c(0.95),
-#   ma = c(0.7, 0.25)),
-#   sd = sqrt(0.1796))
-X = sin(1:100)
+set.seed(2)
+X = arima.sim(n = 100, list(
+  ar = c(0.7),
+  ma = c(0.7, 0.25)),
+  sd = sqrt(0.02796))
+X = sin(1:50)
 
 start_time1 <- Sys.time()
-R = ts_predict(X, 10)$X_hat
+R = ts_predict(X[1:50], 10)$X_hat
 end_time1 <- Sys.time()
 print(end_time1-start_time1)
 
 start_time2 <- Sys.time()
-S = forecast(X, NULL, h = 10, arma(X, p = 1, q = 2))
+S = forecast(X[1:50], NULL, h = 10, arma(X, p = 1, q = 2), alpha = 1)
 end_time2 <- Sys.time()
 print(end_time2-start_time2)
 #
-lines(R, col = "green", type = "l")
-# lines(S$pred, col = "blue", type = "l")
-# lines(X)
 
-print(R[201:210])
-print(S$pred)
+lines(R, col = "green", type = "l")
+
+# lines(S$pred, col = "blue", type = "l")
+lines(X)
+legend(0, 0.5, legend=c("X", "Our Forcast", "itsmr forecast"),
+       col=c("black", "green", "red"), lty=1, cex=0.8)
 
