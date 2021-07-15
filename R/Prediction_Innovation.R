@@ -29,59 +29,119 @@
 
 #Hilfsfunktion
 
+
+library(itsmr)
+
+
+
+
+
+#Rekursive Berechnung der Koeffizienten Theta_n_1,..., Theta_n_n
+
+#Berechnung des mittleren quadratischen Abweichung des ersten Elements
+
+#Hilfsfunktion
+
 regress <- function(X, X_hat, theta, n){
   X = X[1:n]
   coeff <- theta[n,n:1]
   sum(coeff*(X-X_hat))
 }
 
-#Optimiert, deutlich schneller!
-estimate <- function(X, X_hat = 0, n){
+estimate <- function(X,
+                     theta = matrix(0, length(X_hat), length(X_hat)),
+                     X_hat = 0,
+                     n){
   if (X_hat[1] != 0) X_hat[1] <- 0
-  theta = matrix(0, length(X_hat), length(X_hat))
   for (k in length(X_hat):n){
-    theta = innovation(X, theta, k)
-    X_hat <- c(X_hat, regress(X, X_hat, theta, k) )
+    theta <- innovation(X,
+                        small_theta =  theta,
+                        lag =  k)
+    X_hat <- c(X_hat, regress(X, X_hat, theta, k))
   }
-  X_hat
+  list(X_hat = X_hat, theta = theta)
 }
 
-
+####################Neu
 ts_predict <- function(X, steps){
   X_cache <- X
-  X_hat <- 0
+  est <- list(X_hat = 0, theta = 0)
   for (i in 1:steps){
     n <- length(X_cache)
-    X_hat <- estimate(X_cache, X_hat, n)
-    X_cache <- c(X_cache, X_hat[n+1])
+    est <- estimate(X = X_cache,
+                    theta = est$theta,
+                    X_hat = est$X_hat,
+                    n= n)
+    X_cache <- c(X_cache, est$X_hat[n+1])
   }
-  X_hat
+  est
 }
+
+
+##########################Alt
+# ts_predict <- function(X, steps){
+#   X_cache <- X
+#   X_hat <- 0
+#   for (i in 1:steps){
+#     n <- length(X_cache)
+#     X_hat <- estimate(X_cache, theta = matrix(0, length(X_hat), length(X_hat)),X_hat, n)
+#     X_cache <- c(X_cache, X_hat[n+1])
+#   }
+#   X_hat
+# }
+#
+#
+# set.seed(1)
+# X = arima.sim(n = 200, list(
+#   ar = c(0.95),
+#   ma = c(0.7, 0.25)),
+#   sd = sqrt(0.1796))
+# start_time1 <- Sys.time()
+# R = ts_predict(X, 4)
+# end_time1 <- Sys.time()
+#
+# print(end_time1-start_time1)
+
+
+
+#
+# ts_predict <- function(X, steps){
+#   X_cache <- X
+#   est <- list(X_hat = 0, theta = 0)
+#   theta = matrix(0, length(X_hat), length(X_hat))
+#   for (i in 1:steps){
+#     n <- length(X_cache)
+#     for (k in length(X_hat):n){
+#       theta <- innovation(X, theta, k)
+#       X_hat <- c(X_hat, regress(X, X_hat, theta, k) )
+#     }
+#     X_cache <- c(X_cache, X_hat[n+1])
+#   }
+#   X_hat
+# }
 
 
 set.seed(1)
-X = arima.sim(n = 200, list(
-  ar = c(0.95),
-  ma = c(0.7, 0.25)),
-  sd = sqrt(0.1796))
+# X = arima.sim(n = 200, list(
+#   ar = c(0.95),
+#   ma = c(0.7, 0.25)),
+#   sd = sqrt(0.1796))
+X = sin(1:100)
+
 start_time1 <- Sys.time()
-R = ts_predict(X, 4)
+R = ts_predict(X, 10)$X_hat
 end_time1 <- Sys.time()
-
 print(end_time1-start_time1)
-# plot(X)
-# X_hat = estimate(X, 50)
-# plot(X)
-# lines(X_hat, col = "red")
-#X = sin(1:80)
 
-#Niklas: Bitte solche Sachen immer in Klammer setzten weil der Path nicht bei allen funktioniert
-
-
-# X_test <- X[1:60]
-# X_est = ts_predict(X_test, 50)
-# plot(X_est[60:length(X_est)], type = "l", col = "red")
+start_time2 <- Sys.time()
+S = forecast(X, NULL, h = 10, arma(X, p = 1, q = 2))
+end_time2 <- Sys.time()
+print(end_time2-start_time2)
+#
+lines(R, col = "green", type = "l")
+# lines(S$pred, col = "blue", type = "l")
 # lines(X)
 
-
+print(R[201:210])
+print(S$pred)
 
