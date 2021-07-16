@@ -29,7 +29,7 @@ ACF <- function(x, lag = NULL) {
   stopifnot("lag muss NULL oder ein Integer Wert sein!" = length(lag) ==
               1)
   stopifnot("lag muss NULL oder ein Integer Wert sein!" = lag %% 1 == 0)
-  stopifnot("lag liegt nicht im richtigen Bereich. Der richtige Bereich liegt zwischen -n und n" = (-n <= lag & lag <= n))
+  stopifnot("lag liegt nicht im richtigen Bereich. Der richtige Bereich liegt zwischen -n und n!" = (-n <= lag & lag <= n))
   # Definitionsbereich von lag abweichend von Brockwell aber notwendig, damit innovation funktioniert
 
   #Berechnung

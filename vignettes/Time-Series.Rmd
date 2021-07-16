@@ -26,7 +26,7 @@ In dieser Vignette werden die verschiedenen Funktionen des Packages *TimeSeries*
 
 Um die Funktionen nutzen zu können muss zuerst das entsprechende Paket *TimeSeries* geladen werden.
 ```{r setup}
-#library(TimeSeries)
+library(TimeSeries)
 library(ggplot2)
 ```
 
@@ -42,5 +42,5 @@ $$ \hat{\gamma}(h) := n^{-1} \sum_{t=1}^{n-|h|} (x_{t+|h|}-\bar{x})(x_t-\bar{x})
 ````{r}
 set.seed(123)
 ar_obj <- arima.sim( n = 100,list(phi = c(0.9)))
-ar_acf <- acf(ar_obj, lag.max = 20)
+ar_acf <- ACF(ar_obj, lag.max = 20)
 ```

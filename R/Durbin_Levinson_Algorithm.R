@@ -44,7 +44,7 @@ DLA <- function(x, len = NULL) {
 
 ########Test
 #library(signal)
-DLA(X, len=3)
+#DLA(X, len=3)
 #levinson(X,p=3)
 
 
