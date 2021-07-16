@@ -28,6 +28,7 @@ Um die Funktionen nutzen zu können muss zuerst das entsprechende Paket *TimeSer
 ```{r setup}
 library(TimeSeries)
 library(ggplot2)
+library(tibble)
 ```
 
 ## ARMA Generator
@@ -39,8 +40,89 @@ $$\gamma_x(h)=Cov(X_{t+h},X_t) $$
 Die Funktion *ACF* gibt für eine Zeitreihe $x_{1},...,x_{n}$ die geschätzte Sichtprobenkovarianz für die Zeitdifferenz lag = $0$ bis lag = $n-1$ an. Zusätzlich zur Input Zeitreihe kann die lag-Variable individuel angegeben werden, es kann also die Anzahl der zurückgegebenen Autokovarianzen begrenzt werden. Dafür wird folgende Formel genutzt:
 
 $$ \hat{\gamma}(h) := n^{-1} \sum_{t=1}^{n-|h|} (x_{t+|h|}-\bar{x})(x_t-\bar{x})$$
-````{r}
-set.seed(123)
-ar_obj <- arima.sim( n = 100,list(phi = c(0.9)))
-ar_acf <- ACF(ar_obj, lag.max = 20)
+````{r , fig.width = 7, fig.asp = .5}
+set.seed(2)
+ar_obj <- arima.sim(n = 100,list(ar = c(0.2,0.6)))
+ar_acf <- ACF(ar_obj, lag = 20)
+ma_obj <- arima.sim( n = 100,list(ma = c(0.5,0.9)))
+ma_acf <- ACF(ma_obj, lag = 20)
+ar_plot <- ggplot(tibble(ACF=ar_acf, Lag=seq_along(ar_acf)), aes(x=Lag, y=ACF)) +
+                geom_bar(stat="identity") + 
+                ggtitle("AR(1)")
+ma_plot <- ggplot(tibble(ACF=ma_acf, Lag=seq_along(ma_acf)), aes(x=Lag, y=ACF)) +
+                geom_bar(stat="identity") + 
+                ggtitle("MA(1)")
+ar_plot
+ma_plot
+```
+
+Anhand der beiden Autokovarianz-Funktionen kann man eine erste Aussage über die Art des Prozesses treffen. Der erste Plot zeigt eine langsam abnehmende Autokovarianz-Funktion, was auf einen AR-Prozess hindeutet. Der zweite Plot zeigt eine abprupt abnehemnde Autokovarianz-Funktion, was eher auf einen MA-Prozess schließen lässt.
+
+## Durbin-Levinson Algorithmus
+Der Durbin-Levinson Algorithmus kann für Vorhersagen einer Zeitreihe genutzt werden. Der Algorithmus benutzt dabei eine linear Kombination aller vorherigen Zeitreihen Punkte um einen neuen Wert vorherzusagen. Dies wird duch die folgende Gleichung nahc Brookwell et al. (2002) ausgedrückt:
+
+$$ P_nX_{n+1}=\phi_{n1}X_n+...+\phi_{nn}X_1. $$
+
+Die entprechenden $\phi's$ werden durch den folgenden Algorithmus rekursiv bestimmt:
+
+$$ \phi_{nn}=\Big[ \gamma(n)-\sum \limits_{j=1}^{n-1}\phi_{n-1,j}\gamma(n-j)\Big]v_{n-1}^{-1}, $$
+
+$$\begin{bmatrix}\phi_{n1} \\ \vdots \\\phi_{n,n-1}  \end{bmatrix}=
+\begin{bmatrix}\phi_{n-1,1} \\ \vdots \\\phi_{n-1,n-1}  \end{bmatrix}-
+\phi_{nn}
+\begin{bmatrix}\phi_{n-1,n-1} \\ \vdots \\\phi_{n-1,1}  \end{bmatrix},$$
+und
+$$v_n=v_{n-1}[1-\phi_{nn}^2] $$
+
+Für die Startwerte gilt $\phi_{11}=\gamma(1)/\gamma(0)$ und $v_0=\gamma(0)$.
+
+Die Funktion *DLA* benutzt den Durbin-Levinson Algorithums und gibt die geschätzen $\phi's$ zurück. Die Funktion bestimmt standartmäßig die maximale Anzahl an Rekursionen, also n-1, dieser Wert kann jedoch individuel mit dem *len*-Parameter gesetzt werden. Die erhalten $\phi's$ können nun für eine Vorhersage benutzt werden. \n
+Im folgenden Beispiel wird die Funktion auf AR-generierte Daten angewendet:
+```{r}
+set.seed(2)
+ar_obj <- arima.sim(n = 100,list(ar = c(0.2,0.5)))
+dl <- DLA(ar_obj)
+```
+
+```{r}
+# len=100 (hier: Default)
+dl
+```
+
+```{r}
+# len=5
+DLA(ar_obj, len=5)
+```
+Der Output zeigt für die beiden angegebenen Rekursionen die geschätzten $\phi's$ an. Die ersten beiden Werte entsprechen hier nahezu den angegeben ar-Werten in *arima.sim*. Für die Vorhersage müssen nun die $\phi_{n1},...,\phi_{nn}$ mit der Zeitreihe (außgenommen dem letzten Wert, da die maximale Rekusionszahl n-1 ist) multipliziert und anschließend summiert werden.
+```{r}
+res <- sum(ar_obj*dl[-100])
+res
+```
+
+## Innovation Algorithmus
+
+## Innnovation Prediction
+
+## Periodogramm
+Das Periodogramm einer Zeitreihe $\{x_1,...,x_n\}$ ist Funktion die auf Stichproben basiert einen Schätzung für die Spektrale Dichte zurückgibt. Die Definition ist dabei nach Brookwell et al. (2002):
+$$
+I_n(\lambda)=\frac{1}{n} \Bigg| \sum \limits_{t=1}^{n}x_{t}e^{-it\lambda} \Bigg| ^2
+$$
+Dabei steht der Koeffizient $x_t$ für eine Combination von Sinusen und Cosinusen:
+$$
+x_t=\sum \limits_{k \in F_n}a_k [\cos(\omega_kt) + i \sin(\omega_kt)]
+$$
+wobei $F_n$ für die Fourierfrequenzen der Zeitreihe im Intervall $(-\pi,\pi]$ steht und für $\omega_k$ gilt:
+$$\omega_k=\frac{2\pi k}{n}, \space\space\space\space\space\space\space\space k = -[\frac{n-1}{2},...,\frac{n}{2}]$$
+Die Folge ${a_k}$ ist die diskrete Fourier Transformationn der Zeitreihe und berechet sich nach: 
+$$
+a_k=\frac{1}{\sqrt{n}}\sum \limits_{t=1}^{n}x_t e^{-it\omega_k}
+$$
+Die implementierte Funktion *perio* implementiert nun den Periodogramm Algorithmus und gibt für die $\omega's$ im oben definierten Intervall den Wert $I_n(\lambda)$ zurück.
+Der folgende Code soll dies veranschaulichen.
+
+```{r, fig.width = 7, fig.asp = .5}
+x <-  arima.sim( n = 1000,list(ar = c(0.2,-0.6)))
+periodo <- perio(x)
+plot_periodogram(periodo) 
 ```

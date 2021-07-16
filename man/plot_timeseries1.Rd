@@ -2,7 +2,7 @@
 % Please edit documentation in R/Plots.R
 \name{plot_timeseries1}
 \alias{plot_timeseries1}
-\title{Plots}
+\title{Plot-Funktion}
 \usage{
 plot_timeseries1(timeseries)
 }

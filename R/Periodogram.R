@@ -1,9 +1,9 @@
-#'Periodogram
+#'Periodogramm
 #'
 #'\code{perio} bestimmt die spektrale Dichte des Signals. Dadurch kann die dominaten Frequenzen einer Zeitreihe identifiziert werden. Für mehr Informationen rufe die Vignette auf.
 #'
 #'@param y Eingabevektor der die beobachteten Daten enthält
-#'@return Vektor der die Periodogramwerte bzw. die Zeitreihe bei den Fourierfrequenzen enthält.
+#'@return Vektor der die Periodogrammwerte bzw. die Zeitreihe bei den Fourierfrequenzen enthält.
 #'@examples
 #'  #Erstelle eine Zeitreihe
 #'  X = arima.sim(n = 1000, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796))
