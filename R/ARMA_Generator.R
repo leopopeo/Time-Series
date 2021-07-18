@@ -20,7 +20,6 @@
 
 #Parameter setzen für die Beispiele unten. NICHT TEIL DER ENTGÜLTIGEN VERSION.
 set.seed(1)
-start = runif(3)
 phi = c(0.8, -0.3, 0.1)
 theta = c(0.8, -0.3, 0.3)
 sd = 0.2
@@ -39,7 +38,7 @@ reg = function(X, coeff){
 }
 
 #Generator-Funktion
-gen <- function(start, phi = 0, theta = 0, sd, I){
+gen <- function(phi = 0, theta = 0, sd, I){
   #Hier ueberpruefung wir die Eingabewerte auf ihre Richtigkeit
   # start
  # stopifnot("" = )
@@ -56,10 +55,9 @@ gen <- function(start, phi = 0, theta = 0, sd, I){
   # I
 #  stopifnot("" = )
 
-
-  q <- length(theta)
   p = length(phi)
-  X = start
+  q <- length(theta)
+  X = rep(0, p)
   Z = rnorm(q, sd=sd)
   for (i in 1:I){
     Z <- c(Z, rnorm(n = 1, sd=sd))
@@ -70,14 +68,14 @@ gen <- function(start, phi = 0, theta = 0, sd, I){
 
 #start evtl nicht als Argument sondern als Zufallsvektor in Fkt erstellen
 #
-Y1 = gen(start, phi, theta, sd, I)
+Y1 = gen(phi, theta, sd, I)
 plot(Y1, type ="l")
 
 Y2 = arima.sim(n = I,
                list(ar = phi,
                     ma = theta,
                     sd = sd))
-#plot(Y2, type = "l")
+lines(Y2, col = "red")
 
 
 #Von Leo: Hier das habe ich ausgeklammert. Bei mir kam ne Fehlermeldung deswegen.
