@@ -2,7 +2,7 @@
 % Please edit documentation in R/Periodogram.R
 \name{perio}
 \alias{perio}
-\title{Periodogram}
+\title{Periodogramm}
 \usage{
 perio(y)
 }
@@ -10,7 +10,7 @@ perio(y)
 \item{y}{Eingabevektor der die beobachteten Daten enthält}
 }
 \value{
-Vektor der die Periodogramwerte bzw. die Zeitreihe bei den Fourierfrequenzen enthält.
+Vektor der die Periodogrammwerte bzw. die Zeitreihe bei den Fourierfrequenzen enthält.
 }
 \description{
 \code{perio} bestimmt die spektrale Dichte des Signals. Dadurch kann die dominaten Frequenzen einer Zeitreihe identifiziert werden. Für mehr Informationen rufe die Vignette auf.

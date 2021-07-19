@@ -3,6 +3,7 @@
 export()
 export(ACF)
 export(DLA)
+export(gen)
 export(perio)
 export(plot_periodogram)
 export(plot_timeseries1)

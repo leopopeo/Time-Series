@@ -1,22 +1,3 @@
-#'ARMA Generator
-#'
-#'@description Diese Funktion simuliert den ARMA-Prozess.
-#'
-#'Das ARMA-Model beschreibt einen stochatischen Prozess mittels zwei Polynomen:
-#'Der Autoregression (AR) und dem "moving average" (MA).
-#'
-#'@param start
-#'@param phi
-#'@param theta
-#'@param sd
-#'@param I
-#'
-#'@return
-#'@examples
-#'gen()
-#'gen()
-#'
-#'@export
 
 #Parameter setzen für die Beispiele unten. NICHT TEIL DER ENTGÜLTIGEN VERSION.
 set.seed(1)
@@ -36,6 +17,26 @@ reg = function(X, coeff){
   n <- length(coeff)
   sum(coeff*X[length(X):(length(X)-(n-1))])
 }
+
+#'ARMA Generator
+#'
+#'@description Diese Funktion simuliert den ARMA-Prozess.
+#'
+#'Das ARMA-Model beschreibt einen stochatischen Prozess mittels zwei Polynomen:
+#'Der Autoregression (AR) und dem "moving average" (MA).
+#'
+#'@param start
+#'@param phi
+#'@param theta
+#'@param sd
+#'@param I
+#'
+#'@return
+#'@examples
+#'gen()
+#'gen()
+#'
+#'@export
 
 #Generator-Funktion
 gen <- function(phi = 0, theta = 0, sd, I){
