@@ -34,10 +34,10 @@ library(tibble)
 ## ARMA Generator
 
 ## Autokovarianz-Funktion
-Die Autokovarianz ist ein Begriff aus der Signalverarbeitung und gibt die Korrelation einer Funktion bzw. eines Signals mit sich selber zu einem früheren Zeitpunkt an. Die Funktion gibt also an, wie viel Ähnlichkeit die um eine gewisse Zeit verschobene Folge mit der ursprünglichen Folge besitzt. Die Autokovarianz-Funktion ist nach Brookwell et al. (2002) für einen Zeitdifferenz h wie folgt definiert:
+Die Autokovarianz ist ein Begriff aus der Signalverarbeitung und gibt die Korrelation einer Funktion bzw. eines Signals mit sich selbst zu einem früheren Zeitpunkt an. Die Funktion gibt also an, wie viel Ähnlichkeit die um eine gewisse Zeitdifferenz verschobene Folge mit der ursprünglichen Folge besitzt. Die Autokovarianz-Funktion ist nach Brookwell et al. (2002) für eine Zeitdifferenz h wie folgt definiert:
 
 $$\gamma_x(h)=Cov(X_{t+h},X_t) $$
-Die Funktion *ACF* gibt für eine Zeitreihe $x_{1},...,x_{n}$ die geschätzte Sichtprobenkovarianz für die Zeitdifferenz lag = $0$ bis lag = $n-1$ an. Zusätzlich zur Input Zeitreihe kann die lag-Variable individuell angegeben werden, es kann also die Anzahl der zurückgegebenen Autokovarianzen begrenzt werden. Dafür wird folgende Formel genutzt:
+Die Funktion *ACF* gibt für eine Zeitreihe $x_{1},...,x_{n}$ die geschätzte Sichtprobenkovarianz für die Zeitdifferenz lag = $0$ bis lag = $n-1$ an. Zusätzlich zur Input Zeitreihe kann die lag-Variable individuell angegeben werden. Es kann also die Anzahl der zurückgegebenen Autokovarianzen begrenzt werden. Dafür wird folgende Formel genutzt:
 
 $$ \hat{\gamma}(h) := n^{-1} \sum_{t=1}^{n-|h|} (x_{t+|h|}-\bar{x})(x_t-\bar{x})$$
 ````{r , fig.width = 7, fig.asp = .5}
@@ -58,7 +58,7 @@ ar_plot
 ma_plot
 ```
 
-Anhand der beiden Autokovarianz-Funktionen kann man eine erste Aussage über die Art des Prozesses treffen. Der erste Plot zeigt eine langsam abnehmende Autokovarianz-Funktion, was auf einen AR-Prozess hindeutet. Der zweite Plot zeigt eine abprupt abnehemnde Autokovarianz-Funktion, was eher auf einen MA-Prozess schließen lässt.
+Anhand der beiden Autokovarianz-Funktionen kann man eine erste Aussage über die Prozessart treffen. Der erste Plot zeigt eine langsam abnehmende Autokovarianz-Funktion, was auf einen AR-Prozess hindeutet. Der zweite Plot zeigt eine abprupt abnehemnde Autokovarianz-Funktion, was eher auf einen MA-Prozess schließen lässt.
 
 ## Durbin-Levinson Algorithmus
 Der Durbin-Levinson Algorithmus kann für Vorhersagen einer Zeitreihe genutzt werden. Der Algorithmus benutzt dabei eine Linearkombination aller vorherigen Zeitreihen-Punkte, um einen neuen Wert vorherzusagen. Dies wird duch die folgende Gleichung nach Brookwell et al. (2002) ausgedrückt:
