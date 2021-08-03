@@ -12,6 +12,7 @@
 
 
 #Hilfsfunktion
+
 theta_sum <- function(theta, v, n, k){
   if (k == 0) return(0)
   x = NULL
@@ -20,6 +21,7 @@ theta_sum <- function(theta, v, n, k){
   }
   return(sum(x))
 }
+
 
 #'Innovation Algorithm
 #'
@@ -39,7 +41,6 @@ theta_sum <- function(theta, v, n, k){
 #'@examples innovation(arima.sim(n = I, list(ar = c(0.8897,-0.4858),ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796)), 10)
 #'
 #'@export
-
 innovation <- function(ts,
                        small_theta = matrix(0, lag, lag),
                        lag = NA){

@@ -1,23 +1,4 @@
-#'ts_predict
-#'
-#'@description
-#'N-Schritt Prognose mithilfe des Innovation Algorithmus.
-#'
-#'Details
-#'
-#'@param X Die Zeitreihe
-#'@param steps Anzahl N der Schritte der Prognose
-#'
-#'@return Numerischer Vektor der Vorhersage
-#'
-#'@examples X = arima.sim(n = I, list(ar = c(0.8897,-0.4858),ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796)), 10)
-#'ts_predict(X, 4)
-#'
-#'@export
-#Implementierung des Innovations Algorithmus
-#innovations_algorithm <- function(timeseries,){
-#Eingabe ueberpruefen
-#Timeseries timeseries ueberpruefen
+
 
 
 
@@ -65,6 +46,27 @@ estimate <- function(X,
 }
 
 ####################Neu
+
+#'ts_predict
+#'
+#'@description
+#'N-Schritt Prognose mithilfe des Innovation Algorithmus.
+#'
+#'Details
+#'
+#'@param X Die Zeitreihe
+#'@param steps Anzahl N der Schritte der Prognose
+#'
+#'@return Numerischer Vektor der Vorhersage
+#'
+#'@examples X = arima.sim(n = I, list(ar = c(0.8897,-0.4858),ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796)), 10)
+#'ts_predict(X, 4)
+#'
+#'@export
+#Implementierung des Innovations Algorithmus
+#innovations_algorithm <- function(timeseries,){
+#Eingabe ueberpruefen
+#Timeseries timeseries ueberpruefen
 ts_predict <- function(X, steps) {
   X_cache <- X
   est <- list(X_hat = 0, theta = 0)

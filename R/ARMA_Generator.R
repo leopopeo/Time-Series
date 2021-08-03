@@ -63,20 +63,20 @@ arma_sim <- function(phi = 0, theta = 0, sd, I){
 #start evtl nicht als Argument sondern als Zufallsvektor in Fkt erstellen
 #
 #Y1 = gen(phi, theta, sd, I)
-plot(Y1, type ="l")
-
-Y2 = arima.sim(n = I,
-               list(ar = phi,
-                    ma = theta,
-                    sd = sd))
-lines(Y2, col = "red")
-
-
-
-arima(Y1, order = c(length(phi), 0, length(theta)),
-      optim.control = list(maxit = 1000))
-arima(Y2, order = c(length(phi), 0, length(theta)),
-      optim.control = list(maxit = 1000))
-c(phi, theta)
+# plot(Y1, type ="l")
+#
+# Y2 = arima.sim(n = I,
+#                list(ar = phi,
+#                     ma = theta,
+#                     sd = sd))
+# lines(Y2, col = "red")
+#
+#
+#
+# arima(Y1, order = c(length(phi), 0, length(theta)),
+#       optim.control = list(maxit = 1000))
+# arima(Y2, order = c(length(phi), 0, length(theta)),
+#       optim.control = list(maxit = 1000))
+# c(phi, theta)
 
 
