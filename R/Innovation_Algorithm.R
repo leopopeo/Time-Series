@@ -1,21 +1,4 @@
-#'Innovation Algorithm
-#'
-#'@description  Beschreibung
-#'Der Innovations Algorithmus bestimmt .
-#'
-#'
-#'Details
-#'
-#'@param theta
-#'@param v
-#'@param n
-#'@param k
-#'
-#'@return Numerischer Vektor, der die Vorhersage des Innovation Algorithmus beinhaltet.
-#'
-#'@examples innovation(arima.sim(n = I, list(ar = c(0.8897,-0.4858),ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796)), 10)
-#'
-#'@export
+
 #Implementierung des Innovations Algorithmus
 #innovations_algorithm <- function(timeseries,){
   #Eingabe ueberpruefen
@@ -38,8 +21,25 @@ theta_sum <- function(theta, v, n, k){
   return(sum(x))
 }
 
+#'Innovation Algorithm
+#'
+#'@description  Beschreibung
+#'Der Innovations Algorithmus bestimmt .
+#'
+#'
+#'Details
+#'
+#'@param theta
+#'@param v
+#'@param n
+#'@param k
+#'
+#'@return Numerischer Vektor, der die Vorhersage des Innovation Algorithmus beinhaltet.
+#'
+#'@examples innovation(arima.sim(n = I, list(ar = c(0.8897,-0.4858),ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796)), 10)
+#'
+#'@export
 
-#Berechnung des Thetas
 innovation <- function(ts,
                        small_theta = matrix(0, lag, lag),
                        lag = NA){

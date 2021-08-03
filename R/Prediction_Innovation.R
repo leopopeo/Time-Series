@@ -42,18 +42,20 @@ library(itsmr)
 
 #Hilfsfunktion
 
-regress <- function(X, X_hat, theta, n){
+regress <- function(X, X_hat, theta, n) {
   X = X[1:n]
-  coeff <- theta[n,n:1]
-  sum(coeff*(X-X_hat))
+  coeff <- theta[n, n:1]
+  sum(coeff * (X - X_hat))
 }
 
 estimate <- function(X,
                      theta = matrix(0, length(X_hat), length(X_hat)),
                      X_hat = 0,
-                     n){
-  if (X_hat[1] != 0) X_hat[1] <- 0
-  for (k in length(X_hat):n){
+                     n) {
+  if (X_hat[1] != 0)
+    X_hat[1] <- 0
+
+  for (k in length(X_hat):n) {
     theta <- innovation(X,
                         small_theta =  theta,
                         lag =  k)
@@ -63,16 +65,18 @@ estimate <- function(X,
 }
 
 ####################Neu
-ts_predict <- function(X, steps){
+ts_predict <- function(X, steps) {
   X_cache <- X
   est <- list(X_hat = 0, theta = 0)
-  for (i in 1:steps){
+  for (i in 1:steps) {
     n <- length(X_cache)
-    est <- estimate(X = X_cache,
-                    theta = est$theta,
-                    X_hat = est$X_hat,
-                    n= n)
-    X_cache <- c(X_cache, est$X_hat[n+1])
+    est <- estimate(
+      X = X_cache,
+      theta = est$theta,
+      X_hat = est$X_hat,
+      n = n
+    )
+    X_cache <- c(X_cache, est$X_hat[n + 1])
   }
   est
 }
@@ -122,27 +126,20 @@ ts_predict <- function(X, steps){
 
 
 set.seed(2)
-X = arima.sim(n = 100, list(
-  ar = c(0.7),
-  ma = c(0.7, 0.25)),
-  sd = sqrt(0.02796))
+X = arima.sim(n = 100, list(ar = c(0.7),
+                            ma = c(0.7, 0.25)),
+              sd = sqrt(0.02796))
 X = sin(1:50)
 
-start_time1 <- Sys.time()
-R = ts_predict(X[1:50], 10)$X_hat
-end_time1 <- Sys.time()
-print(end_time1-start_time1)
+R = ts_predict(X[1:50], 1)$X_hat
 
-start_time2 <- Sys.time()
+
+
 S = forecast(X[1:50], NULL, h = 10, arma(X, p = 1, q = 2), alpha = 1)
-end_time2 <- Sys.time()
-print(end_time2-start_time2)
-#
+
 
 lines(R, col = "green", type = "l")
 
 # lines(S$pred, col = "blue", type = "l")
-lines(X)
-legend(0, 0.5, legend=c("X", "Our Forcast", "itsmr forecast"),
-       col=c("black", "green", "red"), lty=1, cex=0.8)
+
 

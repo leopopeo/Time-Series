@@ -8,7 +8,7 @@
 #'@return Der Rückgabewert ist ein Vektor für die Abschätzung der Autokorrelationsfunktion.
 #'@examples
 #'  #Erstelle eine Zeitreihe
-#'  X = arima.sim(n = 1000, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796))
+#'  X = arma_sim(n = 1000, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796))
 #'
 #'  ACF(X, lag = 4)
 #'
@@ -23,13 +23,16 @@ ACF <- function(x, lag = NULL) {
 
 
   stopifnot("lag muss NULL oder ein Integer Wert sein!" = (is.null(lag) |
-                                                        is.numeric(lag)))
+                                                             is.numeric(lag)))
   if (is.null(lag))
     lag <- n - 1
   stopifnot("lag muss NULL oder ein Integer Wert sein!" = length(lag) ==
               1)
   stopifnot("lag muss NULL oder ein Integer Wert sein!" = lag %% 1 == 0)
-  stopifnot("lag liegt nicht im richtigen Bereich. Der richtige Bereich liegt zwischen -n und n!" = (-n <= lag & lag <= n))
+  stopifnot(
+    "lag liegt nicht im richtigen Bereich. Der richtige Bereich liegt zwischen -n und n!" = (-n <= lag &
+                                                                                               lag <= n)
+  )
   # Definitionsbereich von lag abweichend von Brockwell aber notwendig, damit innovation funktioniert
 
   #Berechnung
@@ -51,10 +54,6 @@ ACF <- function(x, lag = NULL) {
   })
   unname(res)
 }
-
-
-
-
 
 
 

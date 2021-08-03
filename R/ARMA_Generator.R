@@ -6,13 +6,6 @@ theta = c(0.8, -0.3, 0.3)
 sd = 0.2
 I = 100
 
-
-#Funktion zur Berechnung der Regression
-
-#'Regression auf letzte Werte
-#'
-#'\code{reg} berechnet den nächsten Wert einer Zeitreihe als gewichtete Summe der Vorangegangenen Werte
-
 reg = function(X, coeff){
   n <- length(coeff)
   sum(coeff*X[length(X):(length(X)-(n-1))])
@@ -39,7 +32,7 @@ reg = function(X, coeff){
 #'@export
 
 #Generator-Funktion
-gen <- function(phi = 0, theta = 0, sd, I){
+arma_sim <- function(phi = 0, theta = 0, sd, I){
   #Hier ueberpruefung wir die Eingabewerte auf ihre Richtigkeit
   # start
  # stopifnot("" = )
@@ -69,7 +62,7 @@ gen <- function(phi = 0, theta = 0, sd, I){
 
 #start evtl nicht als Argument sondern als Zufallsvektor in Fkt erstellen
 #
-Y1 = gen(phi, theta, sd, I)
+#Y1 = gen(phi, theta, sd, I)
 plot(Y1, type ="l")
 
 Y2 = arima.sim(n = I,
@@ -79,10 +72,6 @@ Y2 = arima.sim(n = I,
 lines(Y2, col = "red")
 
 
-#Von Leo: Hier das habe ich ausgeklammert. Bei mir kam ne Fehlermeldung deswegen.
-'arima(Y1, order = c(length(phi), 0, length(theta)))
-arima(Y2, order = c(length(phi), 0, length(theta)))
-c(phi, theta)'
 
 arima(Y1, order = c(length(phi), 0, length(theta)),
       optim.control = list(maxit = 1000))
