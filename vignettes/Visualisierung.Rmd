@@ -137,6 +137,6 @@ acf_diff_plot <- function(n){
 ```
 
 
-Der obige Vergleich zeigt deutlich, dass sich die geschätzte ACF dem theoretischen ACF des AR(1)-Prozesses bei höher Länge annähert. Die Übereinstiummung nimmt bis zu einer Länge der AR(1)-Reihe von 1000 sichtbar zu. Ab diesem Zeitpunkt oszilliert die Differenz auf erstaunlicherweise relativ hohen Niveau. Wir nehmen an, dass diese Oszillation durch den zugrundeliegenden Zufallsprozess erzeugt wird.  
+Der obige Vergleich zeigt deutlich, dass sich die geschätzte ACF dem theoretischen ACF des AR(1)-Prozesses bei höher Länge annähert. Die Uebereinstiummung nimmt bis zu einer Länge der AR(1)-Reihe von 1000 sichtbar zu. Ab diesem Zeitpunkt oszilliert die Differenz auf erstaunlicherweise relativ hohen Niveau. Wir nehmen an, dass diese Oszillation durch den zugrundeliegenden Zufallsprozess erzeugt wird.  
 
 # Durbin-Levinson Algorithmus
