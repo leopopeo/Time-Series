@@ -32,16 +32,3 @@ perio <- function(y){
 }
 
 
-#Nachher löschen
-# #####Testing
-#library(TSA)
-I <- 100
-X = arima.sim(n = I, list(
-   ar = c(0.8897,-0.4858),
-   ma = c(-0.2279, 0.2488)
- ), sd = sqrt(0.1796))
-
-#a <- periodogram(X,plot=F)
-#a
-perio(X)
-

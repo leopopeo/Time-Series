@@ -1,5 +1,3 @@
-context("Test der Innovation Funktion")
-
 test_that("Test der Eingabewerte", {
   #Zeitreihe test
   expect_error(innovation(c("Test")), "Eingabe muss ein numerische Vektor sein")
