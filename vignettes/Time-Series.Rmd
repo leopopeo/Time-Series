@@ -15,16 +15,16 @@ knitr::opts_chunk$set(
 ```
 
 ## Einleitung
-In dieser Vignette werden die verschiedenen Funktionen des Packages *TimeSeries* ausführlich erklärt. Das Package enthält folgende Funktionen:
+In dieser Vignette werden die verschiedenen Funktionen des Packages *TimeSeries* ausführlich erklärt. Das Package enthält Implementationen einger wichtiger Algorithmen zur Analyse Vorhersage von ARMA-Prozessen aus *Introduction to Time-Series Analysis and Forecasting* (Brockwell et. al, 2002):
 
-* ARMA Generator für AR(p) und MA(q) Prozesse *gen*
+* ARMA Generator für AR(p) und MA(q) Prozesse *arma_sim*
 * Autokovarianz-Funktion für Zeitreihen *ACF*
 * Durbin-Levinson-Algorithmus für Zeitreihen *DLA*
 * Innovations Algorithmus *innovation* und Vorhersagen mit diesem *ts_predict*
 * Periodogram Algorithmus für Zeitreihen *perio*
 * Plot Funktion für Zeitreihen *plot_timeseries* und Periodogramme *plot_periodogram*
 
-Um die Funktionen nutzen zu können muss zuerst das entsprechende Paket *TimeSeries* geladen werden.
+Um die Funktionen nutzen zu können muss zuerst das Paket *TimeSeries* geladen werden.
 ```{r setup}
 library(TimeSeries)
 library(ggplot2)
@@ -32,6 +32,16 @@ library(tibble)
 ```
 
 ## ARMA Generator
+Ein ARMA(p,q)-Prozess (Autoregressive Moving Average) ist eine stochastischer Prozess der folgendem Modell genügt: $\{X_t\}$ ist stationär und für alle } $t$
+$$\begin{equation}
+
+X_t = \sum_{i= 1}^{p} \phi_i X_{t-i} + \sum_{j = 1}^{q} \theta_j Z_{t-j} + Z_t \qquad,\ Z_t \sim \mathcal{N}(0, \sigma^2)
+\end{equation}$$ 
+und die Polynome } $1 + \phi_1X + ... + \phi_p X^p  \text{ und } 1+ \theta_1X + ... + \theta_q X^q$ sind teilerfremd.
+
+(S. 83)
+
+
 
 ## Autokovarianz-Funktion
 Die Autokovarianz ist ein Begriff aus der Signalverarbeitung und gibt die Korrelation einer Funktion bzw. eines Signals mit sich selbst zu einem früheren Zeitpunkt an. Die Funktion gibt also an, wie viel Ähnlichkeit die um eine gewisse Zeitdifferenz verschobene Folge mit der ursprünglichen Folge besitzt. Die Autokovarianz-Funktion ist nach Brookwell et al. (2002) für eine Zeitdifferenz h wie folgt definiert:
@@ -63,7 +73,9 @@ Anhand der beiden Autokovarianz-Funktionen kann man eine erste Aussage über die
 ## Durbin-Levinson Algorithmus
 Der Durbin-Levinson Algorithmus kann für Vorhersagen einer Zeitreihe genutzt werden. Der Algorithmus benutzt dabei eine Linearkombination aller vorherigen Zeitreihen-Punkte, um einen neuen Wert vorherzusagen. Dies wird duch die folgende Gleichung nach Brookwell et al. (2002) ausgedrückt:
 
-$$ P_nX_{n+1}=\phi_{n1}X_n+...+\phi_{nn}X_1. $$
+$$\begin{align} 
+P_nX_{n+1}=\phi_{n1}X_n+...+\phi_{nn}X_1. 
+\end{align}$$
 
 Die entprechenden $\phi's$ werden durch den folgenden Algorithmus rekursiv bestimmt:
 
@@ -103,11 +115,31 @@ res
 ```
 
 ## Innovation Algorithmus
+Der Innovation Algorithmus ist eine zweite Möglichkeit, um Werte der Zeitreihe vorherzusagen. Sei $\mathbf{\hat X_n} = (X_1,\  P_1 X_2,\ ...\ ,\ P_{n-1}X_n)$.
+Dann gibt es eine Matrix $\mathbf{ \Theta_n}$ sodass $\mathbf{\hat X_n} = \mathbf{ \Theta_n} (\mathbf{X_n - } \mathbf{\hat X_n})$. Es gilt also
+$$\begin{equation}
+\hat{X}_{n+1}= \begin{cases}0, & \text { if } n=0, \\ \sum_{j=1}^{n} \theta_{n j}\left(X_{n+1-j}-\hat{X}_{n+1-j}\right), & \text { if } n=1,2, \ldots,\end{cases}
+\end{equation}$$
+(S. 72)
+
+Wir können nun die Koeffizienten $\theta_n, ij$ rekursiv berechnen. $\kappa(i,j)$ ist dabei die Kovarianz.
+$$
+\begin{aligned}
+&v_{0}=\kappa(1,1), \\
+&\theta_{n, n-k}=v_{k}^{-1}\left(\kappa(n+1, k+1)-\sum_{j=0}^{k-1} \theta_{k, k-j} \theta_{n, n-j} v_{j}\right), \quad 0 \leq k<n,\\
+&\ v_{n}=\kappa(n+1, n+1)-\sum_{j=0}^{n-1} \theta_{n, n-j}^{2} v_{j}
+\end{aligned}
+$$
+(S. 73)
+```{r}
+X = arma_sim(theta = c(0.5,0.9),I=5,sd=0.01)
+innovation(X, lag = 4)
+```
 
 ## Innnovation Prediction
 
 ## Periodogramm
-Das Periodogramm einer Zeitreihe $\{x_1,...,x_n\}$ ist die Funktion, die auf Stichproben basiert einen Schätzung für die Spektraldichte zurückgibt. Die Definition ist dabei nach Brookwell et al. (2002):
+Das Periodogramm einer Zeitreihe $\{x_1,...,x_n\}$ ist die Funktion, die auf Stichproben basiert einen Schätzung für die Spektraldichte zurückgibt. Die Definition ist dabei nach Brockwell et al. (2002):
 $$
 I_n(\lambda)=\frac{1}{n} \Bigg| \sum \limits_{t=1}^{n}x_{t}e^{-it\lambda} \Bigg| ^2
 $$
