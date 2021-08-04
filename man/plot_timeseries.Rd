@@ -2,12 +2,12 @@
 % Please edit documentation in R/Plots.R
 \name{plot_timeseries}
 \alias{plot_timeseries}
-\title{Plot-Funktion}
+\title{Time Series Plot}
 \usage{
 plot_timeseries(timeseries)
 }
 \arguments{
-\item{timeseries}{Ein numerischer Vektor vom Typ time series.}
+\item{timeseries}{Ein numerischer Vektor als Zeitreihe.}
 }
 \value{
 Plot der Zeitreihe.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Plots.R
 \name{plot_periodogram}
 \alias{plot_periodogram}
-\title{Plot-Funktion}
+\title{Periodogramm Plot}
 \usage{
 plot_periodogram(periodogram)
 }

@@ -4,7 +4,7 @@
 \alias{arma_sim}
 \title{ARMA Generator}
 \usage{
-arma_sim(phi = 0, theta = 0, sd, I)
+arma_sim(phi = 0, theta = 0, sd = 1, I)
 }
 \arguments{
 \item{I}{}
