@@ -7,7 +7,7 @@
 #'@return Vektor mit den vorhgesagten Werten
 #'@examples
 #'  #Erstelle eine Zeitreihe
-#'  X = arima.sim(n = 1000, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796))
+#'  X = arma_sim(n = 1000, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796))
 #'
 #'  DLA(X, len = 4)
 #'@export

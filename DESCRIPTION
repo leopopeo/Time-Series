@@ -1,7 +1,7 @@
 Package: TimeSeries
 Title: Analysen von Zeitreihen
 Version: 0.0.0.9000
-Authors@R: c(person("Niklas","Merz"),person("Johannes","Schnebel"),person("Leo","Graf"),person("Wiktor","Pogorzelski"))
+Authors@R: c(person("Niklas","Merz"),person("Johannes","Schnebel",role = "cre", email = "j.schnebel@stud.uni-heidelberg.de"),person("Leo","Graf"),person("Wiktor","Pogorzelski"))
 Description: Dieses Package beinhaltet verschiedene Funktionen für die Analyse von Zeitreihen wie verschiedene Vorhersage Modelle und Plot Funktionen.
 License: MIT + file LICENSE
 Encoding: UTF-8
