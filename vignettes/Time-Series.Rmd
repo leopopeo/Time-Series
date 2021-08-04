@@ -131,12 +131,30 @@ $$
 \end{aligned}
 $$
 (S. 73)
+Die Funktion *innovation(X, lag = n)* berechnet auf diese Weise $\mathbf\Theta_n$, welches wir dann für die Vorhersage mit *ts_predict* verwenden können.
 ```{r}
 X = arma_sim(theta = c(0.5,0.9),I=5,sd=0.01)
 innovation(X, lag = 4)
 ```
 
 ## Innnovation Prediction
+Obige Gleichung können wir nun auch verwenden, um eine $h$-Schritt Prognose des Prozesses zu machen. Sei dazu $m$ die Länge der Zeitreihe. Dann berechnen wir mit $\hat X_{m+h}$ eine h-Schritt Prognose. Die Ausgabe von ts_predict ist eine Liste mit den Elementen *X_hat*, der Vektor $ \mathbf{\hat X_{m+h}}$ der Länge $m+h$ und *theta*, die Innovation Matrix $\mathbf{ \Theta_n}$. Die Vorhersage mit dem Innovation Algorithmus eignet sich besonders gut für $MA(q)$-Prozesse mit kleinem $q$
+
+
+```{r}
+I = 50
+h = 10
+X = arma_sim(theta = c(0.5,0.4),I = I,sd=0.01)
+X_hat = ts_predict(X, h)$X_hat
+df = tibble(t = 1:(I+h), X = X[1:(I+h)], X_hat = X_hat)
+plt = ggplot(df)
+lay1 = geom_line(df, mapping = aes(x = t, y = X_hat), color = "red")
+lay2 = geom_line(df, mapping = aes(x = t, y = X))
+plt + lay1 + lay2
+```
+
+
+
 
 ## Periodogramm
 Das Periodogramm einer Zeitreihe $\{x_1,...,x_n\}$ ist die Funktion, die auf Stichproben basiert einen Schätzung für die Spektraldichte zurückgibt. Die Definition ist dabei nach Brockwell et al. (2002):

@@ -57,7 +57,7 @@ arma_sim <- function(phi = 0, theta = 0, sd=1, I){
     Z <- c(Z, rnorm(n = 1, sd=sd))
     X <- c(X, reg(X, phi) + reg(Z[-length(Z)], theta) + Z[i+q])
   }
-  X[(length(start)+1):length(X)]
+  X[(p+1):length(X)]
 }
 
 #start evtl nicht als Argument sondern als Zufallsvektor in Fkt erstellen
