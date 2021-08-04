@@ -76,7 +76,7 @@ Es ist die typische langsam abflachende Autokovarianzfunktion eines AR(1) zu erk
 
 ### Vergleich von theoretischer mit geschätzter ACF
 
-Wir simulieren nun Daten mit beschriebenen Eigenschaften und schätzen die ACF-Werte ab. Wir wollen testen wie sich die Zeitreihe mit unterschiedlichen Längen verhält.  Dabei wollen wir untersuchen ab welcher Stichporbengröße sich der geschätze ACF-Wert dem theoretischen ACF annähert. Wir erstellen dafür eine Funktion welche die simulierten ACFs zusammen mit den theoretischen plottet. 
+Wir simulieren nun Daten mit beschriebenen Eigenschaften und schätzen die ACF-Werte ab. Wir wollen testen wie sich die Zeitreihe mit unterschiedlichen Längen verhält. Dabei wollen wir untersuchen ab welcher Stichporbengröße sich der geschätze ACF-Wert dem theoretischen ACF annähert und betrachten dabei jeweils die ersten 50 Werte. Wir erstellen dafür eine Funktion welche die simulierten ACFs zusammen mit den theoretischen plottet. 
 
 ```{r , fig.width = 7, fig.asp = .5}
 set.seed(12345)
@@ -88,8 +88,8 @@ ar_1000 <- arma_sim(phi=0.9,I=100, sd =0.05)
 ar_2000 <- arma_sim(phi=0.9,I=2000, sd =0.05)
 ar_5000 <- arma_sim(phi=0.9,I=5000, sd =0.05)
 
-acf_plot <- function(ar, ...){
-        sim_tbl <- tibble(ACF=acf(ar)[1:50],Lag=1:50)
+acf_plot <- function(objekt, ...){
+        sim_tbl <- tibble(ACF=ACF(objekt)[1:50],Lag=1:50)
         sim_tbl$Group <- "Simulation"
         
         true_tbl <- tibble(ACF=true_acf,Lag=1:50)
@@ -103,12 +103,13 @@ acf_plot <- function(ar, ...){
                 scale_x_discrete(name="Lag", breaks=seq(0,50,5))
 acf_plot
 }
-acf_plot(ar_obj_50, "50 obs") 
-acf_plot(ar_obj_100, "100 obs")
-acf_plot(ar_obj_200, "200 obs")
-acf_plot(ar_obj_500, "500 obs")
-acf_plot(ar_obj_1000, "1000 obs")
-acf_plot(ar_obj_5000, "5000 obs")
+acf_plot(ar_50, "50 obs") 
+acf_plot(ar_100, "100 obs")
+acf_plot(ar_300, "200 obs")
+acf_plot(ar_500, "500 obs")
+acf_plot(ar_1000, "1000 obs")
+acf_plot(ar_2000, "2000 obs")
+acf_plot(ar_5000, "5000 obs")
 ```
 
 Der obige Vergleich zeigt deutlich, dass sich die geschätzte ACF dem theoretischen ACF des AR(1)-Prozesses bei höherer Beobachtungszahl annähert. Bei niedriger Beobachtungszahl werden die Autokovarianzen für die niedrigen Lags tendenziell unterschätzt und oszillieren für die höhren Lags deutlich um die null. Für die hohen Beobachtungszahlen ab 1000 können nurnoch kleine Unterschiede festgestellt werden.
