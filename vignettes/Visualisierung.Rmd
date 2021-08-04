@@ -16,13 +16,101 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(TimeSeries)
+library(tibble)
+library(ggplot2)
 ```
-# Visulisierung des Paketes
- 
 In dieser Vignette geht es um die Illustration der Funktionen. Im ersten Teil werden die Fähigkeiten des Packetes *TimeSeries* durch eine Simulationsstudie dargestellt und im zweiten Teil auf reale Daten angewendet.  
  
- ## Simulationsstudie
+# Simulationsstudie
  In dieser kurzen Simualtionsstudio werden die Fähigkeiten des Paketes durch kleine Veränderungen der Parameter veranschaulicht. 
- 
- ### Autokovarianz-Funktion
- 
+
+## Autokovarianz-Funktion
+
+In diesem Teil soll die Funktion *acf* getestet werden. Dazu wird ein AR(1)-Prozess mithilfe der Funktion *arma_sim* simuliert. Für diesen Prozess ist es leicht möglich die "wahre" theoretische Autokovarianz-Funktion zu berechnen.
+
+### Theoretische ACF eines AR(1)-Prozesses
+
+Wir nehmen an, dass die Zeitreihe der folgenden Vorraussetztung genügt, wobei $\epsilon$ die "white noise" ist:
+
+$$
+X_t=\phi X_{t-1}+\epsilon_t
+$$
+Für die Varianz $\gamma_0$ können folgende Berechnungen anstellen:
+
+$$
+\gamma(0)=Cov(X_t,X_t)=Cov(\phi X_{t-1}+\epsilon,\phi X_{t-1} + \epsilon_t)=\phi^2 \gamma(0) +\sigma^2= \frac{\sigma^2}{1-\phi^2}
+$$
+Nun sind auch die weiteren Autokovarianzen leicht bestimmbar:
+
+$$
+\gamma(h)=Cov(X_{t},X_{t-h})=Cov(\phi X_{t-1},X_{t-h})+Cov(\epsilon_t,X_{t-h})=\phi\gamma(h-1)+0=... = \phi^h \gamma(0)
+$$
+Es gilt also:
+$$
+\gamma(1)=Cov(X_{t},X_{t-1})=...=\phi \gamma_0
+$$
+$$
+\gamma(2)=Cov(X_{t},X_{t-2})=...=\phi^2 \gamma_0
+$$
+$$
+usw...
+$$
+(Brockwell Seite 17-18)
+Wir berechnen nun die theoretischen ACF (ersten 50 Autokovarianzen) für den AR(1)-Prozess mit $\phi=0.9$. Wir verwenden keine Standardnormalverteilung für das Rauschen, daher gilt $\sigma_{\epsilon}^2=1$.
+
+```{r fig1, fig.width = 7, fig.asp = .3}
+gamma_0 <- 1/(1-0.9^2)
+true_acf <- numeric(50)
+for(i in 0:49){
+        gamma_i <- gamma_0*0.9^i
+        true_acf[i+1] <- gamma_i
+}
+true_tbl <- tibble(ACF=true_acf, Lag=seq_along(true_acf))
+true_acf_plot <- ggplot(true_tbl, aes(x=Lag, y=ACF)) +
+                geom_bar(stat="identity") + 
+                ggtitle("Theoretische ACF: AR(1)")
+true_acf_plot
+```
+
+Es ist die typische langsam abflachende Autokovarianzfunktion eines AR(1) zu erkennen.
+
+### Vergleich von theoretischer mit geschätzter ACF
+
+Wir simulieren nun Daten mit beschriebenen Eigenschaften und schätzen die ACF-Werte ab. Wir wollen testen wie sich die Zeitreihe mit unterschiedlichen Längen verhält.  Dabei wollen wir untersuchen ab welcher Stichporbengröße sich der geschätze ACF-Wert dem theoretischen ACF annähert. Wir erstellen dafür eine Funktion welche die simulierten ACFs zusammen mit den theoretischen plottet. 
+
+```{r , fig.width = 7, fig.asp = .5}
+set.seed(12345)
+ar_50 <- arma_sim(phi=0.9,I=50, sd =0.05)
+ar_100 <- arma_sim(phi=0.9,I=100, sd =0.05)
+ar_300 <- arma_sim(phi=0.9,I=300, sd =0.05)
+ar_500 <- arma_sim(phi=0.9,I=500, sd =0.05)
+ar_1000 <- arma_sim(phi=0.9,I=100, sd =0.05)
+ar_2000 <- arma_sim(phi=0.9,I=2000, sd =0.05)
+ar_5000 <- arma_sim(phi=0.9,I=5000, sd =0.05)
+
+acf_plot <- function(ar, ...){
+        sim_tbl <- tibble(ACF=acf(ar)[1:50],Lag=1:50)
+        sim_tbl$Group <- "Simulation"
+        
+        true_tbl <- tibble(ACF=true_acf,Lag=1:50)
+        true_tbl$Group <- "Theoretical"
+        
+        tbl <- rbind(sim_tbl, true_tbl)
+        
+        acf_plot <- ggplot(tbl, aes(x=factor(Lag), y=ACF, fill=factor(Group))) +
+                geom_bar(stat='identity', position='dodge') + 
+                ggtitle(...) +
+                scale_x_discrete(name="Lag", breaks=seq(0,50,5))
+acf_plot
+}
+acf_plot(ar_obj_50, "50 obs") 
+acf_plot(ar_obj_100, "100 obs")
+acf_plot(ar_obj_200, "200 obs")
+acf_plot(ar_obj_500, "500 obs")
+acf_plot(ar_obj_1000, "1000 obs")
+acf_plot(ar_obj_5000, "5000 obs")
+```
+
+Der obige Vergleich zeigt deutlich, dass sich die geschätzte ACF dem theoretischen ACF des AR(1)-Prozesses bei höherer Beobachtungszahl annähert. Bei niedriger Beobachtungszahl werden die Autokovarianzen für die niedrigen Lags tendenziell unterschätzt und oszillieren für die höhren Lags deutlich um die null. Für die hohen Beobachtungszahlen ab 1000 können nurnoch kleine Unterschiede festgestellt werden.
+
+# Durbin-Levinson Algorithmus

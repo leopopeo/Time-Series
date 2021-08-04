@@ -32,7 +32,7 @@ reg = function(X, coeff){
 #'@export
 
 #Generator-Funktion
-arma_sim <- function(phi = 0, theta = 0, sd, I){
+arma_sim <- function(phi = 0, theta = 0, sd=1, I){
   #Hier ueberpruefung wir die Eingabewerte auf ihre Richtigkeit
   # start
  # stopifnot("" = )
