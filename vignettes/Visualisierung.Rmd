@@ -17,3 +17,12 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(TimeSeries)
 ```
+# Visulisierung des Paketes
+ 
+In dieser Vignette geht es um die Illustration der Funktionen. Im ersten Teil werden die Fähigkeiten des Packetes *TimeSeries* durch eine Simulationsstudie dargestellt und im zweiten Teil auf reale Daten angewendet.  
+ 
+ ## Simulationsstudie
+ In dieser kurzen Simualtionsstudio werden die Fähigkeiten des Paketes durch kleine Veränderungen der Parameter veranschaulicht. 
+ 
+ ### Autokovarianz-Funktion
+ 
