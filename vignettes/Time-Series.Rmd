@@ -42,10 +42,10 @@ Die Funktion *ACF* gibt für eine Zeitreihe $x_{1},...,x_{n}$ die geschätzte Si
 $$ \hat{\gamma}(h) := n^{-1} \sum_{t=1}^{n-|h|} (x_{t+|h|}-\bar{x})(x_t-\bar{x})$$
 ````{r , fig.width = 7, fig.asp = .5}
 set.seed(3)
-ar <-gen(phi = c(0.2,0.6),I=100,sd=0.01)
+ar <-arma_sim(phi = c(0.2,0.6),I=100,sd=0.01)
 #ar <- arima.sim(n = 100,list(ar = c(0.2,0.6)))
 ar_acf <- ACF(ar, lag = 20)
-ma <- gen(theta = c(0.5,0.9),I=100,sd=0.01)
+ma <- arma_sim(theta = c(0.5,0.9),I=100,sd=0.01)
 #ma <- arima.sim( n = 100,list(ma = c(0.5,0.9)))
 ma_acf <- ACF(ma, lag = 20)
 ar_plot <- ggplot(tibble(ACF=ar_acf, Lag=seq_along(ar_acf)), aes(x=Lag, y=ACF)) +
@@ -82,7 +82,7 @@ Die Funktion *DLA* benutzt den Durbin-Levinson Algorithums und gibt die geschät
 Im folgenden Beispiel wird die Funktion auf AR-generierte Daten angewendet:
 ```{r}
 set.seed(2)
-ar <- gen(phi = c(0.2,0.6),I=100,sd=0.01)
+ar <- arma_sim(phi = c(0.2,0.6),I=100,sd=0.01)
 #ar <- arima.sim(n = 100,list(ar = c(0.2,0.5)))
 res <- DLA(ar)
 ```
@@ -125,7 +125,7 @@ Die implementierte Funktion *perio* implementiert nun den Periodogramm-Algorithm
 Der folgende Code veranschaulicht dies:
 
 ```{r, fig.width = 7, fig.asp = .5}
-x <- gen(phi = c(0.2,-0.6),I=1000,sd=0.01)
+x <- arma_sim(phi = c(0.2,-0.6),I=1000,sd=0.01)
 #x <-  arima.sim( n = 1000,list(ar = c(0.2,-0.6)))
 periodo <- perio(x)
 plot_periodogram(periodo) 
