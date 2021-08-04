@@ -79,14 +79,14 @@ Es ist die typische langsam abflachende Autokovarianzfunktion eines AR(1) zu erk
 Wir simulieren nun Daten mit beschriebenen Eigenschaften und schätzen die ACF-Werte ab. Wir wollen testen wie sich die Zeitreihe mit unterschiedlichen Längen verhält. Dabei wollen wir untersuchen ab welcher Stichporbengröße sich der geschätze ACF-Wert dem theoretischen ACF annähert und betrachten dabei jeweils die ersten 50 Werte. Wir erstellen dafür eine Funktion welche die simulierten ACFs zusammen mit den theoretischen plottet. 
 
 ```{r , fig.width = 7, fig.asp = .5}
-set.seed(12345)
-ar_50 <- arma_sim(phi=0.9,I=50, sd =0.05)
-ar_100 <- arma_sim(phi=0.9,I=100, sd =0.05)
-ar_300 <- arma_sim(phi=0.9,I=300, sd =0.05)
-ar_500 <- arma_sim(phi=0.9,I=500, sd =0.05)
-ar_1000 <- arma_sim(phi=0.9,I=100, sd =0.05)
-ar_2000 <- arma_sim(phi=0.9,I=2000, sd =0.05)
-ar_5000 <- arma_sim(phi=0.9,I=5000, sd =0.05)
+set.seed(13)
+ar_50 <- arma_sim(phi=0.9,I=50, sd =1)
+ar_100 <- arma_sim(phi=0.9,I=100, sd = 1)
+ar_300 <- arma_sim(phi=0.9,I=300, sd =1)
+ar_500 <- arma_sim(phi=0.9,I=500, sd =1)
+ar_1000 <- arma_sim(phi=0.9,I=100, sd =1)
+ar_2000 <- arma_sim(phi=0.9,I=2000, sd =1)
+ar_5000 <- arma_sim(phi=0.9,I=5000, sd =1)
 
 acf_plot <- function(objekt, ...){
         sim_tbl <- tibble(ACF=ACF(objekt)[1:50],Lag=1:50)
@@ -97,21 +97,46 @@ acf_plot <- function(objekt, ...){
         
         tbl <- rbind(sim_tbl, true_tbl)
         
-        acf_plot <- ggplot(tbl, aes(x=factor(Lag), y=ACF, fill=factor(Group))) +
+        acf_plot <- ggplot(tbl, aes(x=factor(Lag), y=ACF, fill=Group)) +
                 geom_bar(stat='identity', position='dodge') + 
                 ggtitle(...) +
                 scale_x_discrete(name="Lag", breaks=seq(0,50,5))
 acf_plot
 }
-acf_plot(ar_50, "50 obs") 
-acf_plot(ar_100, "100 obs")
-acf_plot(ar_300, "200 obs")
-acf_plot(ar_500, "500 obs")
-acf_plot(ar_1000, "1000 obs")
-acf_plot(ar_2000, "2000 obs")
-acf_plot(ar_5000, "5000 obs")
+acf_plot(ar_50, "Länge 50") 
+acf_plot(ar_100, "Länge 100")
+acf_plot(ar_300, "Länge 300")
+acf_plot(ar_500, "Länge 500")
+acf_plot(ar_1000, "Länge 1000")
+acf_plot(ar_2000, "Länge 2000")
+acf_plot(ar_5000, "Länge 5000")
+```
+Als zusätzliche veranschaulichung zeigt dieser Plot den Zusammenhang zwischen der Länge der Zeitreihe und der Differenz zwischen den theoretischen und simulierten Werten an.
+
+```{r , fig.width = 7, fig.asp = .5}
+set.seed(13)
+acf_diff_plot <- function(n){
+        res <- tibble(Länge=n,Differenz=numeric(n))
+        zähler <- 1
+        for(i in 1:n){
+          a <- ACF(arma_sim(phi=0.9,I=i*50, sd =1))
+          diff <- sum(abs(a[1:50]-true_acf))
+          res$Länge[zähler] <- i*50
+          res$Differenz[zähler] <- diff
+          zähler <- zähler+1
+        }
+
+        acf_plot <- ggplot(res,aes(x=Länge,y=Differenz)) +
+          geom_bar(stat='identity', position='dodge') +
+          ggtitle("Differenz simulierten und theoretischen Daten")
+          
+        acf_plot
+}
+######################unebdingt reinmachen nur in Klammer wegen langer berechnungszeit!!!!!!!
+#acf_diff_plot(100)
 ```
 
-Der obige Vergleich zeigt deutlich, dass sich die geschätzte ACF dem theoretischen ACF des AR(1)-Prozesses bei höherer Beobachtungszahl annähert. Bei niedriger Beobachtungszahl werden die Autokovarianzen für die niedrigen Lags tendenziell unterschätzt und oszillieren für die höhren Lags deutlich um die null. Für die hohen Beobachtungszahlen ab 1000 können nurnoch kleine Unterschiede festgestellt werden.
+
+Der obige Vergleich zeigt deutlich, dass sich die geschätzte ACF dem theoretischen ACF des AR(1)-Prozesses bei höher Länge annähert. Die Übereinstiummung nimmt bis zu einer Länge der AR(1)-Reihe von 1000 sichtbar zu. Ab diesem Zeitpunkt oszilliert die Differenz auf erstaunlicherweise relativ hohen Niveau. Wir nehmen an, dass diese Oszillation durch den zugrundeliegenden Zufallsprozess erzeugt wird.  
 
 # Durbin-Levinson Algorithmus
