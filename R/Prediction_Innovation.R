@@ -21,7 +21,7 @@ library(itsmr)
 
 #Berechnung des mittleren quadratischen Abweichung des ersten Elements
 
-#Hilfsfunktion
+#Hilfsfunktionen
 
 regress <- function(X, X_hat, theta, n) {
   X = X[1:n]
@@ -126,21 +126,21 @@ ts_predict <- function(X, steps) {
 #   X_hat
 # }
 
-
-set.seed(2)
-X = arima.sim(n = 100, list(ar = c(0.7),
-                            ma = c(0.7, 0.25)),
-              sd = sqrt(0.02796))
-X = sin(1:50)
-
-R = ts_predict(X[1:50], 1)$X_hat
-
-
-
-S = forecast(X[1:50], NULL, h = 10, arma(X, p = 1, q = 2), alpha = 1)
-
-
-lines(R, col = "green", type = "l")
+#
+# set.seed(2)
+# X = arima.sim(n = 100, list(ar = c(0.7),
+#                             ma = c(0.7, 0.25)),
+#               sd = sqrt(0.02796))
+# X = sin(1:50)
+#
+# R = ts_predict(X[1:50], 1)$X_hat
+#
+#
+#
+# S = forecast(X[1:50], NULL, h = 10, arma(X, p = 1, q = 2), alpha = 1)
+#
+#
+# lines(R, col = "green", type = "l")
 
 # lines(S$pred, col = "blue", type = "l")
 
