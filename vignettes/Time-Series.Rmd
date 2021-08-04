@@ -32,16 +32,34 @@ library(tibble)
 ```
 
 ## ARMA Generator
-Ein ARMA(p,q)-Prozess (Autoregressive Moving Average) ist eine stochastischer Prozess der folgendem Modell genügt: $\{X_t\}$ ist stationär und für alle } $t$
-$$\begin{equation}
-
+Ein ARMA(p,q)-Prozess (Autoregressive Moving Average) ist eine stochastischer Prozess der folgendem Modell genügt: $\{X_t\}$ ist stationär und für alle $t$:
+$$
 X_t = \sum_{i= 1}^{p} \phi_i X_{t-i} + \sum_{j = 1}^{q} \theta_j Z_{t-j} + Z_t \qquad,\ Z_t \sim \mathcal{N}(0, \sigma^2)
-\end{equation}$$ 
-und die Polynome } $1 + \phi_1X + ... + \phi_p X^p  \text{ und } 1+ \theta_1X + ... + \theta_q X^q$ sind teilerfremd.
+$$ 
+und die Polynome  $1 + \phi_1X + ... + \phi_p X^p  \text{ und } 1+ \theta_1X + ... + \theta_q X^q$ teilerfremd sind.
 
 (S. 83)
 
+Hier nun ein paar Beispiele:
 
+1. AR(1,1) Prozess:
+```{r, fig.width = 7, fig.asp = .5}
+arma <- arma_sim(phi = 0.5, theta=0.4,sd=1,I=100)
+plot_timeseries(arma)
+```
+
+2. MA(1) Prozess:
+```{r, fig.width = 7, fig.asp = .5}
+arma <- arma_sim(phi = 0.5,sd=1,I=100)
+plot_timeseries(arma)
+```
+
+3. ARMA(1,1) Prozess:
+```{r, fig.width = 7, fig.asp = .5}
+arma <- arma_sim(theta=0.4,sd=1,I=100)
+plot_timeseries(arma)
+```
+######Berscghreibuzng was man sieht???
 
 ## Autokovarianz-Funktion
 Die Autokovarianz ist ein Begriff aus der Signalverarbeitung und gibt die Korrelation einer Funktion bzw. eines Signals mit sich selbst zu einem früheren Zeitpunkt an. Die Funktion gibt also an, wie viel Ähnlichkeit die um eine gewisse Zeitdifferenz verschobene Folge mit der ursprünglichen Folge besitzt. Die Autokovarianz-Funktion ist nach Brookwell et al. (2002) für eine Zeitdifferenz h wie folgt definiert:
@@ -141,7 +159,8 @@ innovation(X, lag = 4)
 Obige Gleichung können wir nun auch verwenden, um eine $h$-Schritt Prognose des Prozesses zu machen. Sei dazu $m$ die Länge der Zeitreihe. Dann berechnen wir mit $\hat X_{m+h}$ eine h-Schritt Prognose. Die Ausgabe von ts_predict ist eine Liste mit den Elementen *X_hat*, der Vektor $ \mathbf{\hat X_{m+h}}$ der Länge $m+h$ und *theta*, die Innovation Matrix $\mathbf{ \Theta_n}$. Die Vorhersage mit dem Innovation Algorithmus eignet sich besonders gut für $MA(q)$-Prozesse mit kleinem $q$
 
 
-```{r}
+```{r,1. AR(1,1) Prozess:
+```{r, fig.width = 7, fig.asp = .5}
 I = 50
 h = 10
 X = arma_sim(theta = c(0.5,0.4),I = I,sd=0.01)
