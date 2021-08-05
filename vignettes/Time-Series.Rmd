@@ -128,7 +128,7 @@ DLA(ar, len=5)
 ```
 Der Output zeigt für die beiden angegebenen Rekursionen die geschätzten $\phi$ an. Die ersten beiden Werte entsprechen hier nahezu dem angegebenen Parameter *phi*  in *arma_sim*. Für die Vorhersage müssen nun die $\phi_{n1},...,\phi_{nn}$ mit der Zeitreihe (außgenommen dem letzten Wert, da die maximale Rekusionszahl n-1 ist) multipliziert und anschließend summiert werden.
 ```{r}
-res <- sum(ar[-100]*res)
+res <- sum(ar[-100]*rev(res))
 res
 ```
 
