@@ -19,10 +19,19 @@ library(TimeSeries)
 library(tibble)
 library(ggplot2)
 ```
-Im Folgenden geben wir einige Beispiele und Anwendungen der Funktionen des Pakets *Time Series*. Im ersten Teil werden wir dazu eine Simulationsstudie durchführen und im zweiten Teil auf reale Daten analysieren.
+Im Folgenden geben wir einige Beispiele und Anwendungen der Funktionen des Pakets *Time Series*. Im ersten Teil werden wir dazu eine Simulationsstudie durchführen und im zweiten Teil auf reale Daten analysieren:
+
+**1. Simulationsstudie**
+  + Autokovarianz-Funktion
+  + Durbin-Levinson Algorithmus
+  + Innovation Prediction
+
+**2. Analyse realer Daten**
+
+ 
  
 # Simulationsstudie
- In dieser kurzen Simualtionsstudio werden die Fähigkeiten des Paketes durch kleine Veränderungen der Parameter veranschaulicht. 
+In dieser kurzen Simulationsstudio werden die Fähigkeiten des Paketes durch kleine Veränderungen der Parameter veranschaulicht. 
 
 ## Autokovarianz-Funktion
 
@@ -35,7 +44,7 @@ Wir nehmen an, dass die Zeitreihe der folgenden Vorraussetztung genügt, wobei $
 $$
 X_t=\phi X_{t-1}+\epsilon_t
 $$
-Für die Varianz $\gamma_0$ können folgende Berechnungen anstellen:
+Für die Varianz $\gamma_0$ können wir folgende Berechnungen anstellen:
 
 $$
 \gamma(0)=Cov(X_t,X_t)=Cov(\phi X_{t-1}+\epsilon,\phi X_{t-1} + \epsilon_t)=\phi^2 \gamma(0) +\sigma^2= \frac{\sigma^2}{1-\phi^2}
@@ -53,10 +62,12 @@ $$
 \gamma(2)=Cov(X_{t},X_{t-2})=...=\phi^2 \gamma_0
 $$
 $$
-usw...
+.\\
+.\\
+.
 $$
-(Brockwell et.al. (2002), S 17-18)
-Wir berechnen nun die theoretischen ersten 50 Autokovarianzen für den AR(1)-Prozess mit $\phi=0.9$. Wir verwenden eine Standardnormalverteilung für das Rauschen, daher gilt $\sigma_{\epsilon}^2=1$.
+(Brockwell et.al. (2002), S. 17f).
+Wir berechnen nun die theoretischen, ersten 50 Autokovarianzen für den AR(1)-Prozess mit $\phi=0.9$. Wir verwenden eine Standardnormalverteilung für das Rauschen, daher gilt $\sigma_{\epsilon}^2=1$.
 
 ```{r fig1, fig.width = 7, fig.asp = .3}
 gamma_0 <- 1/(1-0.9^2)
@@ -76,7 +87,7 @@ Es ist die typische langsam abflachende Autokovarianzfunktion eines AR(1) zu erk
 
 ### Vergleich von theoretischer mit geschätzter ACF
 
-Wir simulieren nun Daten mit oben beschriebenen Eigenschaften und schätzen die ACF-Werte ab. Wir wollen testen, wie sich die Zeitreihe mit unterschiedlichen Längen verhält. Dabei wollen wir untersuchen ab welcher Stichporbengröße sich der geschätze ACF-Wert dem theoretischen ACF annähert und betrachten dabei jeweils die ersten 50 Werte. Wir erstellen dafür eine Funktion, welche die simulierten ACFs zusammen mit den theoretischen plottet. 
+Wir simulieren nun Daten mit oben beschriebenen Eigenschaften und schätzen die ACF-Werte ab. Wir wollen testen, wie sich die Zeitreihe mit unterschiedlichen Längen verhält. Dabei wollen wir untersuchen ab welcher Stichprobengröße sich der geschätze ACF-Wert dem theoretischen ACF annähert und betrachten dabei jeweils die ersten 50 Werte. Wir erstellen dafür eine Funktion, welche die simulierten ACFs zusammen mit den theoretischen plottet. 
 
 ```{r , fig.width = 7, fig.asp = .5}
 set.seed(13)
@@ -124,7 +135,7 @@ acf_diff_plot <- function(n){
 
         acf_plot <- ggplot(res,aes(x=Länge,y=Differenz)) +
           geom_bar(stat='identity', position='dodge') +
-          ggtitle("Differenz simulierten und theoretischen Daten")
+          ggtitle("Differenz der simulierten und theoretischen Daten")
           
         acf_plot
 }
@@ -133,9 +144,9 @@ acf_diff_plot <- function(n){
 ```
 
 
-Der obige Vergleich zeigt deutlich, dass sich die geschätzte ACF dem theoretischen ACF des AR(1)-Prozesses bei höher Länge annähert. Die Übereinstiummung nimmt bis zu einer Länge der AR(1)-Reihe von 1000 sichtbar zu. Ab diesem Zeitpunkt oszilliert die Differenz auf erstaunlicherweise relativ hohen Niveau. Wir nehmen an, dass diese Oszillation durch den zugrundeliegenden Zufallsprozess erzeugt wird.  
+Der obige Vergleich zeigt deutlich, dass sich die geschätzte ACF der theoretischen ACF des AR(1)-Prozesses bei größerer Länge annähert. Die Übereinstiummung nimmt bis zu einer Länge der AR(1)-Reihe von 1000 sichtbar zu. Ab diesem Zeitpunkt oszilliert die Differenz auf erstaunlicherweise relativ hohem Niveau. Wir nehmen an, dass diese Oszillation durch den zugrundeliegenden Zufallsprozess erzeugt wird.  
 
-# Durbin-Levinson Algorithmus
+## Durbin-Levinson Algorithmus
 
 
 ## Innovation Prediction
@@ -152,7 +163,7 @@ innovation_sim_ar <- ts_predict(timeseries_ar, 5)
 innovation_sim_ma <- ts_predict(timeseries_ma, 5)
 ```
 
-```{r fig1, fig.width = 7, fig.asp = .3}
+```{r fig2, fig.width = 7, fig.asp = .3}
 
 plot_timeseries(timeseries_arma, innovation_sim_arma)
 plot_timeseries(timeseries_ar, innovation_sim_ar)
@@ -166,18 +177,18 @@ library(itsmr)
 
 itsmr_prediction <- forecast(timeseries_arma, #Time series data
                              M = NULL, #Data model
-                             a = arma(timeseries_arma, p=1, q=1), #ARMA model
+                             a = arma(timeseries_arma, p=15, q=15), #ARMA model
                              h = 10, #Steps ahead
                              opt = 1, #Display option (0 silent, 1 tabulate, 2 plot and tabulate)
                              alpha = 1) #Level of significance
 innovation_sim_1 <- ts_predict(timeseries_arma, 10)
 ```
 
-```{r fig1, fig.width = 7, fig.asp = .3}
+```{r fig3, fig.width = 7, fig.asp = .3}
 
-plot(itsmr_prediction)
+plot_timeseries(timeseries_arma, itsmr_prediction$pred)
 plot_timeseries(timeseries_arma, innovation_sim_1)
 ```
 
-Wir können zunächst festhalten, dass die "forecast"-Funktion dem Nutzer mehr Parameter zur Verfügung stellt.
+Wir können zunächst festhalten, dass die "forecast"-Funktion dem Nutzer mehr Parameter zur Verfügung stellt. Mit einer geeigneten Wahl von q und p des Parameters a, gelingt eine nahezu identische Vorhersage der nächsten 10 Datenpunkte.
 
