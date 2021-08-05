@@ -19,7 +19,7 @@ library(TimeSeries)
 library(tibble)
 library(ggplot2)
 ```
-In dieser Vignette geht es um die Illustration der Funktionen. Im ersten Teil werden die Fähigkeiten des Packetes *TimeSeries* durch eine Simulationsstudie dargestellt und im zweiten Teil auf reale Daten angewendet.  
+Im Folgenden geben wir einige Beispiele und Anwendungen der Funktionen des Pakets *Time Series*. Im ersten Teil werden wir dazu eine Simulationsstudie durchführen und im zweiten Teil auf reale Daten analysieren.
  
 # Simulationsstudie
  In dieser kurzen Simualtionsstudio werden die Fähigkeiten des Paketes durch kleine Veränderungen der Parameter veranschaulicht. 
@@ -30,7 +30,7 @@ In diesem Teil soll die Funktion *acf* getestet werden. Dazu wird ein AR(1)-Proz
 
 ### Theoretische ACF eines AR(1)-Prozesses
 
-Wir nehmen an, dass die Zeitreihe der folgenden Vorraussetztung genügt, wobei $\epsilon$ die "white noise" ist:
+Wir nehmen an, dass die Zeitreihe der folgenden Vorraussetztung genügt, wobei $\epsilon$ "white noise" ist:
 
 $$
 X_t=\phi X_{t-1}+\epsilon_t
@@ -55,8 +55,8 @@ $$
 $$
 usw...
 $$
-(Brockwell Seite 17-18)
-Wir berechnen nun die theoretischen ACF (ersten 50 Autokovarianzen) für den AR(1)-Prozess mit $\phi=0.9$. Wir verwenden keine Standardnormalverteilung für das Rauschen, daher gilt $\sigma_{\epsilon}^2=1$.
+(Brockwell et.al. (2002), S 17-18)
+Wir berechnen nun die theoretischen ersten 50 Autokovarianzen für den AR(1)-Prozess mit $\phi=0.9$. Wir verwenden eine Standardnormalverteilung für das Rauschen, daher gilt $\sigma_{\epsilon}^2=1$.
 
 ```{r fig1, fig.width = 7, fig.asp = .3}
 gamma_0 <- 1/(1-0.9^2)
@@ -76,7 +76,7 @@ Es ist die typische langsam abflachende Autokovarianzfunktion eines AR(1) zu erk
 
 ### Vergleich von theoretischer mit geschätzter ACF
 
-Wir simulieren nun Daten mit beschriebenen Eigenschaften und schätzen die ACF-Werte ab. Wir wollen testen wie sich die Zeitreihe mit unterschiedlichen Längen verhält. Dabei wollen wir untersuchen ab welcher Stichporbengröße sich der geschätze ACF-Wert dem theoretischen ACF annähert und betrachten dabei jeweils die ersten 50 Werte. Wir erstellen dafür eine Funktion welche die simulierten ACFs zusammen mit den theoretischen plottet. 
+Wir simulieren nun Daten mit oben beschriebenen Eigenschaften und schätzen die ACF-Werte ab. Wir wollen testen, wie sich die Zeitreihe mit unterschiedlichen Längen verhält. Dabei wollen wir untersuchen ab welcher Stichporbengröße sich der geschätze ACF-Wert dem theoretischen ACF annähert und betrachten dabei jeweils die ersten 50 Werte. Wir erstellen dafür eine Funktion, welche die simulierten ACFs zusammen mit den theoretischen plottet. 
 
 ```{r , fig.width = 7, fig.asp = .5}
 set.seed(13)
@@ -111,7 +111,7 @@ acf_plot(ar_1000, "Länge 1000")
 acf_plot(ar_2000, "Länge 2000")
 acf_plot(ar_5000, "Länge 5000")
 ```
-Als zusätzliche veranschaulichung zeigt dieser Plot den Zusammenhang zwischen der Länge der Zeitreihe und der Differenz zwischen den theoretischen und simulierten Werten an.
+Als zusätzliche Veranschaulichung zeigt der folgende Plot den Zusammenhang zwischen der Länge der Zeitreihe und der Differenz zwischen den theoretischen und simulierten Werten an.
 
 ```{r , fig.width = 7, fig.asp = .5}
 set.seed(13)
@@ -137,6 +137,6 @@ acf_diff_plot <- function(n){
 ```
 
 
-Der obige Vergleich zeigt deutlich, dass sich die geschätzte ACF dem theoretischen ACF des AR(1)-Prozesses bei höher Länge annähert. Die Uebereinstiummung nimmt bis zu einer Länge der AR(1)-Reihe von 1000 sichtbar zu. Ab diesem Zeitpunkt oszilliert die Differenz auf erstaunlicherweise relativ hohen Niveau. Wir nehmen an, dass diese Oszillation durch den zugrundeliegenden Zufallsprozess erzeugt wird.  
+Der obige Vergleich zeigt deutlich, dass sich die geschätzte ACF dem theoretischen ACF des AR(1)-Prozesses bei höher Länge annähert. Die Übereinstiummung nimmt bis zu einer Länge der AR(1)-Reihe von 1000 sichtbar zu. Ab diesem Zeitpunkt oszilliert die Differenz auf erstaunlicherweise relativ hohen Niveau. Wir nehmen an, dass diese Oszillation durch den zugrundeliegenden Zufallsprozess erzeugt wird.  
 
 # Durbin-Levinson Algorithmus
