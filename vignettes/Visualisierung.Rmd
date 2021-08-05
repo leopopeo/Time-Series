@@ -16,13 +16,22 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(TimeSeries)
-library(tibble)
+library(tidyverse)
 library(ggplot2)
 ```
-Im Folgenden geben wir einige Beispiele und Anwendungen der Funktionen des Pakets *Time Series*. Im ersten Teil werden wir dazu eine Simulationsstudie durchführen und im zweiten Teil auf reale Daten analysieren.
+Im Folgenden geben wir einige Beispiele und Anwendungen der Funktionen des Pakets *Time Series*. Im ersten Teil werden wir dazu eine Simulationsstudie durchführen und im zweiten Teil auf reale Daten analysieren:
+
+**1. Simulationsstudie**
+  + Autokovarianz-Funktion
+  + Durbin-Levinson Algorithmus
+  + Innovation Prediction
+
+**2. Analyse realer Daten**
+
+ 
  
 # Simulationsstudie
- In dieser kurzen Simualtionsstudio werden die Fähigkeiten des Paketes durch kleine Veränderungen der Parameter veranschaulicht. 
+In dieser kurzen Simulationsstudio werden die Fähigkeiten des Paketes durch kleine Veränderungen der Parameter veranschaulicht. 
 
 ## Autokovarianz-Funktion
 
@@ -35,7 +44,7 @@ Wir nehmen an, dass die Zeitreihe der folgenden Vorraussetztung genügt, wobei $
 $$
 X_t=\phi X_{t-1}+\epsilon_t
 $$
-Für die Varianz $\gamma_0$ können folgende Berechnungen anstellen:
+Für die Varianz $\gamma_0$ können wir folgende Berechnungen anstellen:
 
 $$
 \gamma(0)=Cov(X_t,X_t)=Cov(\phi X_{t-1}+\epsilon,\phi X_{t-1} + \epsilon_t)=\phi^2 \gamma(0) +\sigma^2= \frac{\sigma^2}{1-\phi^2}
@@ -53,10 +62,12 @@ $$
 \gamma(2)=Cov(X_{t},X_{t-2})=...=\phi^2 \gamma_0
 $$
 $$
-usw...
+.\\
+.\\
+.
 $$
-(Brockwell et.al. (2002), S 17-18)
-Wir berechnen nun die theoretischen ersten 50 Autokovarianzen für den AR(1)-Prozess mit $\phi=0.9$. Wir verwenden eine Standardnormalverteilung für das Rauschen, daher gilt $\sigma_{\epsilon}^2=1$.
+(Brockwell et.al. (2002), S. 17f).
+Wir berechnen nun die theoretischen, ersten 50 Autokovarianzen für den AR(1)-Prozess mit $\phi=0.9$. Wir verwenden eine Standardnormalverteilung für das Rauschen, daher gilt $\sigma_{\epsilon}^2=1$.
 
 ```{r fig1, fig.width = 7, fig.asp = .3}
 gamma_0 <- 1/(1-0.9^2)
@@ -76,7 +87,7 @@ Es ist die typische langsam abflachende Autokovarianzfunktion eines AR(1) zu erk
 
 ### Vergleich von theoretischer mit geschätzter ACF
 
-Wir simulieren nun Daten mit oben beschriebenen Eigenschaften und schätzen die ACF-Werte ab. Wir wollen testen, wie sich die Zeitreihe mit unterschiedlichen Längen verhält. Dabei wollen wir untersuchen ab welcher Stichporbengröße sich der geschätze ACF-Wert dem theoretischen ACF annähert und betrachten dabei jeweils die ersten 50 Werte. Wir erstellen dafür eine Funktion, welche die simulierten ACFs zusammen mit den theoretischen plottet. 
+Wir simulieren nun Daten mit oben beschriebenen Eigenschaften und schätzen die ACF-Werte ab. Wir wollen testen, wie sich die Zeitreihe mit unterschiedlichen Längen verhält. Dabei wollen wir untersuchen ab welcher Stichprobengröße sich der geschätze ACF-Wert dem theoretischen ACF annähert und betrachten dabei jeweils die ersten 50 Werte. Wir erstellen dafür eine Funktion, welche die simulierten ACFs zusammen mit den theoretischen plottet. 
 
 ```{r , fig.width = 7, fig.asp = .5}
 set.seed(13)
@@ -124,7 +135,7 @@ acf_diff_plot <- function(n){
 
         acf_plot <- ggplot(res,aes(x=Länge,y=Differenz)) +
           geom_bar(stat='identity', position='dodge') +
-          ggtitle("Differenz simulierten und theoretischen Daten")
+          ggtitle("Differenz der simulierten und theoretischen Daten")
           
         acf_plot
 }
@@ -133,14 +144,88 @@ acf_diff_plot <- function(n){
 ```
 
 
-Der obige Vergleich zeigt deutlich, dass sich die geschätzte ACF dem theoretischen ACF des AR(1)-Prozesses bei höher Länge annähert. Die Übereinstiummung nimmt bis zu einer Länge der AR(1)-Reihe von 1000 sichtbar zu. Ab diesem Zeitpunkt oszilliert die Differenz auf erstaunlicherweise relativ hohen Niveau. Wir nehmen an, dass diese Oszillation durch den zugrundeliegenden Zufallsprozess erzeugt wird.  
+Der obige Vergleich zeigt deutlich, dass sich die geschätzte ACF der theoretischen ACF des AR(1)-Prozesses bei größerer Länge annähert. Die Übereinstiummung nimmt bis zu einer Länge der AR(1)-Reihe von 1000 sichtbar zu. Ab diesem Zeitpunkt oszilliert die Differenz auf erstaunlicherweise relativ hohem Niveau. Wir nehmen an, dass diese Oszillation durch den zugrundeliegenden Zufallsprozess erzeugt wird.  
 
-# Durbin-Levinson Algorithmus
+## Durbin-Levinson Algorithmus
 
+In diesem Abschnitt befassen wir uns etwas näher mit dem Durbin-Levinson Algorithmus und wollen uns seiner Vorhersagen bezüglich der ARMA-Zeitreihen anschauen und auch, welchen Einfluss die Parameter $\phi$ und $\theta$ haben und für welche Zeitreihen der Durbin-Levinson Algorithmus aussagekräftig ist. Hierfür erstellen wir eine Prediciton-Funktion, welche uns für die vorherigen $n$ Werte den $n+1$ Wert vorhersagt:
+
+```{r}
+DL_prediction <- function(X){
+
+  prediction <- rep(NA, length(X))
+
+  for(i in 10:length(X)){
+    x_help <- X[1:i]
+    dl_save <- DLA(x_help)
+    prediction[i] <- sum(dl_save*rev(x_help))
+  }
+  prediction
+}
+```
+
+Nun simulieren wir Daten mit verschiedenen Eigenschaften und beobachten, welche Auswirkungen die $\phi$ und $\theta$ bei gleichbleibender Stichprobengröße haben und für welche Zeitreihen der DLA akkurat ist.
+Hierfür betrachten wir uns sowohl AR(1) und AR(2), als auch MA(1), MA(2) und ARMA(1)-Zeitreihen:
+
+```{r}
+set.seed(42)
+
+AR_1 <- arma_sim(phi = 0.6, sd = 0.1, I = 100)
+AR_2 <- arma_sim(phi = c(0.5, 0.2), sd = 0.1, I = 100)
+MA_1 <- arma_sim(theta = 0.4, sd = 0.1, I = 100)
+MA_2 <- arma_sim(theta = c(0.65, 0.25), sd = 0.1, I = 100)
+ARMA_1 <- arma_sim(phi = 0.6, theta = 0.4, sd = 0.1, I = 100)
+
+```
+
+Im folgenden berechnen wir nun die Vorhersagen der gegebenen ARMA-Zeitreihen, anhand des DL Algorithmus:
+
+```{r}
+DL1 <- DL_prediction(AR_1)
+DL2 <- DL_prediction(AR_2)
+DL3 <- DL_prediction(MA_1)
+DL4 <- DL_prediction(MA_2)
+DL5 <- DL_prediction(ARMA_1)
+```
+
+Um nun die Genauigkeit des Durbin-Levinson Algorithmus zu überprüfen, plotten wir die ursprüngliche Zeitreihe und die Vorhersage durch den Durbin-Levinson Algorithmus zu vergleichen.
+
+```{r}
+plot_DL <- function(series, dl, ...){
+  tbl <- tibble(Series=series, DL_obj = dl, Lag=1:100)
+  
+   ggplot(tbl, aes(x=Lag)) + 
+    geom_line(aes(y = Series), color = "blue", size=0.4) + 
+    geom_line(aes(y = DL_obj), color= "red", size=0.4) +
+    ggtitle(...)
+}
+
+plot_DL(AR_1, DL1, "Test")
+plot_DL(AR_2, DL2, "Test")
+plot_DL(MA_1, DL3, "Test")
+plot_DL(MA_2, DL4, "Test")
+plot_DL(ARMA_1, DL5, "Test")
+```
 
 ## Innovation Prediction
 
-Dieser Abschnitt veranschaulicht die Vorhersagegenauigkeit des Innovation Algorithmus. Um einen Vergleich mit dem Durbin-Levinson Algortihmus zu gewährleisten, nutzen wir die selben Zeitreihen, wie oben:
+Dieser Abschnitt veranschaulicht die Vorhersagegenauigkeit des Innovation Algorithmus. Um einen Vergleich mit dem Durbin-Levinson Algortihmus zu gewährleisten, nutzen wir die analoge Methodik, sowie die selben Zeitreihen, wie oben:
+
+ierfür erstellen wir eine Prediciton-Funktion, welche uns für die vorherigen $n$ Werte den $n+1$ Wert vorhersagt:
+
+# ```{r}
+# innovation_prediction <- function(X){
+# 
+#   inno_prediction <- rep(NA, length(X))
+# 
+#   for(i in 10:length(X)){
+#     inno_help <- X[1:i]
+#     inno_save <- ts_predict(inno_help)
+#     inno_prediction[i] <- sum(inno_save*rev(inno_help))
+#   }
+#   inno_prediction
+# }
+# ```
 
 ```{r}
 timeseries_arma <- arma_sim(phi = 0.5, theta = 0.4, sd = 1, I = 100)
@@ -152,7 +237,7 @@ innovation_sim_ar <- ts_predict(timeseries_ar, 5)
 innovation_sim_ma <- ts_predict(timeseries_ma, 5)
 ```
 
-```{r fig1, fig.width = 7, fig.asp = .3}
+```{r fig2, fig.width = 7, fig.asp = .3}
 
 plot_timeseries(timeseries_arma, innovation_sim_arma)
 plot_timeseries(timeseries_ar, innovation_sim_ar)
@@ -166,18 +251,18 @@ library(itsmr)
 
 itsmr_prediction <- forecast(timeseries_arma, #Time series data
                              M = NULL, #Data model
-                             a = arma(timeseries_arma, p=1, q=1), #ARMA model
+                             a = arma(timeseries_arma, p=15, q=15), #ARMA model
                              h = 10, #Steps ahead
                              opt = 1, #Display option (0 silent, 1 tabulate, 2 plot and tabulate)
                              alpha = 1) #Level of significance
 innovation_sim_1 <- ts_predict(timeseries_arma, 10)
 ```
 
-```{r fig1, fig.width = 7, fig.asp = .3}
+```{r fig3, fig.width = 7, fig.asp = .3}
 
-plot(itsmr_prediction)
+plot_timeseries(timeseries_arma, itsmr_prediction$pred)
 plot_timeseries(timeseries_arma, innovation_sim_1)
 ```
 
-Wir können zunächst festhalten, dass die "forecast"-Funktion dem Nutzer mehr Parameter zur Verfügung stellt.
+Wir können zunächst festhalten, dass die "forecast"-Funktion dem Nutzer mehr Parameter zur Verfügung stellt. Mit einer geeigneten Wahl von q und p des Parameters a, gelingt eine nahezu identische Vorhersage der nächsten 10 Datenpunkte.
 
