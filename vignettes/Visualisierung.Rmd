@@ -266,3 +266,22 @@ plot_timeseries(timeseries_arma, innovation_sim_1)
 
 Wir können zunächst festhalten, dass die "forecast"-Funktion dem Nutzer mehr Parameter zur Verfügung stellt. Mit einer geeigneten Wahl von q und p des Parameters a, gelingt eine nahezu identische Vorhersage der nächsten 10 Datenpunkte.
 
+
+##Reale Daten
+
+```{r}
+data <- as_tibble(read.delim("Luftdaten_stunde_19480101_20201231_05906.txt",
+                             header = T,
+                             sep = ";",
+                             dec = "."))
+
+data %>% 
+  select(time = MESS_DATUM, temp = TT_TU) -> data
+
+#Achtung!! Sehr lange Rechenzeit für länge > 1000
+# periodo <- perio(data$temp[1:100000])
+# length(periodo)
+# plot_periodogram(periodo)
+# periodo
+
+```
