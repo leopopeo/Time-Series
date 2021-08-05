@@ -1,8 +1,8 @@
 
 #Parameter setzen für die Beispiele unten. NICHT TEIL DER ENTGÜLTIGEN VERSION.
 set.seed(1)
-phi = c(0.8, -0.3, 0.1)
-theta = c(0.8, -0.3, 0.3)
+phi = c(0.8)
+theta = c(0.8)
 sd = 0.2
 I = 100
 

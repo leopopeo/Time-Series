@@ -67,7 +67,7 @@ estimate <- function(X,
 #innovations_algorithm <- function(timeseries,){
 #Eingabe ueberpruefen
 #Timeseries timeseries ueberpruefen
-ts_predict <- function(X, steps) {
+ts_predict <- function(X, steps, all = FALSE) {
   X_cache <- X
   est <- list(X_hat = 0, theta = 0)
   for (i in 1:steps) {
@@ -80,7 +80,8 @@ ts_predict <- function(X, steps) {
     )
     X_cache <- c(X_cache, est$X_hat[n + 1])
   }
-  est
+  if (all) return(est$X_hat)
+  if (!all) return(est$X_hat[-(1:length(X))])
 }
 
 
