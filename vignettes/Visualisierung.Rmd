@@ -151,7 +151,7 @@ Der obige Vergleich zeigt deutlich, dass sich die geschätzte ACF der theoretisc
 In diesem Abschnitt befassen wir uns etwas näher mit dem Durbin-Levinson Algorithmus und wollen uns seiner Vorhersagen bezüglich der ARMA-Zeitreihen anschauen und auch, welchen Einfluss die Parameter $\phi$ und $\theta$ haben und für welche Zeitreihen der Durbin-Levinson Algorithmus aussagekräftig ist. Hierfür erstellen wir eine Prediciton-Funktion, welche uns für die vorherigen $n$ Werte den $n+1$ Wert vorhersagt:
 
 ```{r}
-DL_prediction <- function(X){
+DL_Helper <- function(X){
 
   prediction <- rep(NA, length(X))
 
@@ -181,16 +181,17 @@ ARMA_1 <- arma_sim(phi = 0.6, theta = 0.4, sd = 0.1, I = 100)
 Im folgenden berechnen wir nun die Vorhersagen der gegebenen ARMA-Zeitreihen, anhand des DL Algorithmus:
 
 ```{r}
-DL1 <- DL_prediction(AR_1)
-DL2 <- DL_prediction(AR_2)
-DL3 <- DL_prediction(MA_1)
-DL4 <- DL_prediction(MA_2)
-DL5 <- DL_prediction(ARMA_1)
+DL1 <- DL_Helper(AR_1)
+DL2 <- DL_Helper(AR_2)
+DL3 <- DL_Helper(MA_1)
+DL4 <- DL_Helper(MA_2)
+DL5 <- DL_Helper(ARMA_1)
 ```
 
 Um nun die Genauigkeit des Durbin-Levinson Algorithmus zu überprüfen, plotten wir die ursprüngliche Zeitreihe und die Vorhersage durch den Durbin-Levinson Algorithmus zu vergleichen.
 
 ```{r}
+
 plot_DL <- function(series, dl, ...){
   tbl <- tibble(Series=series, DL_obj = dl, Lag=1:100)
   
@@ -200,6 +201,7 @@ plot_DL <- function(series, dl, ...){
     ggtitle(...)
 }
 
+suppressWarnings(plot_DL(AR_1, DL1, "Test"))
 plot_DL(AR_1, DL1, "Test")
 plot_DL(AR_2, DL2, "Test")
 plot_DL(MA_1, DL3, "Test")
