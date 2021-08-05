@@ -164,7 +164,7 @@ DL_prediction <- function(X){
 }
 ```
 
-Nun simulieren wir uns Daten mit verschiedenen Eigenschaften und beobachten, welche Auswirkungen die $\phi$ und $\theta$ bei gleichbleibender Stichprobengröße haben und für welche Zeitreihen der DLA akkurat ist.
+Nun simulieren wir Daten mit verschiedenen Eigenschaften und beobachten, welche Auswirkungen die $\phi$ und $\theta$ bei gleichbleibender Stichprobengröße haben und für welche Zeitreihen der DLA akkurat ist.
 Hierfür betrachten wir uns sowohl AR(1) und AR(2), als auch MA(1), MA(2) und ARMA(1)-Zeitreihen:
 
 ```{r}
@@ -178,7 +178,7 @@ ARMA_1 <- arma_sim(phi = 0.6, theta = 0.4, sd = 0.1, I = 100)
 
 ```
 
-Im folgenden berechnen wir nun die Vorhersagen der gegebenen ARMA-Zeitreihen, anhand des DL Algorithmus
+Im folgenden berechnen wir nun die Vorhersagen der gegebenen ARMA-Zeitreihen, anhand des DL Algorithmus:
 
 ```{r}
 DL1 <- DL_prediction(AR_1)
@@ -188,7 +188,7 @@ DL4 <- DL_prediction(MA_2)
 DL5 <- DL_prediction(ARMA_1)
 ```
 
-Um nun die Genauigkeit vom Durbin-Levinson Algorithmus überprüfen zu können, verwenden wir hierfür eine Plotfunktion, um die ursprüngliche Zeitreihe und die Vorhersage von Durbin-Levinson Algorithmus vergleichen zu können.
+Um nun die Genauigkeit des Durbin-Levinson Algorithmus zu überprüfen, plotten wir die ursprüngliche Zeitreihe und die Vorhersage durch den Durbin-Levinson Algorithmus zu vergleichen.
 
 ```{r}
 plot_DL <- function(series, dl, ...){
