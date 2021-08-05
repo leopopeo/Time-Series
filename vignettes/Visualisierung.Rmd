@@ -209,7 +209,23 @@ plot_DL(ARMA_1, DL5, "Test")
 
 ## Innovation Prediction
 
-Dieser Abschnitt veranschaulicht die Vorhersagegenauigkeit des Innovation Algorithmus. Um einen Vergleich mit dem Durbin-Levinson Algortihmus zu gewährleisten, nutzen wir die selben Zeitreihen, wie oben:
+Dieser Abschnitt veranschaulicht die Vorhersagegenauigkeit des Innovation Algorithmus. Um einen Vergleich mit dem Durbin-Levinson Algortihmus zu gewährleisten, nutzen wir die analoge Methodik, sowie die selben Zeitreihen, wie oben:
+
+ierfür erstellen wir eine Prediciton-Funktion, welche uns für die vorherigen $n$ Werte den $n+1$ Wert vorhersagt:
+
+```{r}
+innovation_prediction <- function(X){
+
+  inno_prediction <- rep(NA, length(X))
+
+  for(i in 10:length(X)){
+    inno_help <- X[1:i]
+    inno_save <- ts_predict(inno_help)
+    inno_prediction[i] <- sum(inno_save*rev(inno_help))
+  }
+  inno_prediction
+}
+```
 
 ```{r}
 timeseries_arma <- arma_sim(phi = 0.5, theta = 0.4, sd = 1, I = 100)
