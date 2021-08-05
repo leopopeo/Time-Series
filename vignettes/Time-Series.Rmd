@@ -52,7 +52,7 @@ arma_groß <- arma_sim(phi = 0.7, theta=0.3,sd=1,I=100)
 plot_timeseries(arma_groß)
 ```
 
-2. Hier sehen wir zuerst einen AR(1)-Prozess mit einem kleinen *Phi*-Wert und anschließend mit einem großen. Man sieht sehr schön, dass der *Phi*-Wert mit Glattheit der Zeitreihe zusammenhängt, je größer der Wert, desto glatter ist die Funktion. Das Gleiche würde passieren bei einem MA(1)-Prozess mit großen und kleinen *Theta*-Werten.
+2. Hier sehen wir zuerst einen AR(1)-Prozess mit einem kleinen *Phi*-Wert und anschließend mit einem großen. Man sieht sehr schön, dass der *Phi*-Wert mit Glattheit der Zeitreihe zusammenhängt, je größer der Wert, desto glatter ist die Funktion. Das Gleiche würde  bei einem MA(1)-Prozess mit großen und kleinen *Theta*-Werten passieren.
 ```{r, fig.width = 7, fig.asp = .5}
 set.seed(3)
 arma_klein <- arma_sim(phi = 0.3,sd=1,I=100)
@@ -87,7 +87,7 @@ ar_plot
 ma_plot
 ```
 
-Anhand der beiden Autokovarianz-Funktionen kann man eine erste Aussage über die Prozessart treffen. Der erste Plot zeigt eine langsam abnehmende Autokovarianz-Funktion, was auf einen AR-Prozess hindeutet. Der zweite Plot zeigt eine abprupt abnehemnde Autokovarianz-Funktion, was eher auf einen MA-Prozess schließen lässt.
+Anhand der beiden Autokovarianz-Funktionen können wir eine erste Aussage über die Prozessart treffen. Der erste Plot zeigt eine langsam abnehmende Autokovarianz-Funktion, was auf einen AR-Prozess hindeutet. Der zweite Plot zeigt eine abprupt abnehemnde Autokovarianz-Funktion, was auf einen MA-Prozess schließen lässt.
 
 ## Durbin-Levinson Algorithmus
 Der Durbin-Levinson Algorithmus kann für Vorhersagen einer Zeitreihe genutzt werden. Der Algorithmus benutzt dabei eine Linearkombination aller vorherigen Zeitreihen-Punkte, um einen neuen Wert vorherzusagen. Dies wird duch die folgende Gleichung nach Brookwell et al. (2002) ausgedrückt:
@@ -134,11 +134,11 @@ res
 
 ## Innovation Algorithmus
 Der Innovation Algorithmus ist eine zweite Möglichkeit, um Werte der Zeitreihe vorherzusagen. Sei $\mathbf{\hat X_n} = (X_1,\  P_1 X_2,\ ...\ ,\ P_{n-1}X_n)$.
-Dann gibt es eine Matrix $\mathbf{ \Theta_n}$ sodass $\mathbf{\hat X_n} = \mathbf{ \Theta_n} (\mathbf{X_n - } \mathbf{\hat X_n})$. Es gilt also
+Dann gibt es eine Matrix $\mathbf{ \Theta_n}$, sodass $\mathbf{\hat X_n} = \mathbf{ \Theta_n} (\mathbf{X_n - } \mathbf{\hat X_n})$. Es gilt also
 $$\begin{equation}
 \hat{X}_{n+1}= \begin{cases}0, & \text { if } n=0, \\ \sum_{j=1}^{n} \theta_{n j}\left(X_{n+1-j}-\hat{X}_{n+1-j}\right), & \text { if } n=1,2, \ldots,\end{cases}
 \end{equation}$$
-(ebd. S. 72)
+(ebd. S.72)
 
 Wir können nun die Koeffizienten $\theta_{n,i}$ rekursiv berechnen. $\kappa(i,j)$ ist dabei die Kovarianz.
 $$
@@ -148,7 +148,7 @@ $$
 &\ v_{n}=\kappa(n+1, n+1)-\sum_{j=0}^{n-1} \theta_{n, n-j}^{2} v_{j}
 \end{aligned}
 $$
-(ebd. S. 73).
+(ebd. S.73).
 Die Funktion *innovation(X, lag = n)* berechnet auf diese Weise $\mathbf\Theta_n$, welches wir dann für die Vorhersage mit *ts_predict* verwenden können. Mit dem Parameter *lag*  kann dabei das $n$ gewählt werden, bis zu welchem $\theta_{n,i}$ berechnet wird.
 ```{r}
 X = arma_sim(theta = c(0.5,0.9),I=5,sd=0.01)
@@ -156,7 +156,7 @@ innovation(X, lag = 4)
 ```
 
 ## Innnovation Prediction
-Obige Gleichung können wir nun auch verwenden, um eine $h$-Schritt Prognose des Prozesses zu machen. Sei dazu $m$ die Länge der Zeitreihe. Dann berechnen wir mit $\hat X_{m+h}$ eine h-Schritt Prognose. Die Ausgabe von ts_predict ist eine Liste mit den Elementen *X_hat*, der Vektor $\mathbf{\hat X_{m+h}}$ der Länge $m+h$ und *theta*, die Innovation Matrix $\mathbf{ \Theta_n}$. Die Vorhersage mit dem Innovation Algorithmus eignet sich besonders gut für $MA(q)$-Prozesse mit kleinem $q$
+Obige Gleichung können wir nun auch verwenden, um eine $h$-Schritt-Prognose des Prozesses zu machen. Sei dazu $m$ die Länge der Zeitreihe. Dann berechnen wir mit $\hat X_{m+h}$ eine h-Schritt Prognose. Die Ausgabe von ts_predict ist eine Liste mit den Elementen *X_hat*, der Vektor $\mathbf{\hat X_{m+h}}$ der Länge $m+h$ und *theta*, die Innovation-Matrix $\mathbf{ \Theta_n}$. Die Vorhersage mit dem Innovation-Algorithmus eignet sich besonders gut für $MA(q)$-Prozesse mit kleinem $q$
 
 
 ```{r, fig.width = 7, fig.asp = .5}
@@ -166,7 +166,6 @@ X = arma_sim(theta = c(0.5,0.4),I = I,sd=0.01)
 X_hat = ts_predict(X, h)
 plot_timeseries(X, X_hat)
 ```
-
 
 
 
