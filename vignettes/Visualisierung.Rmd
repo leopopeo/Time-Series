@@ -213,35 +213,41 @@ Dieser Abschnitt veranschaulicht die Vorhersagegenauigkeit des Innovation Algori
 
 ierfür erstellen wir eine Prediciton-Funktion, welche uns für die vorherigen $n$ Werte den $n+1$ Wert vorhersagt:
 
-# ```{r}
-# innovation_prediction <- function(X){
-# 
-#   inno_prediction <- rep(NA, length(X))
-# 
-#   for(i in 10:length(X)){
-#     inno_help <- X[1:i]
-#     inno_save <- ts_predict(inno_help)
-#     inno_prediction[i] <- sum(inno_save*rev(inno_help))
-#   }
-#   inno_prediction
-# }
-# ```
+```{r}
+innovation_prediction <- function(X){
+
+
+
+   inno_prediction <- rep(NA, length(X))
+
+   for(i in 10:length(X)){
+     inno_help <- X[1:i]
+     inno_prediction[i+1-100] <- ts_predict(inno_help,1)
+   }
+   inno_prediction
+}
+```
 
 ```{r}
 timeseries_arma <- arma_sim(phi = 0.5, theta = 0.4, sd = 1, I = 100)
 timeseries_ar <- arma_sim(phi = 0.1, theta = 0, sd = 1, I = 100)
 timeseries_ma <- arma_sim(phi = 0, theta = 0.4, sd = 1, I = 100)
 
-innovation_sim_arma <- ts_predict(timeseries_arma, 5)
-innovation_sim_ar <- ts_predict(timeseries_ar, 5)
-innovation_sim_ma <- ts_predict(timeseries_ma, 5)
+innovation_sim_AR_1 <- innovation_prediction(AR_1)
+innovation_sim_AR_2 <- innovation_prediction(AR_2)
+innovation_sim_MA_1 <- innovation_prediction(MA_1)
+innovation_sim_MS_2 <- innovation_prediction(MA_2)
+innovation_sim_ARMA_1 <- innovation_prediction(ARMA_1)
 ```
 
 ```{r fig2, fig.width = 7, fig.asp = .3}
 
-plot_timeseries(timeseries_arma, innovation_sim_arma)
-plot_timeseries(timeseries_ar, innovation_sim_ar)
-plot_timeseries(timeseries_ma, innovation_sim_ma)
+plot_timeseries(AR_1 ,innovation_sim_AR_1)
+plot_timeseries(AR_2 ,innovation_sim_AR_2)
+plot_timeseries(MA_1 ,innovation_sim_MA_1)
+plot_timeseries(MA_2 ,innovation_sim_MS_2)
+plot_timeseries(ARMA_1,innovation_sim_ARMA_1)
+
 ```
  
 Nun wollen wir unseren Innovation Vorhersage mit der bestehenden Funktion "forecast" aus dem Paket "itsmr" (https://mparison <- georgeweigt.github.io/itsmr-refman.pdf, Seite 14) vergleichen:
