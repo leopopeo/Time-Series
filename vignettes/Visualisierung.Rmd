@@ -155,10 +155,10 @@ DL_Helper <- function(X){
 
   prediction <- rep(NA, length(X))
 
-  for(i in 10:length(X)){
+  for(i in 10:(length(X)-1)){
     x_help <- X[1:i]
     dl_save <- DLA(x_help)
-    prediction[i] <- sum(dl_save*rev(x_help))
+    prediction[i+1] <- sum(dl_save*rev(x_help))
   }
   prediction
 }
@@ -221,7 +221,7 @@ innovation_prediction <- function(X){
 
    for(i in 10:length(X)){
      inno_help <- X[1:i]
-     inno_prediction[i+1-100] <- ts_predict(inno_help,1)
+     inno_prediction[i] <- ts_predict(inno_help,1)
    }
    inno_prediction
 }
@@ -231,25 +231,25 @@ innovation_prediction <- function(X){
 innovation_sim_AR_1 <- innovation_prediction(AR_1)
 innovation_sim_AR_2 <- innovation_prediction(AR_2)
 innovation_sim_MA_1 <- innovation_prediction(MA_1)
-innovation_sim_MS_2 <- innovation_prediction(MA_2)
+innovation_sim_MA_2 <- innovation_prediction(MA_2)
 innovation_sim_ARMA_1 <- innovation_prediction(ARMA_1)
 ```
 
 ```{r fig2, fig.width = 7, fig.asp = .3}
 plot_inno <- function(real_series, predicted_series, ...){
-  tbl <- tibble(Series=series, DL_obj = dl, Lag=1:100)
+  tbl <- tibble(series=real_series, inno_obj = predicted_series, Lag=1:100)
   
    ggplot(tbl, aes(x=Lag)) + 
-    geom_line(aes(y = Series), color = "blue", size=0.4) + 
-    geom_line(aes(y = DL_obj), color= "red", size=0.4) +
+    geom_line(aes(y = series), color = "blue", size=0.4) + 
+    geom_line(aes(y = inno_obj), color= "red", size=0.4) +
     ggtitle(...)
 }
 
 plot_inno(AR_1, innovation_sim_AR_1, "AR")
 plot_inno(AR_2, innovation_sim_AR_2, "AR")
 plot_inno(MA_1, innovation_sim_MA_1, "MA")
-plot_inno(MA_2, innovation_sim_MS_2, "MA")
-plot_inno(ARMA_1, innovation_sim_ARMA1, "ARMA")
+plot_inno(MA_2, innovation_sim_MA_2, "MA")
+plot_inno(ARMA_1, innovation_sim_ARMA_1, "ARMA")
 ```
 
 
