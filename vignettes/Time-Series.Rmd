@@ -15,16 +15,16 @@ knitr::opts_chunk$set(
 ```
 
 ## Einleitung
-In dieser Vignette werden die verschiedenen Funktionen des Packages *TimeSeries* ausführlich erklärt. Das Package enthält Implementationen einger wichtiger Algorithmen zur Analyse und Vorhersage von ARMA-Prozessen aus *Introduction to Time-Series Analysis and Forecasting* (Brockwell et. al, 2002):
+In dieser Vignette werden die verschiedenen Funktionen des Packages *TimeSeries* ausführlich erklärt. Das Package enthält Implementationen einiger wichtiger Algorithmen zur Analyse und Vorhersage von ARMA-Prozessen aus *Introduction to Time-Series Analysis and Forecasting* (Brockwell et. al, 2002):
 
 * ARMA Generator für AR(p) und MA(q) Prozesse *arma_sim*
 * Autokovarianz-Funktion für Zeitreihen *ACF*
 * Durbin-Levinson-Algorithmus für Zeitreihen *DLA*
 * Innovations Algorithmus *innovation* und Vorhersagen mit diesem *ts_predict*
 * Periodogram Algorithmus für Zeitreihen *perio*
-* Plot Funktion für Zeitreihen *plot_timeseries* und Periodogramme *plot_periodogram*
+* Plot-Funktion für Zeitreihen *plot_timeseries* und Periodogramme *plot_periodogram*
 
-Um die Funktionen nutzen zu können, muss zuerst das Paket *TimeSeries* geladen werden. Die anderen Paket werden hier zu Demonstrationszwecken geladen.
+Um die Funktionen nutzen zu können, muss zuerst das Paket *TimeSeries* geladen werden. Die anderen Pakete werden zu Demonstrationszwecken geladen.
 ```{r setup}
 library(TimeSeries)
 library(ggplot2)
@@ -41,7 +41,7 @@ und die Polynome  $1 + \phi_1X + ... + \phi_p X^p$ und $1+ \theta_1X + ... + \th
 
 Hier zunächst einige Beispiele für ARMA-Prozesse.
 
-1. Als erstes sehen wir hier einen ARMA(1,1)-Prozess mit einer kleinen und einer großen Standartabweichung. Je größer die Standartabweichung ist desto größer sind die Schwankungen um den Mittelwert. Dieser ist bei uns immer als 0 festgelegt. Im Prinzip wird also einfach die Skalierung der y-Achse geändert.
+1. Als erstes sehen wir einen ARMA(1,1)-Prozess mit einer kleinen und einer großen Standartabweichung. Je größer die Standartabweichung ist, desto größer sind die Schwankungen um den Mittelwert. Dieser ist bei uns immer mit 0 festgelegt. Anschaulich betrachtet,  wird also  die Skalierung der y-Achse geändert.
 Der Plot benutzt dabei die Funktion *plot_timeseries* und erzeugt einen einfachen Linienplot der Zeitreihe. 
 ```{r, fig.width = 7, fig.asp = .5}
 set.seed(3)

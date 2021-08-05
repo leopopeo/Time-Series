@@ -146,7 +146,7 @@ acf_diff_plot <- function(n){
 
 Der obige Vergleich zeigt deutlich, dass sich die geschätzte ACF der theoretischen ACF des AR(1)-Prozesses bei größerer Länge annähert. Die Übereinstiummung nimmt bis zu einer Länge der AR(1)-Reihe von 1000 sichtbar zu. Ab diesem Zeitpunkt oszilliert die Differenz auf erstaunlicherweise relativ hohem Niveau. Wir nehmen an, dass diese Oszillation durch den zugrundeliegenden Zufallsprozess erzeugt wird.  
 
-# Durbin-Levinson Algorithmus
+## Durbin-Levinson Algorithmus
 
 
 ## Innovation Prediction
@@ -190,5 +190,5 @@ plot_timeseries(timeseries_arma, itsmr_prediction$pred)
 plot_timeseries(timeseries_arma, innovation_sim_1)
 ```
 
-Wir können zunächst festhalten, dass die "forecast"-Funktion dem Nutzer mehr Parameter zur Verfügung stellt.
+Wir können zunächst festhalten, dass die "forecast"-Funktion dem Nutzer mehr Parameter zur Verfügung stellt. Mit einer geeigneten Wahl von q und p des Parameters a, gelingt eine nahezu identische Vorhersage der nächsten 10 Datenpunkte.
 
