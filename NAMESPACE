@@ -2,6 +2,7 @@
 
 export(ACF)
 export(DLA)
+export(DL_prediction)
 export(arma_sim)
 export(innovation)
 export(perio)
