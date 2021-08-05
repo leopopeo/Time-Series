@@ -46,7 +46,7 @@ DL_prediction <- function(X){
 
   prediction <- numeric(length(X))
 
-  for(i in 3:length(X)){
+  for(i in 10:length(X)){
     x_help <- X[1:i]
     dl_save <- DLA(x_help)
     prediction[i] <- sum(c(dl_save, dl_save[1])*x_help)
