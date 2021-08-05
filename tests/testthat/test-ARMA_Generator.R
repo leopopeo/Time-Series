@@ -1,6 +1,4 @@
-context("Test of the implementation ’ARAM-Generator'")
-
-xtest_that("Test der Eingabewerte", {
+test_that("Test der Eingabewerte", {
   start = runif(3)
   sd = 0.2
   I = 100
