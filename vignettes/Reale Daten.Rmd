@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(TimeSeries)
-library(tibble)
+library(tidyverse)
 library(ggplot2)
 ```
 
@@ -25,7 +25,15 @@ library(ggplot2)
 You can also embed plots, for example:
 
 ```{r}
-data <- read.delim("Luftdaten_stunde_19480101_20201231_05906.txt", header = T, sep = ";", dec = ".")
-data
+data <- as_tibble(read.delim("Luftdaten_stunde_19480101_20201231_05906.txt",
+                             header = T,
+                             sep = ";",
+                             dec = "."))
+
+data %>% 
+  select(time = MESS_DATUM, temp = TT_TU) -> data
+
+perio(data$temp[1:10000])
+
 
 ```
