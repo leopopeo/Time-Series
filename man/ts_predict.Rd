@@ -4,15 +4,17 @@
 \alias{ts_predict}
 \title{ts_predict}
 \usage{
-ts_predict(X, steps)
+ts_predict(X, steps, all = FALSE)
 }
 \arguments{
-\item{X}{Die Zeitreihe}
+\item{X}{Eine Stationäre Zeitreihe Zeitreihe}
 
 \item{steps}{Anzahl N der Schritte der Prognose}
+
+\item{all=FALSE}{}
 }
 \value{
-Numerischer Vektor der Vorhersage
+Numerischer Vektor der Vorhersage. WEnn all=FALSE, werden nur die Vorhergesagten N Werte zurückgegeben, andernfalls der ganz Vektor X_hat
 }
 \description{
 N-Schritt Prognose mithilfe des Innovation Algorithmus.
