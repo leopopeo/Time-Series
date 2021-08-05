@@ -7,7 +7,6 @@ test_that("Eingabe testen", {
   expect_error(DL_prediction(c(3,4,5,1), len=1.1), "len muss NULL oder ein Integer Wert sein!")
   expect_error(DL_prediction(c(3,4,5,1), len=c(1,1)), "len muss NULL oder ein Integer Wert sein!")
   expect_error(DL_prediction(c(3,4,5,1), len=NA), "len muss >= 1 sein!")
-  expect_error(DL_prediction(c(3,4,5,1), len="a"), "len muss NULL oder ein Integer Wert sein!")
 
   expect_error(DL_prediction(c(3,4,5,1), len=2, all= c("a","b"),"Eingabe ist kein logical Wert"))
   expect_error(DL_prediction(c(3,4,5,1), len=2, all= 1.1,"Eingabe ist kein logical Wert"))
