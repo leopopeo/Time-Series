@@ -37,11 +37,13 @@ plot_timeseries <- function(timeseries, pred = NULL){
 
     tibble2plot <- rbind(value_tbl, pred_tbl)
 
-    plt_base <- ggplot2::ggplot(data = tibble2plot, mapping = ggplot2::aes(x = Zeit, y = Wert, fill = Group))
-    lay <- ggplot2::geom_line(ggplot2::aes(colour = factor(Group)), show.legend = FALSE)
-    point <- ggplot2::geom_point(color="black")
-    labs <- ggplot2::ggtitle("Zeitreihe mit Vorhersage")
-    plt <- plt_base + lay + labs + point + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5,size=15))
+    plt_base <- ggplot2::ggplot(data = tibble2plot, mapping = ggplot2::aes(x = Zeit, y = Wert))
+    lay1 <- ggplot2::geom_line(color = "#F8766D")
+    lay2 <- ggplot2::geom_line(ggplot2::aes(colour = factor(Group)))
+    point <- ggplot2::geom_point(mapping = ggplot2::aes())
+    labs <- ggplot2::labs(colour = "")
+    title <- ggplot2::ggtitle("Zeitreihe mit Vorhersage")
+    plt <- plt_base + lay1 + lay2 + title + labs + point + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5,size=15))
     plt
   }
 }

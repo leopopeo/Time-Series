@@ -163,12 +163,8 @@ Obige Gleichung können wir nun auch verwenden, um eine $h$-Schritt Prognose des
 I = 50
 h = 10
 X = arma_sim(theta = c(0.5,0.4),I = I,sd=0.01)
-X_hat = ts_predict(X, h)$X_hat
-df = tibble(t = 1:(I+h), X = X[1:(I+h)], X_hat = X_hat)
-plt = ggplot(df)
-lay1 = geom_line(df, mapping = aes(x = t, y = X_hat), color = "red")
-lay2 = geom_line(df, mapping = aes(x = t, y = X))
-plt + lay1 + lay2
+X_hat = ts_predict(X, h)
+plot_timeseries(X, X_hat)
 ```
 
 
