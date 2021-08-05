@@ -42,3 +42,20 @@ DLA <- function(x, len = NULL) {
   Phi
 }
 
+DL_prediction <- function(X){
+
+  prediction <- numeric(length(X))
+
+  for(i in 3:length(X)){
+    x_help <- X[1:i]
+    dl_save <- DLA(x_help)
+    prediction[i] <- sum(dl_save*x_help[-(length(x_help))])
+  }
+  prediction
+}
+
+################ TEST
+set.seed(1)
+AR_1 <- arma_sim(phi = 0.3, sd = 1, I = 100)
+DL_prediction(AR_1)
+
