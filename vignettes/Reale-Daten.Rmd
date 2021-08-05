@@ -33,10 +33,7 @@ data <- as_tibble(read.delim("Luftdaten_stunde_19480101_20201231_05906.txt",
 data %>% 
   select(time = MESS_DATUM, temp = TT_TU) -> data
 
-#Achtung!! Sehr lange Rechenzeit für länge > 1000
-# periodo <- perio(data$temp[1:100000])
-# length(periodo)
-# plot_periodogram(periodo)
-# periodo
+perio(data$temp[1:10000])
+
 
 ```

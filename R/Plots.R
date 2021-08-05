@@ -15,8 +15,7 @@ plot_timeseries <- function(timeseries, pred = NULL){
   #Eingabe ueberpruefen
   stopifnot("Der Eingabevektor timeseries ist nicht numerisch." = is.numeric(timeseries))
   stopifnot("Der Vektor timeseries muss wenigstens die Laenge 1 haben." = length(timeseries) > 0)
-  stopifnot("Der Eingabevektor timeseries ist nicht numerisch." = is.numeric(timeseries))
-  stopifnot("Der Vektor timeseries muss wenigstens die Laenge 1 haben." = length(timeseries) > 0)
+  stopifnot("Der Eingabevektor pred ist nicht numerisch oder NULL." = (is.numeric(pred) | is.null(pred)))
   if (is.null(pred)){
     #Timeseries plotten
     tibble2plot <- tibble::tibble(Wert = timeseries, Zeit = seq_along(timeseries))
@@ -60,7 +59,7 @@ plot_timeseries <- function(timeseries, pred = NULL){
 #' X = perio(arima.sim(n = 1000, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796)))
 #' plot_periodogram(X)
 #'@export
-plot_periodogram <- function(periodogram){
+plot_periodogram <- function(periodogram, logscale = T){
   #Eingabe ueberpruefen
   stopifnot("Der Eingabevektor timeseries ist nicht numerisch." = is.numeric(periodogram))
   stopifnot("Der Vektor timeseries muss wenigstens die Laenge 1 haben." = length(periodogram) > 0)
@@ -76,7 +75,9 @@ plot_periodogram <- function(periodogram){
   lay <- ggplot2::geom_line(color="#6a93b0")
   point <- ggplot2::geom_point(color="black")
   labs <- ggplot2::ggtitle("Periodogramm der Zeitreihe")
-  plt <- plt_base + lay + labs + point + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5,size=15))
+  if (logscale) trans <- ggplot2::scale_y_continuous(trans = "log10")
+  else trans <- NULL
+  plt <- plt_base + lay + labs + point + trans+ ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5,size=15))
   plt
 }
 
