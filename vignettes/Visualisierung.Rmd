@@ -136,3 +136,48 @@ acf_diff_plot <- function(n){
 Der obige Vergleich zeigt deutlich, dass sich die geschätzte ACF dem theoretischen ACF des AR(1)-Prozesses bei höher Länge annähert. Die Übereinstiummung nimmt bis zu einer Länge der AR(1)-Reihe von 1000 sichtbar zu. Ab diesem Zeitpunkt oszilliert die Differenz auf erstaunlicherweise relativ hohen Niveau. Wir nehmen an, dass diese Oszillation durch den zugrundeliegenden Zufallsprozess erzeugt wird.  
 
 # Durbin-Levinson Algorithmus
+
+
+## Innovation Prediction
+
+Dieser Abschnitt veranschaulicht die Vorhersagegenauigkeit des Innovation Algorithmus. Um einen Vergleich mit dem Durbin-Levinson Algortihmus zu gewährleisten, nutzen wir die selben Zeitreihen, wie oben:
+
+```{r}
+timeseries_arma <- arma_sim(phi = 0.5, theta = 0.4, sd = 1, I = 100)
+timeseries_ar <- arma_sim(phi = 0.1, theta = 0, sd = 1, I = 100)
+timeseries_ma <- arma_sim(phi = 0, theta = 0.4, sd = 1, I = 100)
+
+innovation_sim_arma <- ts_predict(timeseries_arma, 5)
+innovation_sim_ar <- ts_predict(timeseries_ar, 5)
+innovation_sim_ma <- ts_predict(timeseries_ma, 5)
+```
+
+```{r fig1, fig.width = 7, fig.asp = .3}
+
+plot_timeseries(timeseries_arma, innovation_sim_arma)
+plot_timeseries(timeseries_ar, innovation_sim_ar)
+plot_timeseries(timeseries_ma, innovation_sim_ma)
+```
+ 
+Nun wollen wir unseren Innovation Vorhersage mit der bestehenden Funktion "forecast" aus dem Paket "itsmr" (https://mparison <- georgeweigt.github.io/itsmr-refman.pdf, Seite 14) vergleichen:
+
+```{r}
+library(itsmr)
+
+itsmr_prediction <- forecast(timeseries_arma, #Time series data
+                             M = NULL, #Data model
+                             a = arma(timeseries_arma, p=1, q=1), #ARMA model
+                             h = 10, #Steps ahead
+                             opt = 1, #Display option (0 silent, 1 tabulate, 2 plot and tabulate)
+                             alpha = 1) #Level of significance
+innovation_sim_1 <- ts_predict(timeseries_arma, 10)
+```
+
+```{r fig1, fig.width = 7, fig.asp = .3}
+
+plot(itsmr_prediction)
+plot_timeseries(timeseries_arma, innovation_sim_1)
+```
+
+Wir können zunächst festhalten, dass die "forecast"-Funktion dem Nutzer mehr Parameter zur Verfügung stellt.
+
