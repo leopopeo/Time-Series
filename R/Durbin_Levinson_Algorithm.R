@@ -42,19 +42,4 @@ DLA <- function(x, len = NULL) {
   Phi
 }
 
-DL_prediction <- function(X,len=1){
-
-  prediction <- numeric(length(len))
-
-
-  #Vorhersage
-  #for(i in 1:length){
-  #  prediction[i]
-  #}
-
-}
-################ TEST
-set.seed(1)
-AR_1 <- arma_sim(phi = 0.3, sd = 1, I = 100)
-DL_prediction(AR_1)
 

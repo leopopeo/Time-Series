@@ -2,7 +2,7 @@
 #'
 #' \code{ACF} berechnet eine Naeherung an die Autokovarianz-Funktion der Datenreihe X = x_1,...,x_n. Für mehr Informationen rufe die Vignette auf.
 #'
-#'@param X Eingabevektor der die beobachteten Daten enthält
+#'@param x Eingabevektor der die beobachteten Daten enthält
 #'@param lag Zeitdifferenz der Datenreihe welche die Funktion berücksichtigen soll. Der Default Wert ist die komplette Zeitreihe mit einem Wert weniger als Observationen in der Zeitreihe
 #'
 #'@return Der Rückgabewert ist ein Vektor für die Abschätzung der Autokorrelationsfunktion.

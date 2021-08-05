@@ -4,7 +4,7 @@
 \alias{plot_timeseries}
 \title{Time Series Plot}
 \usage{
-plot_timeseries(timeseries)
+plot_timeseries(timeseries, pred = NULL)
 }
 \arguments{
 \item{timeseries}{Ein numerischer Vektor als Zeitreihe.}
