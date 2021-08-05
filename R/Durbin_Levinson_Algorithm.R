@@ -21,7 +21,7 @@ DLA <- function(x, len = NULL) {
   stopifnot("len muss NULL oder ein Integer Wert sein!"  = (is.null(len) |
                                                         is.numeric(len)))
   if (is.null(len))
-    len <- n -1
+    len <- n-1
   stopifnot("len muss >= 2 sein!" =  len >= 2)
   stopifnot("len muss NULL oder ein Integer Wert sein!" = length(len) == 1)
   stopifnot("len muss NULL oder ein Integer Wert sein!" = len %% 1 == 0)
@@ -39,21 +39,18 @@ DLA <- function(x, len = NULL) {
     Phi <- c(Phi - Phi_nn * Phi[(i - 1):1], Phi_nn)
     v <- v * (1 - Phi_nn ^ 2)
   }
+  Phi_letzter <- (acf_x[n] - sum(Phi * acf_x[n:2]))/v
+  Phi <- c(Phi,Phi_letzter)
   Phi
 }
 
-DL_prediction <- function(X){
+DL_prediction <- function(X,len=1){
 
-  prediction <- numeric(length(X))
+  prediction <- numeric(length(len))
 
-  for(i in 3:length(X)){
-    x_help <- X[1:i]
-    dl_save <- DLA(x_help)
-    prediction[i] <- sum(dl_save*x_help[-(length(x_help))])
-  }
-  prediction
+  #Vorhersage
+
 }
-
 ################ TEST
 set.seed(1)
 AR_1 <- arma_sim(phi = 0.3, sd = 1, I = 100)

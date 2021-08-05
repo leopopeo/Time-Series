@@ -82,9 +82,7 @@ Wir simulieren nun Daten mit oben beschriebenen Eigenschaften und schätzen die 
 set.seed(13)
 ar_50 <- arma_sim(phi=0.9,I=50, sd =1)
 ar_100 <- arma_sim(phi=0.9,I=100, sd = 1)
-ar_300 <- arma_sim(phi=0.9,I=300, sd =1)
 ar_500 <- arma_sim(phi=0.9,I=500, sd =1)
-ar_1000 <- arma_sim(phi=0.9,I=100, sd =1)
 ar_2000 <- arma_sim(phi=0.9,I=2000, sd =1)
 ar_5000 <- arma_sim(phi=0.9,I=5000, sd =1)
 
@@ -93,7 +91,7 @@ acf_plot <- function(objekt, ...){
         sim_tbl$Group <- "Simulation"
         
         true_tbl <- tibble(ACF=true_acf,Lag=1:50)
-        true_tbl$Group <- "Theoretical"
+        true_tbl$Group <- "Theoretisch"
         
         tbl <- rbind(sim_tbl, true_tbl)
         
@@ -105,9 +103,7 @@ acf_plot
 }
 acf_plot(ar_50, "Länge 50") 
 acf_plot(ar_100, "Länge 100")
-acf_plot(ar_300, "Länge 300")
 acf_plot(ar_500, "Länge 500")
-acf_plot(ar_1000, "Länge 1000")
 acf_plot(ar_2000, "Länge 2000")
 acf_plot(ar_5000, "Länge 5000")
 ```
@@ -140,3 +136,48 @@ acf_diff_plot <- function(n){
 Der obige Vergleich zeigt deutlich, dass sich die geschätzte ACF dem theoretischen ACF des AR(1)-Prozesses bei höher Länge annähert. Die Übereinstiummung nimmt bis zu einer Länge der AR(1)-Reihe von 1000 sichtbar zu. Ab diesem Zeitpunkt oszilliert die Differenz auf erstaunlicherweise relativ hohen Niveau. Wir nehmen an, dass diese Oszillation durch den zugrundeliegenden Zufallsprozess erzeugt wird.  
 
 # Durbin-Levinson Algorithmus
+
+
+## Innovation Prediction
+
+Dieser Abschnitt veranschaulicht die Vorhersagegenauigkeit des Innovation Algorithmus. Um einen Vergleich mit dem Durbin-Levinson Algortihmus zu gewährleisten, nutzen wir die selben Zeitreihen, wie oben:
+
+```{r}
+timeseries_arma <- arma_sim(phi = 0.5, theta = 0.4, sd = 1, I = 100)
+timeseries_ar <- arma_sim(phi = 0.1, theta = 0, sd = 1, I = 100)
+timeseries_ma <- arma_sim(phi = 0, theta = 0.4, sd = 1, I = 100)
+
+innovation_sim_arma <- ts_predict(timeseries_arma, 5)
+innovation_sim_ar <- ts_predict(timeseries_ar, 5)
+innovation_sim_ma <- ts_predict(timeseries_ma, 5)
+```
+
+```{r fig1, fig.width = 7, fig.asp = .3}
+
+plot_timeseries(timeseries_arma, innovation_sim_arma)
+plot_timeseries(timeseries_ar, innovation_sim_ar)
+plot_timeseries(timeseries_ma, innovation_sim_ma)
+```
+ 
+Nun wollen wir unseren Innovation Vorhersage mit der bestehenden Funktion "forecast" aus dem Paket "itsmr" (https://mparison <- georgeweigt.github.io/itsmr-refman.pdf, Seite 14) vergleichen:
+
+```{r}
+library(itsmr)
+
+itsmr_prediction <- forecast(timeseries_arma, #Time series data
+                             M = NULL, #Data model
+                             a = arma(timeseries_arma, p=1, q=1), #ARMA model
+                             h = 10, #Steps ahead
+                             opt = 1, #Display option (0 silent, 1 tabulate, 2 plot and tabulate)
+                             alpha = 1) #Level of significance
+innovation_sim_1 <- ts_predict(timeseries_arma, 10)
+```
+
+```{r fig1, fig.width = 7, fig.asp = .3}
+
+plot(itsmr_prediction)
+plot_timeseries(timeseries_arma, innovation_sim_1)
+```
+
+Wir können zunächst festhalten, dass die "forecast"-Funktion dem Nutzer mehr Parameter zur Verfügung stellt.
+
