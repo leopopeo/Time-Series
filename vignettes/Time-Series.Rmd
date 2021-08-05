@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ## Einleitung
-In dieser Vignette werden die verschiedenen Funktionen des Packages *TimeSeries* ausführlich erklärt. Das Package enthält Implementationen einger wichtiger Algorithmen zur Analyse Vorhersage von ARMA-Prozessen aus *Introduction to Time-Series Analysis and Forecasting* (Brockwell et. al, 2002):
+In dieser Vignette werden die verschiedenen Funktionen des Packages *TimeSeries* ausführlich erklärt. Das Package enthält Implementationen einger wichtiger Algorithmen zur Analyse und Vorhersage von ARMA-Prozessen aus *Introduction to Time-Series Analysis and Forecasting* (Brockwell et. al, 2002):
 
 * ARMA Generator für AR(p) und MA(q) Prozesse *arma_sim*
 * Autokovarianz-Funktion für Zeitreihen *ACF*
@@ -24,7 +24,7 @@ In dieser Vignette werden die verschiedenen Funktionen des Packages *TimeSeries*
 * Periodogram Algorithmus für Zeitreihen *perio*
 * Plot Funktion für Zeitreihen *plot_timeseries* und Periodogramme *plot_periodogram*
 
-Um die Funktionen nutzen zu können muss zuerst das Paket *TimeSeries* geladen werden.
+Um die Funktionen nutzen zu können, muss zuerst das Paket *TimeSeries* geladen werden. Die anderen Paket werden hier zu Demonstrationszwecken geladen.
 ```{r setup}
 library(TimeSeries)
 library(ggplot2)
@@ -32,40 +32,42 @@ library(tibble)
 ```
 
 ## ARMA Generator
-Ein ARMA(p,q)-Prozess (Autoregressive Moving Average) ist eine stochastischer Prozess der folgendem Modell genügt: $\{X_t\}$ ist stationär und für alle $t$:
+Ein ARMA(p,q)-Prozess (Autoregressive Moving Average) ist ein stochastischer Prozess der folgendem Modell genügt: $\{X_t\}$ ist stationär und für alle $t$ gilt:
 $$
-X_t = \sum_{i= 1}^{p} \phi_i X_{t-i} + \sum_{j = 1}^{q} \theta_j Z_{t-j} + Z_t \qquad,\ Z_t \sim \mathcal{N}(0, \sigma^2)
+X_t = \sum_{i= 1}^{p} \phi_i X_{t-i} + \sum_{j = 1}^{q} \theta_j Z_{t-j} + Z_t, \qquad\ Z_t \sim \mathcal{N}(0, \sigma^2)
 $$ 
-und die Polynome  $1 + \phi_1X + ... + \phi_p X^p  \text{ und } 1+ \theta_1X + ... + \theta_q X^q$ teilerfremd sind.
+und die Polynome  $1 + \phi_1X + ... + \phi_p X^p$ und $1+ \theta_1X + ... + \theta_q X^q$ sind teilerfremd (Brockwell et. al (2002), S. 83).
 
-(S. 83)
 
-Hier nun ein paar Beispiele:
+Hier zunächst einige Beispiele für ARMA-Prozesse.
 
-1. AR(1,1) Prozess:
+1. ARMA(1,1) Prozess:
 ```{r, fig.width = 7, fig.asp = .5}
-arma <- arma_sim(phi = 0.5, theta=0.4,sd=1,I=100)
+set.seed(1)
+arma <- arma_sim(phi = 0.5, theta=0.4,sd=0.1,I=100)
 plot_timeseries(arma)
 ```
 
-2. MA(1) Prozess:
+2. AR(1) Prozess:
 ```{r, fig.width = 7, fig.asp = .5}
-arma <- arma_sim(phi = 0.5,sd=1,I=100)
+set.seed(1)
+arma <- arma_sim(phi = 0.5,sd=0.1,I=100)
 plot_timeseries(arma)
 ```
 
-3. ARMA(1,1) Prozess:
+3. MA(1) Prozess:
 ```{r, fig.width = 7, fig.asp = .5}
-arma <- arma_sim(theta=0.4,sd=1,I=100)
+set.seed(1)
+arma <- arma_sim(theta=0.4,sd=0.1,I=100)
 plot_timeseries(arma)
 ```
 ######Berscghreibuzng was man sieht???
 
 ## Autokovarianz-Funktion
-Die Autokovarianz ist ein Begriff aus der Signalverarbeitung und gibt die Korrelation einer Funktion bzw. eines Signals mit sich selbst zu einem früheren Zeitpunkt an. Die Funktion gibt also an, wie viel Ähnlichkeit die um eine gewisse Zeitdifferenz verschobene Folge mit der ursprünglichen Folge besitzt. Die Autokovarianz-Funktion ist nach Brookwell et al. (2002) für eine Zeitdifferenz h wie folgt definiert:
+Die Autokovarianz ist ein Begriff aus der Signalverarbeitung und gibt die Kovarianz einer Funktion bzw. eines Signals mit sich selbst zu einem früheren Zeitpunkt an. Die Funktion gibt also an, wie viel Ähnlichkeit die um eine gewisse Zeitdifferenz verschobene Folge mit der ursprünglichen Folge besitzt. Die Autokovarianz-Funktion ist nach Brookwell et al. (2002) (S. 19) für eine Zeitdifferenz h wie folgt definiert:
 
-$$\gamma_x(h)=Cov(X_{t+h},X_t) $$
-Die Funktion *ACF* gibt für eine Zeitreihe $x_{1},...,x_{n}$ die geschätzte Sichtprobenkovarianz für die Zeitdifferenz lag = $0$ bis lag = $n-1$ an. Zusätzlich zur Input Zeitreihe kann die lag-Variable individuell angegeben werden. Es kann also die Anzahl der zurückgegebenen Autokovarianzen begrenzt werden. Dafür wird folgende Formel genutzt:
+$$\gamma_x(h):=COV(X_{t+h},X_t) $$
+Die Funktion *ACF* gibt für eine Zeitreihe $x_{1},...,x_{n}$ die geschätzte Sichtprobenkovarianz für die Zeitdifferenz lag = $0$ bis lag = $n-1$ an. Zusätzlich zur Input Zeitreihe kann die lag-Variable individuell angegeben werden. Es kann also die Anzahl der zurückgegebenen Autokovarianzen gewählt werden. Dafür wird folgende Formel genutzt:
 
 $$ \hat{\gamma}(h) := n^{-1} \sum_{t=1}^{n-|h|} (x_{t+|h|}-\bar{x})(x_t-\bar{x})$$
 ````{r , fig.width = 7, fig.asp = .5}
@@ -78,10 +80,10 @@ ma <- arma_sim(theta = c(0.5,0.9),I=100,sd=0.01)
 ma_acf <- ACF(ma, lag = 20)
 ar_plot <- ggplot(tibble(ACF=ar_acf, Lag=seq_along(ar_acf)), aes(x=Lag, y=ACF)) +
                 geom_bar(stat="identity") + 
-                ggtitle("AR(1)")
+                ggtitle("AR(2)")
 ma_plot <- ggplot(tibble(ACF=ma_acf, Lag=seq_along(ma_acf)), aes(x=Lag, y=ACF)) +
                 geom_bar(stat="identity") + 
-                ggtitle("MA(1)")
+                ggtitle("MA(2)")
 ar_plot
 ma_plot
 ```
@@ -92,10 +94,10 @@ Anhand der beiden Autokovarianz-Funktionen kann man eine erste Aussage über die
 Der Durbin-Levinson Algorithmus kann für Vorhersagen einer Zeitreihe genutzt werden. Der Algorithmus benutzt dabei eine Linearkombination aller vorherigen Zeitreihen-Punkte, um einen neuen Wert vorherzusagen. Dies wird duch die folgende Gleichung nach Brookwell et al. (2002) ausgedrückt:
 
 $$\begin{align} 
-P_nX_{n+1}=\phi_{n1}X_n+...+\phi_{nn}X_1. 
+P_nX_{n+1}=\phi_{n1}X_n+...+\phi_{nn}X_1.
 \end{align}$$
 
-Die entprechenden $\phi's$ werden durch den folgenden Algorithmus rekursiv bestimmt:
+Die entprechenden $\phi$ werden durch den folgenden Algorithmus rekursiv bestimmt:
 
 $$ \phi_{nn}=\Big[ \gamma(n)-\sum \limits_{j=1}^{n-1}\phi_{n-1,j}\gamma(n-j)\Big]v_{n-1}^{-1}, $$
 
@@ -104,16 +106,15 @@ $$\begin{bmatrix}\phi_{n1} \\ \vdots \\\phi_{n,n-1}  \end{bmatrix}=
 \phi_{nn}
 \begin{bmatrix}\phi_{n-1,n-1} \\ \vdots \\\phi_{n-1,1}  \end{bmatrix},$$
 und
-$$v_n=v_{n-1}[1-\phi_{nn}^2] $$
+$$v_n=v_{n-1}[1-\phi_{nn}^2]. $$
 
 Für die Startwerte gilt $\phi_{11}=\gamma(1)/\gamma(0)$ und $v_0=\gamma(0)$.
 
-Die Funktion *DLA* benutzt den Durbin-Levinson Algorithums und gibt die geschätzten $\phi's$ zurück. Die Funktion bestimmt standartmäßig die maximale Anzahl an Rekursionen, also n-1. Dieser Wert kann jedoch individuell mit dem *len*-Parameter gesetzt werden. Die erhaltenen $\phi's$ können nun für eine Vorhersage benutzt werden. \n
+Die Funktion *DLA* ist die Implementation des Durbin-Levinson Algorithums und gibt die geschätzten $\phi$ zurück. Die Funktion benutzt standartmäßig die maximale Anzahl an Rekursionen, also n-1. Dieser Wert kann jedoch individuell mit dem *len*-Parameter gesetzt werden. Die erhaltenen $\phi$ können nun für eine Vorhersage benutzt werden. \n
 Im folgenden Beispiel wird die Funktion auf AR-generierte Daten angewendet:
 ```{r}
 set.seed(2)
 ar <- arma_sim(phi = c(0.2,0.6),I=100,sd=0.01)
-#ar <- arima.sim(n = 100,list(ar = c(0.2,0.5)))
 res <- DLA(ar)
 ```
 
@@ -126,9 +127,9 @@ res
 # len=5
 DLA(ar, len=5)
 ```
-Der Output zeigt für die beiden angegebenen Rekursionen die geschätzten $\phi's$ an. Die ersten beiden Werte entsprechen hier nahezu den angegebenen ar-Werten in *arima.sim*. Für die Vorhersage müssen nun die $\phi_{n1},...,\phi_{nn}$ mit der Zeitreihe (außgenommen dem letzten Wert, da die maximale Rekusionszahl n-1 ist) multipliziert und anschließend summiert werden.
+Der Output zeigt für die beiden angegebenen Rekursionen die geschätzten $\phi$ an. Die ersten beiden Werte entsprechen hier nahezu dem angegebenen Parameter *phi*  in *arma_sim*. Für die Vorhersage müssen nun die $\phi_{n1},...,\phi_{nn}$ mit der Zeitreihe (außgenommen dem letzten Wert, da die maximale Rekusionszahl n-1 ist) multipliziert und anschließend summiert werden.
 ```{r}
-res <- sum(ar*res[-100])
+res <- sum(ar[-100]*res[-100])
 res
 ```
 
@@ -138,9 +139,9 @@ Dann gibt es eine Matrix $\mathbf{ \Theta_n}$ sodass $\mathbf{\hat X_n} = \mathb
 $$\begin{equation}
 \hat{X}_{n+1}= \begin{cases}0, & \text { if } n=0, \\ \sum_{j=1}^{n} \theta_{n j}\left(X_{n+1-j}-\hat{X}_{n+1-j}\right), & \text { if } n=1,2, \ldots,\end{cases}
 \end{equation}$$
-(S. 72)
+(ebd. S. 72)
 
-Wir können nun die Koeffizienten $\theta_n, ij$ rekursiv berechnen. $\kappa(i,j)$ ist dabei die Kovarianz.
+Wir können nun die Koeffizienten $\theta_{n,i}$ rekursiv berechnen. $\kappa(i,j)$ ist dabei die Kovarianz.
 $$
 \begin{aligned}
 &v_{0}=\kappa(1,1), \\
@@ -148,18 +149,17 @@ $$
 &\ v_{n}=\kappa(n+1, n+1)-\sum_{j=0}^{n-1} \theta_{n, n-j}^{2} v_{j}
 \end{aligned}
 $$
-(S. 73)
-Die Funktion *innovation(X, lag = n)* berechnet auf diese Weise $\mathbf\Theta_n$, welches wir dann für die Vorhersage mit *ts_predict* verwenden können.
+(ebd. S. 73).
+Die Funktion *innovation(X, lag = n)* berechnet auf diese Weise $\mathbf\Theta_n$, welches wir dann für die Vorhersage mit *ts_predict* verwenden können. Mit dem Parameter *lag*  kann dabei das $n$ gewählt werden, bis zu welchem $\theta_{n,i}$ berechnet wird.
 ```{r}
 X = arma_sim(theta = c(0.5,0.9),I=5,sd=0.01)
 innovation(X, lag = 4)
 ```
 
 ## Innnovation Prediction
-Obige Gleichung können wir nun auch verwenden, um eine $h$-Schritt Prognose des Prozesses zu machen. Sei dazu $m$ die Länge der Zeitreihe. Dann berechnen wir mit $\hat X_{m+h}$ eine h-Schritt Prognose. Die Ausgabe von ts_predict ist eine Liste mit den Elementen *X_hat*, der Vektor $ \mathbf{\hat X_{m+h}}$ der Länge $m+h$ und *theta*, die Innovation Matrix $\mathbf{ \Theta_n}$. Die Vorhersage mit dem Innovation Algorithmus eignet sich besonders gut für $MA(q)$-Prozesse mit kleinem $q$
+Obige Gleichung können wir nun auch verwenden, um eine $h$-Schritt Prognose des Prozesses zu machen. Sei dazu $m$ die Länge der Zeitreihe. Dann berechnen wir mit $\hat X_{m+h}$ eine h-Schritt Prognose. Die Ausgabe von ts_predict ist eine Liste mit den Elementen *X_hat*, der Vektor $\mathbf{\hat X_{m+h}}$ der Länge $m+h$ und *theta*, die Innovation Matrix $\mathbf{ \Theta_n}$. Die Vorhersage mit dem Innovation Algorithmus eignet sich besonders gut für $MA(q)$-Prozesse mit kleinem $q$
 
 
-```{r,1. AR(1,1) Prozess:
 ```{r, fig.width = 7, fig.asp = .5}
 I = 50
 h = 10
@@ -176,26 +176,25 @@ plt + lay1 + lay2
 
 
 ## Periodogramm
-Das Periodogramm einer Zeitreihe $\{x_1,...,x_n\}$ ist die Funktion, die auf Stichproben basiert einen Schätzung für die Spektraldichte zurückgibt. Die Definition ist dabei nach Brockwell et al. (2002):
+Das Periodogramm einer Zeitreihe $\{x_1,...,x_n\}$ ist deren Spektraldichte. Die Definition ist dabei nach Brockwell et al. (2002) (S.123):
 $$
 I_n(\lambda)=\frac{1}{n} \Bigg| \sum \limits_{t=1}^{n}x_{t}e^{-it\lambda} \Bigg| ^2
 $$
-Dabei steht der Koeffizient $x_t$ für eine Kombination von Sinusen und Cosinusen:
+Dabei steht der Koeffizient $x_t$ für eine Kombination trigonometrischer Funktionen:
 $$
 x_t=\sum \limits_{k \in F_n}a_k [\cos(\omega_kt) + i \sin(\omega_kt)]
 $$
 wobei $F_n$ für die Fourierfrequenzen der Zeitreihe im Intervall $(-\pi,\pi]$ steht und für $\omega_k$ gilt:
-$$\omega_k=\frac{2\pi k}{n}, \space\space\space\space\space\space\space\space k = -[\frac{n-1}{2},...,\frac{n}{2}]$$
-Die Folge ${a_k}$ ist die diskrete Fourier Transformation der Zeitreihe und berechet sich nach: 
+$$\omega_k=\frac{2\pi k}{n}, \space\space\space\space\space\space\space\space k = [-\frac{n-1}{2},...,\frac{n}{2}]$$
+Die Folge ${a_k}$ ist die diskrete Fouriertransformation der Zeitreihe und berechet sich nach: 
 $$
 a_k=\frac{1}{\sqrt{n}}\sum \limits_{t=1}^{n}x_t e^{-it\omega_k}
 $$
-Die implementierte Funktion *perio* implementiert nun den Periodogramm-Algorithmus und gibt für die $\omega's$ im oben definierten Intervall den Wert $I_n(\lambda)$ zurück.
+Die *perio* implementiert nun den Periodogramm-Algorithmus und gibt für die $\omega$ im oben definierten Intervall den Wert $I_n(\lambda)$ zurück.
 Der folgende Code veranschaulicht dies:
 
 ```{r, fig.width = 7, fig.asp = .5}
 x <- arma_sim(phi = c(0.2,-0.6),I=1000,sd=0.01)
-#x <-  arima.sim( n = 1000,list(ar = c(0.2,-0.6)))
 periodo <- perio(x)
 plot_periodogram(periodo) 
 ```
