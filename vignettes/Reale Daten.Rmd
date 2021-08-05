@@ -1,0 +1,39 @@
+---
+title: "Reale Daten"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Visualisierung}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(TimeSeries)
+library(tidyverse)
+library(ggplot2)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r}
+data <- as_tibble(read.delim("Luftdaten_stunde_19480101_20201231_05906.txt",
+                             header = T,
+                             sep = ";",
+                             dec = "."))
+
+data %>% 
+  select(time = MESS_DATUM, temp = TT_TU) -> data
+
+perio(data$temp[1:10000])
+
+
+```
