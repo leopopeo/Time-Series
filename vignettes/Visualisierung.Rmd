@@ -82,9 +82,7 @@ Wir simulieren nun Daten mit oben beschriebenen Eigenschaften und schätzen die 
 set.seed(13)
 ar_50 <- arma_sim(phi=0.9,I=50, sd =1)
 ar_100 <- arma_sim(phi=0.9,I=100, sd = 1)
-ar_300 <- arma_sim(phi=0.9,I=300, sd =1)
 ar_500 <- arma_sim(phi=0.9,I=500, sd =1)
-ar_1000 <- arma_sim(phi=0.9,I=100, sd =1)
 ar_2000 <- arma_sim(phi=0.9,I=2000, sd =1)
 ar_5000 <- arma_sim(phi=0.9,I=5000, sd =1)
 
@@ -93,7 +91,7 @@ acf_plot <- function(objekt, ...){
         sim_tbl$Group <- "Simulation"
         
         true_tbl <- tibble(ACF=true_acf,Lag=1:50)
-        true_tbl$Group <- "Theoretical"
+        true_tbl$Group <- "Theoretisch"
         
         tbl <- rbind(sim_tbl, true_tbl)
         
@@ -105,9 +103,7 @@ acf_plot
 }
 acf_plot(ar_50, "Länge 50") 
 acf_plot(ar_100, "Länge 100")
-acf_plot(ar_300, "Länge 300")
 acf_plot(ar_500, "Länge 500")
-acf_plot(ar_1000, "Länge 1000")
 acf_plot(ar_2000, "Länge 2000")
 acf_plot(ar_5000, "Länge 5000")
 ```
