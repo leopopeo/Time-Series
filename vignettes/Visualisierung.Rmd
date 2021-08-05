@@ -262,14 +262,14 @@ itsmr_prediction <- forecast(timeseries_arma, #Time series data
                              M = NULL, #Data model
                              a = arma(timeseries_arma, p=15, q=15), #ARMA model
                              h = 10, #Steps ahead
-                             opt = 1, #Display option (0 silent, 1 tabulate, 2 plot and tabulate)
-                             alpha = 1) #Level of significance
+                             opt = 0, #Display option (0 silent, 1 tabulate, 2 plot and tabulate)
+                             alpha = 1)$pred #Level of significance
 innovation_sim_1 <- ts_predict(timeseries_arma, 10)
 ```
 
 ```{r fig3, fig.width = 7, fig.asp = .3}
 
-plot_timeseries(timeseries_arma, itsmr_prediction$pred)
+plot_timeseries(timeseries_arma, itsmr_prediction)
 plot_timeseries(timeseries_arma, innovation_sim_1)
 ```
 
