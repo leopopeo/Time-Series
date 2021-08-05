@@ -4,10 +4,12 @@
 \alias{plot_periodogram}
 \title{Periodogramm Plot}
 \usage{
-plot_periodogram(periodogram, logscale = T)
+plot_periodogram(periodogram, logscale = TRUE)
 }
 \arguments{
 \item{periodogram}{Ein numerischer Vektor welcher ein Periodogram einer Zeitreihe enthält}
+
+\item{logscale}{Wenn TRUE wird die Y-Achse logarithmisch skaliert.}
 }
 \value{
 Plot des Periodograms in Abhängigkeit der Fourier Frequenzen
@@ -17,6 +19,6 @@ Diese Funktion plottet eine gegebenes PEriodogram.
 }
 \examples{
 #Erstelle ein Periodogram einer Zeitreihe
-X = perio(arima.sim(n = 1000, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796)))
+X = perio(arma_sim(phi = c(0.5, 0.1), theta = c(-0.2), sd = 0.01, I = 100))
 plot_periodogram(X)
 }

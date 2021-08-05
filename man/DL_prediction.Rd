@@ -4,10 +4,10 @@
 \alias{DL_prediction}
 \title{Durbin Levionson Prediction}
 \usage{
-DL_prediction(X, len = 1, all = FALSE)
+DL_prediction(x, len = 1, all = FALSE)
 }
 \arguments{
-\item{X}{Eingabevektor der die beobachteten Daten enthält}
+\item{x}{Eingabevektor der die beobachteten Daten enthält}
 
 \item{len}{Anzahl der vorherzusagenden Werten}
 
