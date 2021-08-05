@@ -31,19 +31,17 @@ theta_sum <- function(theta, v, n, k){
 #'
 #'Details
 #'
-#'@param theta
-#'@param v
-#'@param n
-#'@param k
+#'@param ts Die Zeitreihe
+#'@param small_theta Optional eine Innovation-Matrix aus einer Vorherigen Berechnung
+#'@param lag Der Index n bis zu welchem die Matrix berechnet werden soll.
 #'
-#'@return Numerischer Vektor, der die Vorhersage des Innovation Algorithmus beinhaltet.
+#'@return n x n Matrix mit den Innovation-Koeffizienten theta.
 #'
-#'@examples innovation(arima.sim(n = I, list(ar = c(0.8897,-0.4858),ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796)), 10)
-#'
+#'@examples innovation(arma_sim(phi = c(0.5, 0.1), theta = c(-0.2), sd = 0.01, I = 100))
 #'@export
 innovation <- function(ts,
                        small_theta = matrix(0, lag, lag),
-                       lag = NA){
+                       lag = 1){
   theta <- matrix(0, lag, lag)
   theta[1:NROW(small_theta), 1:NCOL(small_theta)] <- small_theta
   n_start <- which(theta[,1] == 0)[1]

@@ -3,11 +3,13 @@
 #'@description Diese Funktion plottet eine gegebene Timeseries (deutsch: Zeitreihe).
 #'
 #'@param timeseries Ein numerischer Vektor als Zeitreihe.
+#'@param pred Optionaler Vektor einer Vorhersage der Zeitreihe
 #'@return Plot der Zeitreihe.
 #'@examples
 #' #Erstelle eine Zeitreihe
-#' X = arima.sim(n = 1000, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796))
-#' plot_timeseries(X)
+#' X = arma_sim(phi = c(0.5, 0.1), theta = c(-0.2), sd = 0.01, I = 100)
+#' f = ts_predict(X, 10)
+#' plot_timeseries(X, f)
 #'@export
 
 #Neu von Niklas, oberer hat bei mir nicht funktioniert??
@@ -53,13 +55,14 @@ plot_timeseries <- function(timeseries, pred = NULL){
 #'@description Diese Funktion plottet eine gegebenes PEriodogram.
 #'
 #'@param periodogram Ein numerischer Vektor welcher ein Periodogram einer Zeitreihe enthält
+#'@param logscale Wenn TRUE wird die Y-Achse logarithmisch skaliert.
 #'@return Plot des Periodograms in Abhängigkeit der Fourier Frequenzen
 #'@examples
 #' #Erstelle ein Periodogram einer Zeitreihe
-#' X = perio(arima.sim(n = 1000, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796)))
+#' X = perio(arma_sim(phi = c(0.5, 0.1), theta = c(-0.2), sd = 0.01, I = 100))
 #' plot_periodogram(X)
 #'@export
-plot_periodogram <- function(periodogram, logscale = T){
+plot_periodogram <- function(periodogram, logscale = TRUE){
   #Eingabe ueberpruefen
   stopifnot("Der Eingabevektor timeseries ist nicht numerisch." = is.numeric(periodogram))
   stopifnot("Der Vektor timeseries muss wenigstens die Laenge 1 haben." = length(periodogram) > 0)
