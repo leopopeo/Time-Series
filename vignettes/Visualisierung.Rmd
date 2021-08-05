@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(TimeSeries)
-library(tibble)
+library(tidyverse)
 library(ggplot2)
 ```
 Im Folgenden geben wir einige Beispiele und Anwendungen der Funktionen des Pakets *Time Series*. Im ersten Teil werden wir dazu eine Simulationsstudie durchführen und im zweiten Teil auf reale Daten analysieren:
