@@ -1,10 +1,10 @@
 #'Durbin-Levinson Algorithm
 #'
-#'\code{DLA} berechnet durch die rekursive Durbin-Levinson Methode eine Vorhersage für die übergebene Zeitreihe. Für mehr Informationen rufe die Vignette auf.
+#'\code{DLA} berechnet durch die rekursive Durbin-Levinson Methode die Gewichtung der Phi's fuer eine uebergebene Zeitreihe. Fuer mehr Informationen rufe die Vignette auf.
 #'
-#'@param x Eingabevektor der die beobachteten Daten enthält
-#'@param len Horizont der Vorhersage.
-#'@return Vektor mit den vorhgesagten Werten
+#'@param x Eingabevektor, der die beobachteten Daten enthaelt
+#'@param len Horizont der Vorhersage
+#'@return Vektor, welcher die Gewichtung der Phi's enthaelt
 #'@examples
 #'  #Erstelle eine Zeitreihe
 #'  X = arma_sim(phi=0.3,sd=1,I=1000)

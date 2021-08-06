@@ -7,15 +7,15 @@
 DLA(x, len = NULL)
 }
 \arguments{
-\item{x}{Eingabevektor der die beobachteten Daten enthält}
+\item{x}{Eingabevektor, der die beobachteten Daten enthaelt}
 
-\item{len}{Horizont der Vorhersage.}
+\item{len}{Horizont der Vorhersage}
 }
 \value{
-Vektor mit den vorhgesagten Werten
+Vektor, welcher die Gewichtung der Phi's enthaelt
 }
 \description{
-\code{DLA} berechnet durch die rekursive Durbin-Levinson Methode eine Vorhersage für die übergebene Zeitreihe. Für mehr Informationen rufe die Vignette auf.
+\code{DLA} berechnet durch die rekursive Durbin-Levinson Methode die Gewichtung der Phi's fuer eine uebergebene Zeitreihe. Fuer mehr Informationen rufe die Vignette auf.
 }
 \examples{
  #Erstelle eine Zeitreihe
