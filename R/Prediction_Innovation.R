@@ -54,11 +54,11 @@ estimate <- function(X,
 #'
 #'Details
 #'
-#'@param X Eine Stationäre Zeitreihe Zeitreihe
+#'@param X Eine Stationaere Zeitreihe
 #'@param steps Anzahl N der Schritte der Prognose
-#'@param all=FALSE
+#'@param all=FALSE Wird, wenn es auf TRUE gesetzt ist, die Zeitreihe und die Vorhersage ausgeben
 #'
-#'@return Numerischer Vektor der Vorhersage. WEnn all=FALSE, werden nur die Vorhergesagten N Werte zurückgegeben, andernfalls der ganz Vektor X_hat
+#'@return Numerischer Vektor der Vorhersage. Wenn all=FALSE, werden nur die Vorhergesagten N Werte zurueckgegeben, andernfalls der ganz Vektor X_hat
 #'
 #'@examples
 #'#Erstelle eine Zeitreihe
