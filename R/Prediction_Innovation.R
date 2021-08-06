@@ -1,25 +1,5 @@
+#library(itsmr)
 
-
-
-
-
-#Rekursive Berechnung der Koeffizienten Theta_n_1,..., Theta_n_n
-
-#Berechnung des mittleren quadratischen Abweichung des ersten Elements
-
-
-#Hilfsfunktion
-
-
-library(itsmr)
-
-
-
-
-
-#Rekursive Berechnung der Koeffizienten Theta_n_1,..., Theta_n_n
-
-#Berechnung des mittleren quadratischen Abweichung des ersten Elements
 
 #Hilfsfunktionen
 
@@ -29,6 +9,7 @@ regress <- function(X, X_hat, theta, n) {
   sum(coeff * (X - X_hat))
 }
 
+#Berechnet x_hat
 estimate <- function(X,
                      theta = matrix(0, length(X_hat), length(X_hat)),
                      X_hat = 0,
@@ -44,8 +25,6 @@ estimate <- function(X,
   }
   list(X_hat = X_hat, theta = theta)
 }
-
-####################Neu
 
 #'ts_predict
 #'
@@ -70,6 +49,12 @@ estimate <- function(X,
 #Eingabe ueberpruefen
 #Timeseries timeseries ueberpruefen
 ts_predict <- function(X, steps=1, all = FALSE) {
+  #X
+  stopifnot("X muss ein numerischer Vektor der min. der Länge 1sein." = is.numeric(X) & length(X) >= 1)
+  #steps
+  stopfifnot("steps muss Integer Vektor der Länge 1 sein" = is.integer(X) & (length(steps) == 1))
+  stopfifnot("all muss logischer Wert sein" = is.logical(all))
+
   X_cache <- X
   est <- list(X_hat = 0, theta = 0)
   for (i in 1:steps) {
@@ -129,14 +114,14 @@ ts_predict <- function(X, steps=1, all = FALSE) {
 #   X_hat
 # }
 
-set.seed(3)
-X = arima.sim(n = 100, list(ar = c(0.7),
-                             ma = c(0.7, 0.25)),
-               sd = sqrt(0.02796))
-X = sin(1:50)
-
-R = ts_predict(X[1:50], 50, all = T)
-
+# set.seed(3)
+# X = arima.sim(n = 100, list(ar = c(0.7),
+#                              ma = c(0.7, 0.25)),
+#                sd = sqrt(0.02796))
+# X = sin(1:50)
+#
+# R = ts_predict(X[1:50], 50, all = T)
+#
 
 
 #S = forecast(X[1:50], NULL, h = 50, arma(X, p = 10, q = 10), alpha = 1)
