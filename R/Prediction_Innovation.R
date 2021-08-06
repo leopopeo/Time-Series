@@ -139,9 +139,9 @@ R = ts_predict(X[1:50], 50, all = T)
 
 
 
-S = forecast(X[1:50], NULL, h = 50, arma(X, p = 10, q = 10), alpha = 1)
+#S = forecast(X[1:50], NULL, h = 50, arma(X, p = 10, q = 10), alpha = 1)
 
 
-lines(R, col = "green", type = "l")
+#lines(R, col = "green", type = "l")
 
 
