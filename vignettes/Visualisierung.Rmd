@@ -155,10 +155,10 @@ DL_Helper <- function(X){
 
   prediction <- rep(NA, length(X))
 
-  for(i in 10:(length(X)-1)){
+  for(i in 10:(length(X))){
     x_help <- X[1:i]
     dl_save <- DLA(x_help)
-    prediction[i+1] <- sum(dl_save*rev(x_help))
+    prediction[i] <- sum(dl_save*rev(x_help))
   }
   prediction
 }
@@ -200,14 +200,48 @@ plot_DL <- function(series, dl, ...){
     geom_line(aes(y = DL_obj), color= "red", size=0.4) +
     ggtitle(...)
 }
-
-suppressWarnings(plot_DL(AR_1, DL1, "Test"))
-plot_DL(AR_1, DL1, "Test")
-plot_DL(AR_2, DL2, "Test")
-plot_DL(MA_1, DL3, "Test")
-plot_DL(MA_2, DL4, "Test")
-plot_DL(ARMA_1, DL5, "Test")
 ```
+
+
+```{r}
+plot_DL(AR_1, DL1, "AR(1)")
+plot_DL(AR_2, DL2, "AR(2)")
+plot_DL(MA_1, DL3, "MA(1)")
+plot_DL(MA_2, DL4, "MA(2)")
+plot_DL(ARMA_1, DL5, "ARMA(1)")
+```
+
+Wie man erkennen kann, kann der Durbin-Levinson Algorithmus bereits mit wenigen Inputs sehr gute Vorhersagen treffen, die man insbesondere am AR(1) und ARMA(1) erkennt, was in der Theorie auch übereinstimmt. Bei unserem Beispiel sollte der Innovation Algorithmus besser für die MA-Prozesse geeignet sein, wobei man an den Plots auch erkennt, dass der Durbin-Lveinson Algorithmus gute Vorhersagen trifft. Außerdem verringert sich die Ungenauigkeit des Algorithmus je mehr Input dieser bekommt, was schön zu erkennen ist, da bereits bei 60+ die Vorhersage fast exakt mit der Zeitreihe übereinstimmt.
+
+Jetzt wollen wir noch überprüfen, wie gut der Algorithmus damit klarkommt, wenn er mit seinen Vorhersagen weiterrechnet. 
+
+```{r}
+DL_Helper_Flaw <- function(X){
+
+  prediction <- rep(NA, length(X))
+
+  for(i in 10:(length(X))){
+    x_help <- X[1:i]
+    dl_save <- DLA(x_help)
+    prediction[i] <- sum(dl_save*rev(x_help))
+    X[i] <- prediction[i]
+  }
+  prediction
+}
+
+DL_Flaw1 <- DL_Helper_Flaw(AR_1)
+DL_Flaw2 <- DL_Helper_Flaw(MA_1)
+DL_Flaw3 <- DL_Helper_Flaw(ARMA_1)
+```
+
+```{r}
+plot_DL(AR_1, DL_Flaw1, "Test")
+plot_DL(MA_1, DL_Flaw2, "Test")
+plot_DL(ARMA_1, DL_Flaw3, "Test")
+```
+
+Auch hier schneidet der Durbin-Levinson solide ab, obwohl man beim MA(1) erkennt, dass dieser vor Allem bei den Peaks deutlich ungenauer ist, als bei den anderen beiden Prozessen, was auch mit unserer Theorie aus dem Brockwell übereinstimmt.
+Die Vorhersage ist insbesondere immer flacher und nicht so Spitz wie in unserer tatsächlichen Zeitreihe, was unter anderem damit zusammenhängen kann !!!noch weiterschreiben !!!
 
 ## Innovation Prediction
 
