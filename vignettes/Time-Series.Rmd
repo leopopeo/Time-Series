@@ -142,7 +142,7 @@ bestimmt. Mit Hilfe der Funktion *plot_timeseries* können wir als zweites Argum
 ```{r,fig.width = 7, fig.asp = .5}
 set.seed(13)
 arma <- arma_sim(phi=0.5,sd=1,I=150)
-predict <- DL_prediction(arma,len=9)
+predict <- DL_prediction(arma,len=15)
 plot_timeseries(arma,predict)
 ```
 Auch für einen ARMA(2,2)-Prozess kann die Funktion *DL_prediction* verwendet werden, 
@@ -150,7 +150,7 @@ Auch für einen ARMA(2,2)-Prozess kann die Funktion *DL_prediction* verwendet we
 ```{r,fig.width = 7, fig.asp = .5}
 set.seed(13)
 arma <- arma_sim(phi=c(0.3,0.5),theta=c(0.2,0.4),sd=1,I=150)
-predict <- DL_prediction(arma,len=9)
+predict <- DL_prediction(arma,len=15)
 plot_timeseries(arma,predict)
 ```
 

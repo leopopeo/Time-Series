@@ -69,7 +69,7 @@ estimate <- function(X,
 #innovations_algorithm <- function(timeseries,){
 #Eingabe ueberpruefen
 #Timeseries timeseries ueberpruefen
-ts_predict <- function(X, steps, all = FALSE) {
+ts_predict <- function(X, steps=1, all = FALSE) {
   X_cache <- X
   est <- list(X_hat = 0, theta = 0)
   for (i in 1:steps) {

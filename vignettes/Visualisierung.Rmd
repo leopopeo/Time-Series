@@ -321,10 +321,18 @@ data <- as_tibble(read.delim("Luftdaten_stunde_19480101_20201231_05906.txt",
 data %>% 
   select(time = MESS_DATUM, temp = TT_TU) -> data
 
+
 #Achtung!! Sehr lange Rechenzeit für länge > 1000
 # periodo <- perio(data$temp[1:100000])
 # length(periodo)
 # plot_periodogram(periodo)
 # periodo
 
+raw <- data[[2]][2700:3000]-mean(data[[2]][2700:3000])
+raw_full <- data[[2]][2700:3050]-mean(data[[2]][2700:3050])
+predic <- DL_prediction(raw,len=50,all=T)
+#plot_DL(raw_full,predic)
+#plot_timeseries(predic,DL_prediction(predic,len=30))
+#plot_timeseries(predic,ts_predict(predic,steps=30))
 ```
+

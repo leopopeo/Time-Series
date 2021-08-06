@@ -30,7 +30,7 @@ DL_prediction <- function(x,len=1,all=FALSE){
 
   prediction <- numeric(length(len))
 
-  zwischen <- X
+  zwischen <- x
   #Vorhersage
   for(i in 1:len){
     pred <- DLA(zwischen)
