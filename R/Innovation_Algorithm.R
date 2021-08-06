@@ -26,13 +26,13 @@ theta_sum <- function(theta, v, n, k){
 #'Innovation Algorithm
 #'
 #'@description  Beschreibung
-#'Der Innovations Algorithmus bestimmt .
+#'Der Innovations Algorithmus bestimmt fuer eine gewisse Zeitreihe die folgenden Werte der Zeitreihe, ist also fuer die Vorhersagung zustaendig.
 #'
 #'
 #'Details
 #'
-#'@param ts Die Zeitreihe
-#'@param small_theta Optional eine Innovation-Matrix aus einer Vorherigen Berechnung
+#'@param ts Die Zeitreihe, welche uebergeben wird
+#'@param small_theta Optional eine Innovation-Matrix aus einer vorherigen Berechnung
 #'@param lag Der Index n bis zu welchem die Matrix berechnet werden soll.
 #'
 #'@return n x n Matrix mit den Innovation-Koeffizienten theta.

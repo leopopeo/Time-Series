@@ -7,19 +7,24 @@
 arma_sim(phi = 0, theta = 0, sd = 1, I)
 }
 \arguments{
-\item{I}{}
+\item{phi}{Eingabevektor, der fuer die AR-Zeitreihe zustaendig ist}
+
+\item{theta}{Eingabevektor, der fuer die MA-Zeitreihe zustaendig ist}
+
+\item{sd}{Wert fuer die Standardabweichung}
+
+\item{I}{Ist die Laenge des gewollten Outputs}
 }
 \value{
-
+Gibt eine Zeitreihe ARMA(phi, theta) zurueck, welche die Laenge I hat
 }
 \description{
-Diese Funktion simuliert den ARMA-Prozess. Damit können Zeitreihen erzeugt werden.
+Diese Funktion simuliert den ARMA-Prozess. Damit koennen Zeitreihen erzeugt werden.
 
 Das ARMA-Model beschreibt einen stochatischen Prozess mittels zwei Polynomen:
 Der Autoregression (AR) und dem "moving average" (MA).
 }
 \examples{
-gen()
-gen()
+arma_sim(phi = 0.5, theta = 0.5, sd = 0.1, 500)
 
 }

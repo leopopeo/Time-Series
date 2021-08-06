@@ -13,20 +13,18 @@ reg = function(X, coeff){
 
 #'ARMA Generator
 #'
-#'@description Diese Funktion simuliert den ARMA-Prozess. Damit können Zeitreihen erzeugt werden.
+#'@description Diese Funktion simuliert den ARMA-Prozess. Damit koennen Zeitreihen erzeugt werden.
 #'
 #'Das ARMA-Model beschreibt einen stochatischen Prozess mittels zwei Polynomen:
 #'Der Autoregression (AR) und dem "moving average" (MA).
 #'
-#'@param phi
-#'@param theta
-#'@param sd
-#'@param I
+#'@param phi Eingabevektor, der fuer die AR-Zeitreihe zustaendig ist
+#'@param theta Eingabevektor, der fuer die MA-Zeitreihe zustaendig ist
+#'@param sd Wert fuer die Standardabweichung
+#'@param I Ist die Laenge des gewollten Outputs
 #'
-#'@return
-#'@examples
-#'gen()
-#'gen()
+#'@return Gibt eine Zeitreihe ARMA(phi, theta) zurueck, welche die Laenge I hat
+#'@examples arma_sim(phi = 0.5, theta = 0.5, sd = 0.1, 500)
 #'
 #'@export
 
@@ -48,10 +46,10 @@ arma_sim <- function(phi = 0, theta = 0, sd=1, I){
   # I
 #  stopifnot("" = )
 
-  p = length(phi)
+  p <-  length(phi)
   q <- length(theta)
-  X = rep(0, p)
-  Z = rnorm(q, sd=sd)
+  X <-  rep(0, p)
+  Z <-  rnorm(q, sd=sd)
   for (i in 1:I){
     Z <- c(Z, rnorm(n = 1, sd=sd))
     X <- c(X, reg(X, phi) + reg(Z[-length(Z)], theta) + Z[i+q])

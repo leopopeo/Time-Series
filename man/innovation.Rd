@@ -7,9 +7,9 @@
 innovation(ts, small_theta = matrix(0, lag, lag), lag = 1)
 }
 \arguments{
-\item{ts}{Die Zeitreihe}
+\item{ts}{Die Zeitreihe, welche uebergeben wird}
 
-\item{small_theta}{Optional eine Innovation-Matrix aus einer Vorherigen Berechnung}
+\item{small_theta}{Optional eine Innovation-Matrix aus einer vorherigen Berechnung}
 
 \item{lag}{Der Index n bis zu welchem die Matrix berechnet werden soll.}
 }
@@ -18,7 +18,7 @@ n x n Matrix mit den Innovation-Koeffizienten theta.
 }
 \description{
 Beschreibung
-Der Innovations Algorithmus bestimmt .
+Der Innovations Algorithmus bestimmt fuer eine gewisse Zeitreihe die folgenden Werte der Zeitreihe, ist also fuer die Vorhersagung zustaendig.
 
 Details
 }
