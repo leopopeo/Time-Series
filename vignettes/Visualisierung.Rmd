@@ -337,9 +337,14 @@ periodo <- perio(data_daily$temp)
 
 plot_periodogram(periodo, logscale = T)
 periodo
+```
 
-plot_DL_1 <- function(series, dl, ...){
-  tbl <- tibble(Series=series, DL_obj = dl, Lag=1:300)
+Als nächstes betrachten wir einen kleinen Ausschnitt der Daten und versuchen anhand von 100 Datenwerten die einem gewissen Muster folgen eine Vorhersage zu treffen:
+```{r, fig.width = 7, fig.asp = .5}
+plot_predic <- function(series, dl, ...){
+  len <- length(series)
+  dl[1:100] <- rep(NA,100)
+  tbl <- tibble(Series=series, DL_obj = dl, Lag=1:len)
   
    ggplot(tbl, aes(x=Lag)) + 
     geom_line(aes(y = Series), color = "blue", size=0.4,na.rm=T) + 
@@ -347,12 +352,19 @@ plot_DL_1 <- function(series, dl, ...){
     ggtitle(...)
 }
 
+raw <- data[[2]][2000:2100]-mean(data[[2]][2000:2100])
+raw_full <- data[[2]][2000:2130]-mean(data[[2]][2000:2130])
+predic_DL <- DL_prediction(raw,len=30,all=T)
+predic_IN <- ts_predict(raw,steps=30,all=T)
 
-raw <- data[[2]][2701:2970]-mean(data[[2]][2701:2970])
-raw_full <- data[[2]][2701:3000]-mean(data[[2]][2701:3000])
-predic <- DL_prediction(raw,len=30,all=T)
-plot_DL_1(raw_full,predic,"Test")
-#plot_timeseries(predic,DL_prediction(predic,len=30))
-#plot_timeseries(predic,ts_predict(predic,steps=30))
+plot_predic(raw_full, predic_DL,"Vorhersage Durbin-Levinson")
+plot_predic(raw_full, predic_IN,"Vorhersage Innovation")
+
+acf_plot <- ggplot(tibble(ACF=ACF(raw), Lag=seq_along(ACF(raw))), aes(x=Lag, y=ACF)) +
+                geom_bar(stat="identity") + 
+                ggtitle("ACF-Plot")
+acf_plot
 ```
+Wir sehen, dass die Vorhersage durch den *DL_predict* einen sehr starken Ausschlag als ersten Wert hat und auch danach die Zeitreihe nicht so gut vorhersagen kann wie die *ts_predict*-Funktion. Dies legt die Vermutung nahe, dass es sich hier ehr um einen MA-Prozess handel. Dies bestätigt auch der entsprechende ACF-Plot, hier sieht ein schnelles Abfallen der Bar-Plots, was typtisch für einen MA-Prozess ist. Wie bereits oben erklärt können erneut die Maxima nicht sehr gut aufgelöst werden. Es lohnt sich also den entsprechenden ACF-Plot anzuschauen um zu entscheiden welche Prediction-Funktion die Daten besser modellieren kann.  
+
 
