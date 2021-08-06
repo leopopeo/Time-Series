@@ -42,8 +42,11 @@ arma_sim <- function(phi = 0, theta = 0, sd=1, I){
   stopifnot("Die Standardabweichung sd muss ein numerischer Vektor der Länge 1 sein." = length(sd) == 1 & is.numeric(sd))
 
   # I
-#  stopifnot("" = )
+  stopifnot("I muss ein numerischer Vektor der Länge 1 sein" = is.numeric(I) & length(I)==1)
+  stopifnot("I muss ein Interger Wert sein" = I %% 1 == 0)
+  stopifnot("I muss größer als 0 sein!" = I > 0)
 
+  #Berechnung
   p <-  length(phi)
   q <- length(theta)
   X <-  rep(0, p)

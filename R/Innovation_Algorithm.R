@@ -42,6 +42,26 @@ theta_sum <- function(theta, v, n, k){
 innovation <- function(ts,
                        small_theta = matrix(0, lag, lag),
                        lag = 1){
+  #Eingabewerte testen
+  laen <- length(ts)
+
+  #Eingabewerte überprüfen
+  #ts
+  stopifnot("Eingabe ist nicht numerisch!" = is.numeric(ts))
+  stopifnot("Die Länge des Vektors muss größer als 1 sein!" = length(ts) > 1)
+
+  #small_theta ???????
+
+  #lag
+  stopifnot("lag muss >= 1 sein!" =  lag >= 1)
+  stopifnot("lag muss NULL oder ein Integer Wert sein!"  = (is.null(lag) |
+                                                              is.numeric(lag)))
+  stopifnot("lag muss NULL oder ein Integer Wert sein!" = length(lag) == 1)
+  stopifnot("lag muss NULL oder ein Integer Wert sein!" = lag %% 1 == 0)
+
+
+
+  #Berechnung
   theta <- matrix(0, lag, lag)
   theta[1:NROW(small_theta), 1:NCOL(small_theta)] <- small_theta
   n_start <- which(theta[,1] == 0)[1]
