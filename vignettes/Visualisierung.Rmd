@@ -18,7 +18,6 @@ knitr::opts_chunk$set(
 library(TimeSeries)
 library(tidyverse)
 library(ggplot2)
-library(itsmr)
 ```
 Im Folgenden geben wir einige Beispiele und Anwendungen der Funktionen des Pakets *Time Series*. Im ersten Teil werden wir dazu eine Simulationsstudie durchführen und im zweiten Teil auf reale Daten analysieren:
 
@@ -191,18 +190,18 @@ DL5 <- DL_Helper(ARMA_1)
 
 Um nun die Genauigkeit des Durbin-Levinson Algorithmus zu überprüfen, plotten wir die ursprüngliche Zeitreihe und die Vorhersage durch den Durbin-Levinson Algorithmus zu vergleichen.
 
-```{r, fig.width = 7, fig.asp = .5}
+```{r}
 
 plot_DL <- function(series, dl, ...){
   tbl <- tibble(Series=series, DL_obj = dl, Lag=1:100)
   
    ggplot(tbl, aes(x=Lag)) + 
-    geom_line(aes(y = Series), color = "blue", size=0.4,na.rm=T) + 
-    geom_line(aes(y = DL_obj), color= "red", size=0.4,na.rm=T) +
+    geom_line(aes(y = Series), color = "blue", size=0.4) + 
+    geom_line(aes(y = DL_obj), color= "red", size=0.4) +
     ggtitle(...)
 }
 
-plot_DL(AR_1, DL1, "Test")
+suppressWarnings(plot_DL(AR_1, DL1, "Test"))
 plot_DL(AR_1, DL1, "Test")
 plot_DL(AR_2, DL2, "Test")
 plot_DL(MA_1, DL3, "Test")
@@ -214,7 +213,7 @@ plot_DL(ARMA_1, DL5, "Test")
 
 Dieser Abschnitt veranschaulicht die Vorhersagegenauigkeit des Innovation Algorithmus. Um einen Vergleich mit dem Durbin-Levinson Algortihmus zu gewährleisten, nutzen wir die analoge Methodik, sowie die selben Zeitreihen, wie oben:
 
-Hierfür erstellen wir eine Prediciton-Funktion, welche uns für die vorherigen $n$ Werte den $n+1$ Wert vorhersagt:
+ierfür erstellen wir eine Prediciton-Funktion, welche uns für die vorherigen $n$ Werte den $n+1$ Wert vorhersagt:
 
 ```{r}
 innovation_prediction <- function(X){
@@ -241,8 +240,8 @@ plot_inno <- function(real_series, predicted_series, ...){
   tbl <- tibble(series=real_series, inno_obj = predicted_series, Lag=1:100)
   
    ggplot(tbl, aes(x=Lag)) + 
-    geom_line(aes(y = series), color = "blue", size=0.4,na.rm=T) + 
-    geom_line(aes(y = inno_obj), color= "red", size=0.4,na.rm=T) +
+    geom_line(aes(y = series), color = "blue", size=0.4) + 
+    geom_line(aes(y = inno_obj), color= "red", size=0.4) +
     ggtitle(...)
 }
 
@@ -257,19 +256,21 @@ plot_inno(ARMA_1, innovation_sim_ARMA_1, "ARMA")
 Nun wollen wir unseren Innovation Vorhersage mit der bestehenden Funktion "forecast" aus dem Paket "itsmr" (https://mparison <- georgeweigt.github.io/itsmr-refman.pdf, Seite 14) vergleichen:
 
 ```{r}
-itsmr_prediction <- forecast(AR_2, #Time series data
+library(itsmr)
+
+itsmr_prediction <- forecast(timeseries_arma, #Time series data
                              M = NULL, #Data model
-                             a = arma(AR_2,p=1, q=1), #ARMA model
+                             a = arma(timeseries_arma, p=15, q=15), #ARMA model
                              h = 10, #Steps ahead
                              opt = 0, #Display option (0 silent, 1 tabulate, 2 plot and tabulate)
                              alpha = 1)$pred #Level of significance
-innovation_sim_1 <- ts_predict(AR_2, 10)
+innovation_sim_1 <- ts_predict(timeseries_arma, 10)
 ```
 
 ```{r , fig.width = 7, fig.asp = .5}
 
-plot_timeseries(AR_2, itsmr_prediction)
-plot_timeseries(AR_2, innovation_sim_1)
+plot_timeseries(timeseries_arma, itsmr_prediction)
+plot_timeseries(timeseries_arma, innovation_sim_1)
 ```
 
 Wir können zunächst festhalten, dass die "forecast"-Funktion dem Nutzer mehr Parameter zur Verfügung stellt. Mit einer geeigneten Wahl von q und p des Parameters a, gelingt eine nahezu identische Vorhersage der nächsten 10 Datenpunkte.
