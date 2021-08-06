@@ -258,19 +258,19 @@ Nun wollen wir unseren Innovation Vorhersage mit der bestehenden Funktion "forec
 ```{r}
 library(itsmr)
 
-itsmr_prediction <- forecast(AR_1, #Time series data
+itsmr_prediction <- forecast(AR_2, #Time series data
                              M = NULL, #Data model
-                             a = arma(AR_1, p=15, q=15), #ARMA model
+                             a = arma(AR_2, p=1, q=1), #ARMA model
                              h = 10, #Steps ahead
                              opt = 0, #Display option (0 silent, 1 tabulate, 2 plot and tabulate)
                              alpha = 1)$pred #Level of significance
-innovation_sim_1 <- ts_predict(AR_1, 10)
+innovation_sim_1 <- ts_predict(AR_2, 10)
 ```
 
 ```{r , fig.width = 7, fig.asp = .5}
 
-plot_timeseries(AR_1, itsmr_prediction)
-plot_timeseries(AR_1, innovation_sim_1)
+plot_timeseries(timeseries_arma, itsmr_prediction)
+plot_timeseries(timeseries_arma, innovation_sim_1)
 ```
 
 Wir können zunächst festhalten, dass die "forecast"-Funktion dem Nutzer mehr Parameter zur Verfügung stellt. Mit einer geeigneten Wahl von q und p des Parameters a, gelingt eine nahezu identische Vorhersage der nächsten 10 Datenpunkte.
