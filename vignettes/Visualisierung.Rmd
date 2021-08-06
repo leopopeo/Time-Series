@@ -328,10 +328,20 @@ data %>%
 # plot_periodogram(periodo)
 # periodo
 
-raw <- data[[2]][2700:3000]-mean(data[[2]][2700:3000])
-raw_full <- data[[2]][2700:3050]-mean(data[[2]][2700:3050])
-predic <- DL_prediction(raw,len=50,all=T)
-#plot_DL(raw_full,predic)
+plot_DL_1 <- function(series, dl, ...){
+  tbl <- tibble(Series=series, DL_obj = dl, Lag=1:300)
+  
+   ggplot(tbl, aes(x=Lag)) + 
+    geom_line(aes(y = Series), color = "blue", size=0.4,na.rm=T) + 
+    geom_line(aes(y = DL_obj), color= "red", size=0.4,na.rm=T) +
+    ggtitle(...)
+}
+
+
+raw <- data[[2]][2701:2970]-mean(data[[2]][2701:2970])
+raw_full <- data[[2]][2701:3000]-mean(data[[2]][2701:3000])
+predic <- DL_prediction(raw,len=30,all=T)
+plot_DL_1(raw_full,predic,"Test")
 #plot_timeseries(predic,DL_prediction(predic,len=30))
 #plot_timeseries(predic,ts_predict(predic,steps=30))
 ```
