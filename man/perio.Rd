@@ -7,17 +7,17 @@
 perio(y)
 }
 \arguments{
-\item{y}{Eingabevektor der die beobachteten Daten enthält}
+\item{y}{Eingabevektor, der die beobachteten Daten enthaelt}
 }
 \value{
-Vektor der die Periodogrammwerte bzw. die Zeitreihe bei den Fourierfrequenzen enthält.
+Vektor, der die Periodogrammwerte bzw. die Zeitreihe bei den Fourierfrequenzen enthaelt.
 }
 \description{
-\code{perio} bestimmt die spektrale Dichte des Signals. Dadurch kann die dominaten Frequenzen einer Zeitreihe identifiziert werden. Für mehr Informationen rufe die Vignette auf.
+\code{perio} bestimmt die spektrale Dichte des Signals. Dadurch kann die dominaten Frequenzen einer Zeitreihe identifiziert werden. Fuer mehr Informationen rufe die Vignette auf.
 }
 \examples{
  #Erstelle eine Zeitreihe
- X = arima.sim(n = 1000, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796))
+ X = arma_sim(phi=0.3,sd=1,I=1000)
 
  perio(X)
 }

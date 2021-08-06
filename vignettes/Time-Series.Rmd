@@ -131,6 +131,29 @@ Der Output zeigt für die beiden angegebenen Rekursionen die geschätzten $\phi$
 res <- sum(ar*rev(res))
 res
 ```
+Dies wird nun auch im *DL_prediction* Algorithmus realisiert.
+
+## Durbin-Levinson Prediction
+Die Funktion *DL_predict* benutzt nun bereits oben beschriebene Verfahren um Vorhersagen für eine Zeitreihe basierend auf dem Durbin-Levinson Algorithmus zu treffen. Der Eintrag $X_{n+1}$ der Zeitreihe $X_1, ... , X_{n}$ wird dabei jeweils durch:
+$$
+X_{n+1}=\phi_{n1}X_n+...+\phi_{nn}X_1. 
+$$
+bestimmt. Mit Hilfe der Funktion *plot_timeseries* können wir als zweites Argument die Vorhersage übergeben und bekommen anschließend einen Linienplot ausgegeben. Dies sind für einen AR(1)-Prozess folgendermaßen aus:
+```{r,fig.width = 7, fig.asp = .5}
+set.seed(13)
+arma <- arma_sim(phi=0.5,sd=1,I=150)
+predict <- DL_prediction(arma,len=9)
+plot_timeseries(arma,predict)
+```
+Auch für einen ARMA(2,2)-Prozess kann die Funktion *DL_prediction* verwendet werden, 
+
+```{r,fig.width = 7, fig.asp = .5}
+set.seed(13)
+arma <- arma_sim(phi=c(0.3,0.5),theta=c(0.2,0.4),sd=1,I=150)
+predict <- DL_prediction(arma,len=9)
+plot_timeseries(arma,predict)
+```
+
 
 ## Innovation Algorithmus
 Der Innovation Algorithmus ist eine zweite Möglichkeit, um Werte der Zeitreihe vorherzusagen. Sei $\mathbf{\hat X_n} = (X_1,\  P_1 X_2,\ ...\ ,\ P_{n-1}X_n)$.
@@ -156,7 +179,7 @@ innovation(X, lag = 4)
 ```
 
 ## Innnovation Prediction
-Obige Gleichung können wir nun auch verwenden, um eine $h$-Schritt-Prognose des Prozesses zu machen. Sei dazu $m$ die Länge der Zeitreihe. Dann berechnen wir mit $\hat X_{m+h}$ eine h-Schritt Prognose. Die Ausgabe von ts_predict ist eine Liste mit den Elementen *X_hat*, der Vektor $\mathbf{\hat X_{m+h}}$ der Länge $m+h$ und *theta*, die Innovation-Matrix $\mathbf{ \Theta_n}$. Die Vorhersage mit dem Innovation-Algorithmus eignet sich besonders gut für $MA(q)$-Prozesse mit kleinem $q$
+Obige Gleichung können wir nun auch verwenden, um eine $h$-Schritt-Prognose des Prozesses zu machen. Sei dazu $m$ die Länge der Zeitreihe. Dann berechnen wir mit $\hat X_{m+h}$ eine h-Schritt Prognose. Die Ausgabe von ts_predict ist eine Liste mit den Elementen *X_hat*, der Vektor $\mathbf{\hat X_{m+h}}$ der Länge $m+h$ und *theta*, die Innovation-Matrix $\mathbf{ \Theta_n}$. Die Vorhersage mit dem Innovation-Algorithmus eignet sich besonders gut für $MA(q)$-Prozesse mit kleinem $q$. Hier wird die *ts_predict*-Funktion auf einen MA(2)-Prozess angewendet:
 
 
 ```{r, fig.width = 7, fig.asp = .5}

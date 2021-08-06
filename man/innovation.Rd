@@ -4,21 +4,24 @@
 \alias{innovation}
 \title{Innovation Algorithm}
 \usage{
-innovation(ts, small_theta = matrix(0, lag, lag), lag = NA)
+innovation(ts, small_theta = matrix(0, lag, lag), lag = 1)
 }
 \arguments{
-\item{k}{}
+\item{ts}{Die Zeitreihe, welche uebergeben wird}
+
+\item{small_theta}{Optional eine Innovation-Matrix aus einer vorherigen Berechnung}
+
+\item{lag}{Der Index n bis zu welchem die Matrix berechnet werden soll.}
 }
 \value{
-Numerischer Vektor, der die Vorhersage des Innovation Algorithmus beinhaltet.
+n x n Matrix mit den Innovation-Koeffizienten theta.
 }
 \description{
 Beschreibung
-Der Innovations Algorithmus bestimmt .
+Der Innovations Algorithmus bestimmt fuer eine gewisse Zeitreihe die folgenden Werte der Zeitreihe, ist also fuer die Vorhersagung zustaendig.
 
 Details
 }
 \examples{
-innovation(arima.sim(n = I, list(ar = c(0.8897,-0.4858),ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796)), 10)
-
+innovation(arma_sim(phi = c(0.5, 0.1), theta = c(-0.2), sd = 0.01, I = 100))
 }

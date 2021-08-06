@@ -4,20 +4,20 @@
 \alias{DL_prediction}
 \title{Durbin Levionson Prediction}
 \usage{
-DL_prediction(X, len = 1, all = FALSE)
+DL_prediction(x, len = 1, all = FALSE)
 }
 \arguments{
-\item{X}{Eingabevektor der die beobachteten Daten enthält}
+\item{x}{Eingabevektor der die beobachteten Daten enthält}
 
 \item{len}{Anzahl der vorherzusagenden Werten}
 
-\item{all}{logical-Wert der angibt ob nur die vorhergesagten Werte oder die alte Zeitreihe plus die vorhergesagten Werte zurückgegeben wird. Der Default-Wert ist Ersteres.}
+\item{all}{logical-Wert der angibt ob nur die vorhergesagten Werte oder die alte Zeitreihe plus die vorhergesagten Werte zurueckgegeben wird. Der Default-Wert ist Ersteres.}
 }
 \value{
 Vektor mit den vorhgesagten Werten
 }
 \description{
-\code{DL_prediction} benutzt den Durbin-Levinson_Algorithmus (\code{DLA}) um eine Vorhersage für die Zeitreihe zu treffen. Mit dem \code{len} Parameter kann die Anzahl der zu vorhersagenden Werten getroffen werden. Für mehr Informationen rufe die Vignette "Time-Series" auf.
+\code{DL_prediction} benutzt den Durbin-Levinson_Algorithmus (\code{DLA}) um eine Vorhersage fuer die Zeitreihe zu treffen. Mit dem \code{len} Parameter kann die Anzahl der zu vorhersagenden Werten getroffen werden. Für mehr Informationen rufe die Vignette "Time-Series" auf.
 }
 \examples{
  #Erstelle eine Zeitreihe

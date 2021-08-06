@@ -7,14 +7,14 @@
 ts_predict(X, steps, all = FALSE)
 }
 \arguments{
-\item{X}{Eine Stationäre Zeitreihe Zeitreihe}
+\item{X}{Eine Stationaere Zeitreihe}
 
 \item{steps}{Anzahl N der Schritte der Prognose}
 
-\item{all=FALSE}{}
+\item{all=FALSE}{Wird, wenn es auf TRUE gesetzt ist, die Zeitreihe und die Vorhersage ausgeben}
 }
 \value{
-Numerischer Vektor der Vorhersage. WEnn all=FALSE, werden nur die Vorhergesagten N Werte zurückgegeben, andernfalls der ganz Vektor X_hat
+Numerischer Vektor der Vorhersage. Wenn all=FALSE, werden nur die Vorhergesagten N Werte zurueckgegeben, andernfalls der ganz Vektor X_hat
 }
 \description{
 N-Schritt Prognose mithilfe des Innovation Algorithmus.
@@ -22,7 +22,9 @@ N-Schritt Prognose mithilfe des Innovation Algorithmus.
 Details
 }
 \examples{
-X = arima.sim(n = I, list(ar = c(0.8897,-0.4858),ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796)), 10)
+#Erstelle eine Zeitreihe
+X = arma_sim(theta=0.4,sd=1,I=100)
+
 ts_predict(X, 4)
 
 }

@@ -8,6 +8,8 @@ plot_timeseries(timeseries, pred = NULL)
 }
 \arguments{
 \item{timeseries}{Ein numerischer Vektor als Zeitreihe.}
+
+\item{pred}{Optionaler Vektor einer Vorhersage der Zeitreihe}
 }
 \value{
 Plot der Zeitreihe.
@@ -17,6 +19,7 @@ Diese Funktion plottet eine gegebene Timeseries (deutsch: Zeitreihe).
 }
 \examples{
 #Erstelle eine Zeitreihe
-X = arima.sim(n = 1000, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796))
-plot_timeseries(X)
+X = arma_sim(phi = c(0.5, 0.1), theta = c(-0.2), sd = 0.01, I = 100)
+f = ts_predict(X, 10)
+plot_timeseries(X, f)
 }

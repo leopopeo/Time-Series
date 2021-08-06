@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 library(TimeSeries)
 library(tidyverse)
 library(ggplot2)
+library(itsmr)
 ```
 Im Folgenden geben wir einige Beispiele und Anwendungen der Funktionen des Pakets *Time Series*. Im ersten Teil werden wir dazu eine Simulationsstudie durchführen und im zweiten Teil auf reale Daten analysieren:
 
@@ -69,7 +70,7 @@ $$
 (Brockwell et.al. (2002), S. 17f).
 Wir berechnen nun die theoretischen, ersten 50 Autokovarianzen für den AR(1)-Prozess mit $\phi=0.9$. Wir verwenden eine Standardnormalverteilung für das Rauschen, daher gilt $\sigma_{\epsilon}^2=1$.
 
-```{r fig1, fig.width = 7, fig.asp = .3}
+```{r, fig.width = 7, fig.asp = .5}
 gamma_0 <- 1/(1-0.9^2)
 true_acf <- numeric(50)
 for(i in 0:49){
@@ -151,14 +152,14 @@ Der obige Vergleich zeigt deutlich, dass sich die geschätzte ACF der theoretisc
 In diesem Abschnitt befassen wir uns etwas näher mit dem Durbin-Levinson Algorithmus und wollen uns seiner Vorhersagen bezüglich der ARMA-Zeitreihen anschauen und auch, welchen Einfluss die Parameter $\phi$ und $\theta$ haben und für welche Zeitreihen der Durbin-Levinson Algorithmus aussagekräftig ist. Hierfür erstellen wir eine Prediciton-Funktion, welche uns für die vorherigen $n$ Werte den $n+1$ Wert vorhersagt:
 
 ```{r}
-DL_prediction <- function(X){
+DL_Helper <- function(X){
 
   prediction <- rep(NA, length(X))
 
-  for(i in 10:length(X)){
+  for(i in 10:(length(X)-1)){
     x_help <- X[1:i]
     dl_save <- DLA(x_help)
-    prediction[i] <- sum(dl_save*rev(x_help))
+    prediction[i+1] <- sum(dl_save*rev(x_help))
   }
   prediction
 }
@@ -181,25 +182,27 @@ ARMA_1 <- arma_sim(phi = 0.6, theta = 0.4, sd = 0.1, I = 100)
 Im folgenden berechnen wir nun die Vorhersagen der gegebenen ARMA-Zeitreihen, anhand des DL Algorithmus:
 
 ```{r}
-DL1 <- DL_prediction(AR_1)
-DL2 <- DL_prediction(AR_2)
-DL3 <- DL_prediction(MA_1)
-DL4 <- DL_prediction(MA_2)
-DL5 <- DL_prediction(ARMA_1)
+DL1 <- DL_Helper(AR_1)
+DL2 <- DL_Helper(AR_2)
+DL3 <- DL_Helper(MA_1)
+DL4 <- DL_Helper(MA_2)
+DL5 <- DL_Helper(ARMA_1)
 ```
 
 Um nun die Genauigkeit des Durbin-Levinson Algorithmus zu überprüfen, plotten wir die ursprüngliche Zeitreihe und die Vorhersage durch den Durbin-Levinson Algorithmus zu vergleichen.
 
-```{r}
+```{r, fig.width = 7, fig.asp = .5}
+
 plot_DL <- function(series, dl, ...){
   tbl <- tibble(Series=series, DL_obj = dl, Lag=1:100)
   
    ggplot(tbl, aes(x=Lag)) + 
-    geom_line(aes(y = Series), color = "blue", size=0.4) + 
-    geom_line(aes(y = DL_obj), color= "red", size=0.4) +
+    geom_line(aes(y = Series), color = "blue", size=0.4,na.rm=T) + 
+    geom_line(aes(y = DL_obj), color= "red", size=0.4,na.rm=T) +
     ggtitle(...)
 }
 
+plot_DL(AR_1, DL1, "Test")
 plot_DL(AR_1, DL1, "Test")
 plot_DL(AR_2, DL2, "Test")
 plot_DL(MA_1, DL3, "Test")
@@ -211,60 +214,66 @@ plot_DL(ARMA_1, DL5, "Test")
 
 Dieser Abschnitt veranschaulicht die Vorhersagegenauigkeit des Innovation Algorithmus. Um einen Vergleich mit dem Durbin-Levinson Algortihmus zu gewährleisten, nutzen wir die analoge Methodik, sowie die selben Zeitreihen, wie oben:
 
-ierfür erstellen wir eine Prediciton-Funktion, welche uns für die vorherigen $n$ Werte den $n+1$ Wert vorhersagt:
-
-# ```{r}
-# innovation_prediction <- function(X){
-# 
-#   inno_prediction <- rep(NA, length(X))
-# 
-#   for(i in 10:length(X)){
-#     inno_help <- X[1:i]
-#     inno_save <- ts_predict(inno_help)
-#     inno_prediction[i] <- sum(inno_save*rev(inno_help))
-#   }
-#   inno_prediction
-# }
-# ```
+Hierfür erstellen wir eine Prediciton-Funktion, welche uns für die vorherigen $n$ Werte den $n+1$ Wert vorhersagt:
 
 ```{r}
-timeseries_arma <- arma_sim(phi = 0.5, theta = 0.4, sd = 1, I = 100)
-timeseries_ar <- arma_sim(phi = 0.1, theta = 0, sd = 1, I = 100)
-timeseries_ma <- arma_sim(phi = 0, theta = 0.4, sd = 1, I = 100)
+innovation_prediction <- function(X){
+   inno_prediction <- rep(NA, length(X))
 
-innovation_sim_arma <- ts_predict(timeseries_arma, 5)
-innovation_sim_ar <- ts_predict(timeseries_ar, 5)
-innovation_sim_ma <- ts_predict(timeseries_ma, 5)
+   for(i in 10:length(X)){
+     inno_help <- X[1:i]
+     inno_prediction[i] <- ts_predict(inno_help,1)
+   }
+   inno_prediction
+}
 ```
 
-```{r fig2, fig.width = 7, fig.asp = .3}
-
-plot_timeseries(timeseries_arma, innovation_sim_arma)
-plot_timeseries(timeseries_ar, innovation_sim_ar)
-plot_timeseries(timeseries_ma, innovation_sim_ma)
+```{r}
+innovation_sim_AR_1 <- innovation_prediction(AR_1)
+innovation_sim_AR_2 <- innovation_prediction(AR_2)
+innovation_sim_MA_1 <- innovation_prediction(MA_1)
+innovation_sim_MA_2 <- innovation_prediction(MA_2)
+innovation_sim_ARMA_1 <- innovation_prediction(ARMA_1)
 ```
- 
+
+```{r, fig.width = 7, fig.asp = .5}
+plot_inno <- function(real_series, predicted_series, ...){
+  tbl <- tibble(series=real_series, inno_obj = predicted_series, Lag=1:100)
+  
+   ggplot(tbl, aes(x=Lag)) + 
+    geom_line(aes(y = series), color = "blue", size=0.4,na.rm=T) + 
+    geom_line(aes(y = inno_obj), color= "red", size=0.4,na.rm=T) +
+    ggtitle(...)
+}
+
+plot_inno(AR_1, innovation_sim_AR_1, "AR")
+plot_inno(AR_2, innovation_sim_AR_2, "AR")
+plot_inno(MA_1, innovation_sim_MA_1, "MA")
+plot_inno(MA_2, innovation_sim_MA_2, "MA")
+plot_inno(ARMA_1, innovation_sim_ARMA_1, "ARMA")
+```
+
+
 Nun wollen wir unseren Innovation Vorhersage mit der bestehenden Funktion "forecast" aus dem Paket "itsmr" (https://mparison <- georgeweigt.github.io/itsmr-refman.pdf, Seite 14) vergleichen:
 
 ```{r}
-library(itsmr)
-
-itsmr_prediction <- forecast(timeseries_arma, #Time series data
+itsmr_prediction <- forecast(AR_2, #Time series data
                              M = NULL, #Data model
-                             a = arma(timeseries_arma, p=15, q=15), #ARMA model
+                             a = arma(AR_2,p=1, q=1), #ARMA model
                              h = 10, #Steps ahead
-                             opt = 1, #Display option (0 silent, 1 tabulate, 2 plot and tabulate)
-                             alpha = 1) #Level of significance
-innovation_sim_1 <- ts_predict(timeseries_arma, 10)
+                             opt = 0, #Display option (0 silent, 1 tabulate, 2 plot and tabulate)
+                             alpha = 1)$pred #Level of significance
+innovation_sim_1 <- ts_predict(AR_2, 10)
 ```
 
-```{r fig3, fig.width = 7, fig.asp = .3}
+```{r , fig.width = 7, fig.asp = .5}
 
-plot_timeseries(timeseries_arma, itsmr_prediction$pred)
-plot_timeseries(timeseries_arma, innovation_sim_1)
+plot_timeseries(AR_2, itsmr_prediction)
+plot_timeseries(AR_2, innovation_sim_1)
 ```
 
 Wir können zunächst festhalten, dass die "forecast"-Funktion dem Nutzer mehr Parameter zur Verfügung stellt. Mit einer geeigneten Wahl von q und p des Parameters a, gelingt eine nahezu identische Vorhersage der nächsten 10 Datenpunkte.
+
 
 
 ##Reale Daten
