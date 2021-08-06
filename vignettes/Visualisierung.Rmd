@@ -258,13 +258,13 @@ Nun wollen wir unseren Innovation Vorhersage mit der bestehenden Funktion "forec
 ```{r}
 library(itsmr)
 
-itsmr_prediction <- forecast(timeseries_arma, #Time series data
+itsmr_prediction <- forecast(AR_2, #Time series data
                              M = NULL, #Data model
-                             a = arma(timeseries_arma, p=15, q=15), #ARMA model
+                             a = arma(AR_2, p=1, q=1), #ARMA model
                              h = 10, #Steps ahead
                              opt = 0, #Display option (0 silent, 1 tabulate, 2 plot and tabulate)
                              alpha = 1)$pred #Level of significance
-innovation_sim_1 <- ts_predict(timeseries_arma, 10)
+innovation_sim_1 <- ts_predict(AR_2, 10)
 ```
 
 ```{r , fig.width = 7, fig.asp = .5}
