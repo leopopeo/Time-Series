@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 library(TimeSeries)
 library(tidyverse)
 library(ggplot2)
+library(itsmr)
 ```
 Im Folgenden geben wir einige Beispiele und Anwendungen der Funktionen des Pakets *Time Series*. Im ersten Teil werden wir dazu eine Simulationsstudie durchführen und im zweiten Teil auf reale Daten analysieren:
 
@@ -190,20 +191,20 @@ DL5 <- DL_Helper(ARMA_1)
 
 Um nun die Genauigkeit des Durbin-Levinson Algorithmus zu überprüfen, plotten wir die ursprüngliche Zeitreihe und die Vorhersage durch den Durbin-Levinson Algorithmus zu vergleichen.
 
-```{r}
+```{r, fig.width = 7, fig.asp = .5}
 
 plot_DL <- function(series, dl, ...){
   tbl <- tibble(Series=series, DL_obj = dl, Lag=1:100)
   
    ggplot(tbl, aes(x=Lag)) + 
-    geom_line(aes(y = Series), color = "blue", size=0.4) + 
-    geom_line(aes(y = DL_obj), color= "red", size=0.4) +
+    geom_line(aes(y = Series), color = "blue", size=0.4,na.rm=T) + 
+    geom_line(aes(y = DL_obj), color= "red", size=0.4,na.rm=T) +
     ggtitle(...)
 }
 ```
 
 
-```{r}
+```{r, fig.width = 7, fig.asp = .5}
 plot_DL(AR_1, DL1, "AR(1)")
 plot_DL(AR_2, DL2, "AR(2)")
 plot_DL(MA_1, DL3, "MA(1)")
@@ -234,7 +235,7 @@ DL_Flaw2 <- DL_Helper_Flaw(MA_1)
 DL_Flaw3 <- DL_Helper_Flaw(ARMA_1)
 ```
 
-```{r}
+```{r, fig.width = 7, fig.asp = .5}
 plot_DL(AR_1, DL_Flaw1, "Test")
 plot_DL(MA_1, DL_Flaw2, "Test")
 plot_DL(ARMA_1, DL_Flaw3, "Test")
@@ -274,8 +275,8 @@ plot_inno <- function(real_series, predicted_series, ...){
   tbl <- tibble(series=real_series, inno_obj = predicted_series, Lag=1:100)
   
    ggplot(tbl, aes(x=Lag)) + 
-    geom_line(aes(y = series), color = "blue", size=0.4) + 
-    geom_line(aes(y = inno_obj), color= "red", size=0.4) +
+    geom_line(aes(y = series), color = "blue", size=0.4,na.rm=T) + 
+    geom_line(aes(y = inno_obj), color= "red", size=0.4,na.rm=T) +
     ggtitle(...)
 }
 
@@ -290,21 +291,19 @@ plot_inno(ARMA_1, innovation_sim_ARMA_1, "ARMA")
 Nun wollen wir unseren Innovation Vorhersage mit der bestehenden Funktion "forecast" aus dem Paket "itsmr" (https://mparison <- georgeweigt.github.io/itsmr-refman.pdf, Seite 14) vergleichen:
 
 ```{r}
-library(itsmr)
-
-itsmr_prediction <- forecast(timeseries_arma, #Time series data
+itsmr_prediction <- forecast(AR_1, #Time series data
                              M = NULL, #Data model
-                             a = arma(timeseries_arma, p=15, q=15), #ARMA model
+                             a = arma(AR_1, p=15, q=15), #ARMA model
                              h = 10, #Steps ahead
                              opt = 0, #Display option (0 silent, 1 tabulate, 2 plot and tabulate)
                              alpha = 1)$pred #Level of significance
-innovation_sim_1 <- ts_predict(timeseries_arma, 10)
+innovation_sim_1 <- ts_predict(AR_1, 10)
 ```
 
 ```{r , fig.width = 7, fig.asp = .5}
 
-plot_timeseries(timeseries_arma, itsmr_prediction)
-plot_timeseries(timeseries_arma, innovation_sim_1)
+plot_timeseries(AR_1, itsmr_prediction)
+plot_timeseries(AR_1, innovation_sim_1)
 ```
 
 Wir können zunächst festhalten, dass die "forecast"-Funktion dem Nutzer mehr Parameter zur Verfügung stellt. Mit einer geeigneten Wahl von q und p des Parameters a, gelingt eine nahezu identische Vorhersage der nächsten 10 Datenpunkte.
