@@ -56,11 +56,11 @@ estimate <- function(X,
 #'
 #'@param X Eine Stationäre Zeitreihe Zeitreihe
 #'@param steps Anzahl N der Schritte der Prognose
-#'@param all=FALSE
+#'@param all Wenn FALSe wird nur der Vorhersagevektor der L�nge steps ausgegeben. Andernfalls auch alle bis dahin berechneten X_hat
 #'
 #'@return Numerischer Vektor der Vorhersage. WEnn all=FALSE, werden nur die Vorhergesagten N Werte zurückgegeben, andernfalls der ganz Vektor X_hat
 #'
-#'@examples X = arima.sim(n = I, list(ar = c(0.8897,-0.4858),ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796)), 10)
+#'@examples X = arma_sim(phi = c(0.5, 0.1), theta = c(-0.2), sd = 0.01, I = 100)
 #'ts_predict(X, 4)
 #'
 #'@export
