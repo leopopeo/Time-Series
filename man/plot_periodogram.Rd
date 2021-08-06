@@ -7,15 +7,15 @@
 plot_periodogram(periodogram, logscale = F)
 }
 \arguments{
-\item{periodogram}{Ein numerischer Vektor welcher ein Periodogram einer Zeitreihe enthält}
+\item{periodogram}{Ein numerischer Vektor welcher ein Periodogram einer Zeitreihe enthaelt}
 
 \item{logscale}{Wenn TRUE wird die Y-Achse logarithmisch skaliert.}
 }
 \value{
-Plot des Periodograms in Abhängigkeit der Fourier Frequenzen
+Plot des Periodograms in Abhaengigkeit der Fourier Frequenzen
 }
 \description{
-Diese Funktion plottet eine gegebenes PEriodogram.
+Diese Funktion plottet eine gegebenes Periodogram.
 }
 \examples{
 #Erstelle ein Periodogram einer Zeitreihe

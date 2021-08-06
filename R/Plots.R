@@ -52,11 +52,11 @@ plot_timeseries <- function(timeseries, pred = NULL){
 
 #'Periodogramm Plot
 #'
-#'@description Diese Funktion plottet eine gegebenes PEriodogram.
+#'@description Diese Funktion plottet eine gegebenes Periodogram.
 #'
-#'@param periodogram Ein numerischer Vektor welcher ein Periodogram einer Zeitreihe enthält
+#'@param periodogram Ein numerischer Vektor welcher ein Periodogram einer Zeitreihe enthaelt
 #'@param logscale Wenn TRUE wird die Y-Achse logarithmisch skaliert.
-#'@return Plot des Periodograms in Abhängigkeit der Fourier Frequenzen
+#'@return Plot des Periodograms in Abhaengigkeit der Fourier Frequenzen
 #'@examples
 #' #Erstelle ein Periodogram einer Zeitreihe
 #' X = perio(arma_sim(phi = c(0.5, 0.1), theta = c(-0.2), sd = 0.01, I = 100))
