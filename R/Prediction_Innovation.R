@@ -56,7 +56,7 @@ estimate <- function(X,
 #'
 #'@param X Eine Stationäre Zeitreihe Zeitreihe
 #'@param steps Anzahl N der Schritte der Prognose
-#'@param all Wenn FALSe wird nur der Vorhersagevektor der L�nge steps ausgegeben. Andernfalls auch alle bis dahin berechneten X_hat
+#'@param all Wenn FALSe wird nur der Vorhersagevektor der L?nge steps ausgegeben. Andernfalls auch alle bis dahin berechneten X_hat
 #'
 #'@return Numerischer Vektor der Vorhersage. WEnn all=FALSE, werden nur die Vorhergesagten N Werte zurückgegeben, andernfalls der ganz Vektor X_hat
 #'
@@ -64,6 +64,7 @@ estimate <- function(X,
 #'ts_predict(X, 4)
 #'
 #'@export
+
 #Implementierung des Innovations Algorithmus
 #innovations_algorithm <- function(timeseries,){
 #Eingabe ueberpruefen
