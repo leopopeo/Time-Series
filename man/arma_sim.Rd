@@ -19,7 +19,7 @@ arma_sim(phi = 0, theta = 0, sd = 1, I)
 Gibt eine Zeitreihe ARMA(phi, theta) zurueck, welche die Laenge I hat
 }
 \description{
-Diese Funktion simuliert den ARMA-Prozess. Damit können Zeitreihen erzeugt werden.
+Diese Funktion simuliert den ARMA-Prozess. Damit koennen Zeitreihen erzeugt werden.
 
 Das ARMA-Model beschreibt einen stochatischen Prozess mittels zwei Polynomen:
 Der Autoregression (AR) und dem "moving average" (MA).
