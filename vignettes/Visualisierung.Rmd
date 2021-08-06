@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 library(TimeSeries)
 library(tidyverse)
 library(ggplot2)
+library(itsmr)
 ```
 Im Folgenden geben wir einige Beispiele und Anwendungen der Funktionen des Pakets *Time Series*. Im ersten Teil werden wir dazu eine Simulationsstudie durchführen und im zweiten Teil auf reale Daten analysieren:
 
@@ -256,8 +257,6 @@ plot_inno(ARMA_1, innovation_sim_ARMA_1, "ARMA")
 Nun wollen wir unseren Innovation Vorhersage mit der bestehenden Funktion "forecast" aus dem Paket "itsmr" (https://mparison <- georgeweigt.github.io/itsmr-refman.pdf, Seite 14) vergleichen:
 
 ```{r}
-library(itsmr)
-
 itsmr_prediction <- forecast(AR_2, #Time series data
                              M = NULL, #Data model
                              a = arma(AR_2,p=1, q=1), #ARMA model

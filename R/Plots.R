@@ -62,7 +62,7 @@ plot_timeseries <- function(timeseries, pred = NULL){
 #' X = perio(arma_sim(phi = c(0.5, 0.1), theta = c(-0.2), sd = 0.01, I = 100))
 #' plot_periodogram(X)
 #'@export
-plot_periodogram <- function(periodogram, logscale = TRUE){
+plot_periodogram <- function(periodogram, logscale = F){
   #Eingabe ueberpruefen
   stopifnot("Der Eingabevektor timeseries ist nicht numerisch." = is.numeric(periodogram))
   stopifnot("Der Vektor timeseries muss wenigstens die Laenge 1 haben." = length(periodogram) > 0)

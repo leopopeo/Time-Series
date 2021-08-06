@@ -4,7 +4,7 @@
 \alias{plot_periodogram}
 \title{Periodogramm Plot}
 \usage{
-plot_periodogram(periodogram, logscale = TRUE)
+plot_periodogram(periodogram, logscale = F)
 }
 \arguments{
 \item{periodogram}{Ein numerischer Vektor welcher ein Periodogram einer Zeitreihe enthält}
