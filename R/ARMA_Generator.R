@@ -13,7 +13,7 @@ reg = function(X, coeff){
 
 #'ARMA Generator
 #'
-#'@description Diese Funktion simuliert den ARMA-Prozess. Damit können Zeitreihen erzeugt werden.
+#'@description Diese Funktion simuliert den ARMA-Prozess. Damit koennen Zeitreihen erzeugt werden.
 #'
 #'Das ARMA-Model beschreibt einen stochatischen Prozess mittels zwei Polynomen:
 #'Der Autoregression (AR) und dem "moving average" (MA).
