@@ -19,7 +19,7 @@ Der Rückgabewert ist ein Vektor für die Abschätzung der Autokorrelationsfunkt
 }
 \examples{
  #Erstelle eine Zeitreihe
- X = arma_sim(n = 1000, list(ar = c(0.5, 0.499), ma = c(-0.2279, 0.2488)), sd = sqrt(0.1796))
+ X = arma_sim(phi=0.3,sd=1,I=1000)
 
  ACF(X, lag = 4)
 
