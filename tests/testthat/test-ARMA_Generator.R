@@ -21,5 +21,6 @@ test_that("Eingabe testen", {
 })
 
 test_that("AR works", {
-print("Test")
+
+expect_equal(2*2, 4)
 })

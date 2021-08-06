@@ -50,10 +50,10 @@ estimate <- function(X,
 #Timeseries timeseries ueberpruefen
 ts_predict <- function(X, steps=1, all = FALSE) {
   #X
-  stopifnot("X muss ein numerischer Vektor der min. der Länge 1sein." = is.numeric(X) & length(X) >= 1)
+  stopifnot("X muss ein numerischer Vektor min. der Laenge 2 sein." = is.numeric(X) & (length(X) >= 2))
   #steps
-  stopfifnot("steps muss Integer Vektor der Länge 1 sein" = is.integer(X) & (length(steps) == 1))
-  stopfifnot("all muss logischer Wert sein" = is.logical(all))
+  stopifnot("steps muss Integer Vektor der Laenge 1 sein." = steps %% 1 == 0 & (length(steps) == 1))
+  stopifnot("all muss logischer Wert sein." = is.logical(all))
 
   X_cache <- X
   est <- list(X_hat = 0, theta = 0)

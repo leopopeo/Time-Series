@@ -4,7 +4,7 @@
 \alias{ts_predict}
 \title{ts_predict}
 \usage{
-ts_predict(X, steps, all = FALSE)
+ts_predict(X, steps = 1, all = FALSE)
 }
 \arguments{
 \item{X}{Eine Stationäre Zeitreihe Zeitreihe}
