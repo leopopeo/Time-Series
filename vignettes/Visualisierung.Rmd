@@ -425,12 +425,14 @@ plot_predic(raw_full_1, predic_IN_1,"Vorhersage Innovation")
 ```
 Während die Vorhersage des Durbin-Levinson-Algorithmus stark von den realisierten Werten abweicht, entspricht die Vorhersage des Innovation-Algorithmus vor allem in den ersten Schritten sehr gut den realisierten Werten. 
 
+
 Betrachten wir nun die selbe Vorhersagen für die Monatsdaten.
 ```{r, fig.width = 7, fig.asp = .5}
 plot_predic(raw_full_2, predic_DL_2,"Vorhersage Durbin-Levinson")
 plot_predic(raw_full_2, predic_IN_2,"Vorhersage Innovation")
 ```
 Hier geht die Vorhersage mit Durbin-Levinson schnell gegen den Mittelwert, ohne die Schwankungen zu antizipieren. Im Gegensatz dazu erkennt der Innovation-Algorithmus das Periodische Verhalten der Temperaturschwankungen deutlich besser.
+
 
 In beiden Beispielen liefert der Innovation-Algorithmus eine bessere Vorhersage als der Durbin-Levinson-Algorithmus. Dies legt die Vermutung nahe, dass es sich hier eher um einen MA-Prozess handelt. Die entsprechenden ACF-Plots bestätigen dies. 
 ```{r, fig.width = 7, fig.asp = .5}
