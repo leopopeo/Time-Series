@@ -237,9 +237,9 @@ DL_Flaw3 <- DL_Helper_Flaw(ARMA_1)
 ```
 
 ```{r, fig.width = 7, fig.asp = .5}
-plot_DL(AR_1, DL_Flaw1, "Test")
-plot_DL(MA_1, DL_Flaw2, "Test")
-plot_DL(ARMA_1, DL_Flaw3, "Test")
+plot_mult(AR_1, forecast1 = DL_Flaw1, title = "Test")
+plot_mult(MA_1, forecast1 =DL_Flaw2, title ="Test")
+plot_mult(ARMA_1, forecast1 = DL_Flaw3,title = "Test")
 ```
 
 Auch hier schneidet der Durbin-Levinson solide ab, obwohl man beim MA(1) erkennt, dass dieser vor Allem bei den Peaks deutlich ungenauer ist, als bei den anderen beiden Prozessen, was auch mit unserer Theorie aus dem Brockwell übereinstimmt.
@@ -288,11 +288,11 @@ innovation_sim_ARMA_1 <- innovation_prediction(ARMA_1)
 ```
 
 ```{r, fig.width = 7, fig.asp = .5}
-plot_mult(AR_1, innovation_sim_AR_1, "AR(1)")
-plot_mult(AR_2, innovation_sim_AR_2, "AR(2)")
-plot_mult(MA_1, innovation_sim_MA_1, "MA(1)")
-plot_mult(MA_2, innovation_sim_MA_2, "MA(2)")
-plot_mult(ARMA_1, innovation_sim_ARMA_1, "ARMA(1,1)")
+plot_mult(AR_1, innovation_sim_AR_1, title = "AR(1)")
+plot_mult(AR_2, innovation_sim_AR_2, title ="AR(2)")
+plot_mult(MA_1, innovation_sim_MA_1, title ="MA(1)")
+plot_mult(MA_2, innovation_sim_MA_2, title ="MA(2)")
+plot_mult(ARMA_1, innovation_sim_ARMA_1, title ="ARMA(1,1)")
 ```
 Man erkennt hier, dass die Ein-Schritt Prognose den Bewegungen der Zeitreihe folgt, die Ausschläge jedoch nicht so stark sind. Dies liegt daran, dass zur Prognose ein gewichtetes Mittel der Vergangenen Differenzen $\mathbf{X_n} - \mathbf{\hat X_n}$ herangezogen wird, was dazu führt, dass die Prognose tendenziell immer zum Mittelwert strebt. Dieses Verhalten, Bewegungen zu antizipieren, aber zu dämpfen sieht man auch an folgendem Beispiel eines vollständig deterministischen periodischen Prozesses:
 
