@@ -67,7 +67,7 @@ plot_timeseries(arma_groß)
 Die Autokovarianz ist ein Begriff aus der Signalverarbeitung und gibt die Kovarianz einer Funktion bzw. eines Signals mit sich selbst zu einem früheren Zeitpunkt an. Die Funktion gibt also an, wie viel Ähnlichkeit die um eine gewisse Zeitdifferenz verschobene Folge mit der ursprünglichen Folge besitzt. Die Autokovarianz-Funktion ist nach Brockwell et al. (2002) (S. 19) für eine Zeitdifferenz h wie folgt definiert:
 
 $$\gamma_x(h):=COV(X_{t+h},X_t) $$
-Die Funktion *ACF* gibt für eine Zeitreihe $x_{1},...,x_{n}$ die geschätzte Sichtprobenkovarianz für die Zeitdifferenz lag = $0$ bis lag = $n-1$ an. Zusätzlich zur Input Zeitreihe kann die lag-Variable individuell angegeben werden. Es kann also die Anzahl der zurückgegebenen Autokovarianzen gewählt werden. Dafür wird folgende Formel genutzt:
+Da die obige Funktion jedoch nur funktioniert, wenn das Model der Zeitreihe bekannt ist arbeitet unsere Funktion nur mit den gemessenen Daten. Die Funktion *ACF* gibt also für eine Zeitreihe $x_{1},...,x_{n}$ die geschätzte Sichtprobenkovarianz für die Zeitdifferenz lag = $0$ bis lag = $n-1$ an. Zusätzlich zur Input Zeitreihe kann die lag-Variable individuell angegeben werden. Es kann also die Anzahl der zurückgegebenen Autokovarianzen gewählt werden. Dafür wird folgende Formel genutzt:
 
 $$ \hat{\gamma}(h) := n^{-1} \sum_{t=1}^{n-|h|} (x_{t+|h|}-\bar{x})(x_t-\bar{x})$$
 ````{r , fig.width = 7, fig.asp = .5}
