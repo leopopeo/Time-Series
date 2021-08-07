@@ -352,8 +352,8 @@ plot_predic <- function(series, dl, ...){
     ggtitle(...)
 }
 
-raw <- data_hourly$temp[2000:2100]-mean(data_hourly$temp[2000:2100])
-raw_full <- data_hourly$temp[2000:2130]-mean(data_hourly$temp[2000:2130])
+raw <- data_hourly$temp[3700:3800]-mean(data_hourly$temp[3700:3800])
+raw_full <- data_hourly$temp[3700:3830]-mean(data_hourly$temp[3700:3830])
 predic_DL <- DL_prediction(raw,len=30,all=T)
 predic_IN <- ts_predict(raw,steps=30,all=T)
 
