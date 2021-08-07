@@ -199,7 +199,7 @@ Um nun die Genauigkeit des Durbin-Levinson Algorithmus zu überprüfen, plotten 
 ```{r, fig.width = 7, fig.asp = .5}
 
 plot_mult <- function(series, forecast1, forecast2 = NULL,  title = "Zeitreihe"){
-  tbl <- tibble(Series=series, forecast1 = forecast1, forecast2 = forecast2, Lag=1:100)
+  tbl <- tibble(Series=series, forecast1 = forecast1, forecast2 = forecast2, Lag=1:length(series))
   
     a <- ggplot(tbl, aes(x=Lag)) 
     b <- geom_line(aes(y = Series, color = "Series"), size = 0.5, na.rm = T) 
@@ -355,7 +355,7 @@ data_hourly <- as_tibble(read.delim("Luftdaten_stunde_19480101_20201231_05906.tx
                                     sep = ";",
                                     dec = "."))
 
-data_mon <- as_tibble(read.delim("C:/Users/Johannes Schnebel/Documents/Studium/VWL/R Kurs/Time-Series/vignettes/Luftdaten_monat_18810101_20201231_05906.txt",
+data_mon <- as_tibble(read.delim("Luftdaten_monat_18810101_20201231_05906.txt",
                                  header = T,
                                  sep = ";",
                                  dec = "."))
