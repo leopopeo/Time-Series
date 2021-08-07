@@ -221,7 +221,7 @@ plot_mult(series = MA_2, forecast1 = DL4, title = "MA(2)")
 plot_mult(series = ARMA_1, forecast1 = DL5, title = "ARMA(1)")
 ```
 
-Wie man erkennen kann, kann der Durbin-Levinson Algorithmus bereits mit wenigen Inputs sehr gute Vorhersagen treffen, die man insbesondere am AR(1) und ARMA(1) erkennt, was in der Theorie auch übereinstimmt. Bei unserem Beispiel sollte der Innovation Algorithmus besser für die MA-Prozesse geeignet sein, wobei man an den Plots auch erkennt, dass der Durbin-Lveinson Algorithmus gute Vorhersagen trifft. Außerdem verringert sich die Ungenauigkeit des Algorithmus je mehr Input dieser bekommt, was schön zu erkennen ist, da bereits bei 60+ die Vorhersage fast exakt mit der Zeitreihe übereinstimmt.
+Wie man erkennen kann, kann der Durbin-Levinson Algorithmus bereits mit wenigen Inputs sehr gute Vorhersagen treffen, die man insbesondere am AR(1) und ARMA(1) erkennt, was in der Theorie auch übereinstimmt. Auffallend ist außerdem, dass der Durbin-Levinson Algorithmus auch bei unserer MA-Zeitreihe auch sehr passable Vorhersagen erstellt, wofür eigentlich der Innovation besser funktionieren sollte. Außerdem verringert sich die Ungenauigkeit des Algorithmus je mehr Input dieser bekommt, was schön zu erkennen ist, da bereits bei 60+ die Vorhersage fast exakt mit der Zeitreihe übereinstimmt.
 
 Jetzt wollen wir noch überprüfen, wie gut der Algorithmus damit klarkommt, wenn er mit seinen Vorhersagen weiterrechnet. 
 
@@ -251,8 +251,7 @@ plot_mult(ARMA_1, forecast1 = DL_Flaw3,title ="ARMA(1,1)")
 ```
 
 Auch hier schneidet der Durbin-Levinson solide ab, obwohl man beim MA(1) erkennt, dass dieser vor Allem bei den Peaks deutlich ungenauer ist, als bei den anderen beiden Prozessen, was auch mit unserer Theorie aus dem Brockwell übereinstimmt.
-Die Vorhersage ist insbesondere immer flacher und nicht so Spitz wie in unserer tatsächlichen Zeitreihe, was unter anderem damit zusammenhängen kann !!!noch weiterschreiben !!!
-
+Die Vorhersage ist insbesondere immer flacher und nicht so Spitz wie in unserer tatsächlichen Zeitreihe, was unter anderem damit zusammenhängen kann, dass die ACF Funktion selbst starke Peaks erzeugt und der DLA nicht mit dem Rauschen klarkommt, was erklären würde, weswegen er nicht so stark ausschlägt, wie der Innovation Algorithmus.
 
 ## Innovation
 Wir betrachten zunächst die letzten Zeilen und ersten Spalten der Innovationmatrix für den AR(1) und den MA(2) - Prozess.
