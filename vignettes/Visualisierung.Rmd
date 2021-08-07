@@ -352,8 +352,8 @@ plot_predic <- function(series, dl, ...){
     ggtitle(...)
 }
 
-raw <- data[[2]][2000:2100]-mean(data[[2]][2000:2100])
-raw_full <- data[[2]][2000:2130]-mean(data[[2]][2000:2130])
+raw <- data_hourly$temp[2000:2100]-mean(data_hourly$temp[2000:2100])
+raw_full <- data_hourly$temp[2000:2130]-mean(data_hourly$temp[2000:2130])
 predic_DL <- DL_prediction(raw,len=30,all=T)
 predic_IN <- ts_predict(raw,steps=30,all=T)
 
@@ -365,6 +365,6 @@ acf_plot <- ggplot(tibble(ACF=ACF(raw), Lag=seq_along(ACF(raw))), aes(x=Lag, y=A
                 ggtitle("ACF-Plot")
 acf_plot
 ```
-Wir sehen, dass die Vorhersage durch den *DL_predict* einen sehr starken Ausschlag als ersten Wert hat und auch danach die Zeitreihe nicht so gut vorhersagen kann wie die *ts_predict*-Funktion. Dies legt die Vermutung nahe, dass es sich hier ehr um einen MA-Prozess handel. Dies bestätigt auch der entsprechende ACF-Plot, hier sieht ein schnelles Abfallen der Bar-Plots, was typtisch für einen MA-Prozess ist. Wie bereits oben erklärt können erneut die Maxima nicht sehr gut aufgelöst werden, der grobe Trend wird jedoch ganz gut eingehalten. Es lohnt sich also den entsprechenden ACF-Plot anzuschauen um zu entscheiden welche Prediction-Funktion die Daten besser modellieren kann.  
+Wir sehen, dass die Vorhersage durch den *DL_predict* einen sehr starken Ausschlag als ersten Wert hat und auch danach die Zeitreihe nicht so gut vorhersagen kann wie die *ts_predict*-Funktion. Dies legt die Vermutung nahe, dass es sich hier ehr um einen MA-Prozess handel. Dies bestätigt auch der entsprechende ACF-Plot, hier sieht ein schnelles Abfallen der Bar-Plots, was typtisch für einen MA-Prozess ist. Wie bereits oben erklärt können erneut die Maxima nicht sehr gut aufgelöst werden. Es lohnt sich also den entsprechenden ACF-Plot anzuschauen um zu entscheiden welche Prediction-Funktion die Daten besser modellieren kann.  
 
 
