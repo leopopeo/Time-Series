@@ -4,12 +4,14 @@
 \alias{plot_timeseries}
 \title{Time Series Plot}
 \usage{
-plot_timeseries(timeseries, pred = NULL)
+plot_timeseries(timeseries, pred = NULL, title = "Zeitreihe mit Vorhersage")
 }
 \arguments{
 \item{timeseries}{Ein numerischer Vektor als Zeitreihe.}
 
 \item{pred}{Optionaler Vektor einer Vorhersage der Zeitreihe}
+
+\item{...}{Optional}
 }
 \value{
 Plot der Zeitreihe.
