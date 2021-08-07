@@ -350,23 +350,33 @@ Hier haben wir leider nicht das gewünsche Ergbenis erhalten. In der Dokumentati
 ## Reale Daten
 
 ```{r , fig.width = 7, fig.asp = .5}
-data <- as_tibble(read.delim("Luftdaten_stunde_19480101_20201231_05906.txt",
-                             header = T,
-                             sep = ";",
-                             dec = "."))
+data_hourly <- as_tibble(read.delim("Luftdaten_stunde_19480101_20201231_05906.txt",
+                                    header = T,
+                                    sep = ";",
+                                    dec = "."))
 
-data %>% 
+data_mon <- as_tibble(read.delim("C:/Users/Johannes Schnebel/Documents/Studium/VWL/R Kurs/Time-Series/vignettes/Luftdaten_monat_18810101_20201231_05906.txt",
+                                 header = T,
+                                 sep = ";",
+                                 dec = "."))
+
+data_hourly %>%
   select(time = MESS_DATUM, temp = TT_TU) %>%
   filter((abs(temp) < 50) & (2000010100 <= time) ) -> data_hourly
-
-data_hourly %>% 
-  separate(time, sep = 6, into = "date") %>% 
-  group_by(date) %>% 
-  summarise(temp = mean(temp)) -> data_mon
-
+data_mon %>%
+  select(date = MESS_DATUM_BEGINN, temp = MO_TT) %>%
+  filter((abs(temp) < 50) & (20140101 <= date) ) %>%
+  mutate(date = as.Date(as.character(date), "%Y%m%d"))-> data_mon
 
 
-plot_timeseries(data_hourly$temp[3700:3800])
+plot(data_mon, type  = "l")
+
+
+
+
+periodo <- perio(data_mon$temp)
+
+plot_periodogram(periodo, logscale = T)
 ```
 An diesem Plott sehen den groben Tagestemperatur Trend. Die X-Achse ist hier in Stunden und in ungefähr 24 Stunden sehen wir ein Tal (Nacht) und ein Peak (Tag) in den Temperaturdaten. 
 ```{r, fig.width = 7, fig.asp = .5}
