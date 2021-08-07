@@ -367,11 +367,6 @@ data_mon %>%
   select(date = MESS_DATUM_BEGINN, temp = MO_TT) %>%
   filter((abs(temp) < 50) & (20100101 <= date) ) %>%
   mutate(date = as.Date(as.character(date), "%Y%m%d"))-> data_mon
-
-
-periodo <- perio(data_mon$temp)
-
-plot_periodogram(periodo, logscale = T)
 ```
 An diesem Plott sehen den groben Tagestemperatur Trend. Die X-Achse ist hier in Stunden und in ungefähr 24 Stunden sehen wir ein Tal (Nacht) und ein Peak (Tag) in den Temperaturdaten. 
 ```{r, fig.width = 7, fig.asp = .5}
