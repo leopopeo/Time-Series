@@ -370,7 +370,7 @@ data_mon %>%
 ```
 An diesem Plott sehen den groben Tagestemperatur Trend. Die X-Achse ist hier in Stunden und in ungefähr 24 Stunden sehen wir ein Tal (Nacht) und ein Peak (Tag) in den Temperaturdaten. 
 ```{r, fig.width = 7, fig.asp = .5}
-periodo <- perio(data_hourly$temp[3700:3800])
+periodo <- perio(data_mon$temp)
 
 plot_periodogram(periodo, logscale = T)
 ```
