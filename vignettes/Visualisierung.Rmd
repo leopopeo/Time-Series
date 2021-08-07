@@ -23,11 +23,16 @@ library(itsmr)
 Im Folgenden geben wir einige Beispiele und Anwendungen der Funktionen des Pakets *Time Series*. Im ersten Teil werden wir dazu eine Simulationsstudie durchführen und im zweiten Teil auf reale Daten analysieren:
 
 **1. Simulationsstudie**
-  + Autokovarianz-Funktion
-  + Durbin-Levinson Algorithmus
-  + Innovation Prediction
+
+* Autokovarianz-Funktion
+
+* Durbin-Levinson Algorithmus
+
+* Innovation Prediction
 
 **2. Analyse realer Daten**
+
+* Temperaturdaten aus Mannheim
 
  
  
@@ -193,14 +198,17 @@ Um nun die Genauigkeit des Durbin-Levinson Algorithmus zu überprüfen, plotten 
 
 ```{r, fig.width = 7, fig.asp = .5}
 
-plot_mult <- function(series, forecast1, forecast2 = NA_real_,  title = "Zeitreihe"){
+plot_mult <- function(series, forecast1, forecast2 = NULL,  title = "Zeitreihe"){
   tbl <- tibble(Series=series, forecast1 = forecast1, forecast2 = forecast2, Lag=1:100)
   
-    ggplot(tbl, aes(x=Lag)) +
-    geom_line(aes(y = Series, color = "Series"), size = 0.5, na.rm = T) +
-    geom_line(aes(y = forecast1, color = "forecast1"), size = 0.5, na.rm = T) +
-    geom_line(aes(y = forecast2, color = "forecast2")) +
-    ggtitle(title)
+    a <- ggplot(tbl, aes(x=Lag)) 
+    b <- geom_line(aes(y = Series, color = "Series"), size = 0.5, na.rm = T) 
+    c <- geom_line(aes(y = forecast1, color = "forecast1"), size = 0.5, na.rm = T)
+    if(is.null(forecast2)){d <- NULL }
+    else{d <- geom_line(aes(y = forecast2, color = "forecast2"), size = 0.5, na.rm = T)} 
+    e <- ggtitle(title)
+    plt <- a+b+c+d+e
+    plt
 }
 ```
 
@@ -237,9 +245,9 @@ DL_Flaw3 <- DL_Helper_Flaw(ARMA_1)
 ```
 
 ```{r, fig.width = 7, fig.asp = .5}
-plot_mult(AR_1, forecast1 = DL_Flaw1, title = "Test")
-plot_mult(MA_1, forecast1 =DL_Flaw2, title ="Test")
-plot_mult(ARMA_1, forecast1 = DL_Flaw3,title = "Test")
+plot_mult(AR_1, forecast1 = DL_Flaw1, title = "AR(1)")
+plot_mult(MA_1, forecast1 =DL_Flaw2, title ="MA(1)")
+plot_mult(ARMA_1, forecast1 = DL_Flaw3,title ="ARMA(1,1)")
 ```
 
 Auch hier schneidet der Durbin-Levinson solide ab, obwohl man beim MA(1) erkennt, dass dieser vor Allem bei den Peaks deutlich ungenauer ist, als bei den anderen beiden Prozessen, was auch mit unserer Theorie aus dem Brockwell übereinstimmt.
@@ -256,7 +264,6 @@ rownames(M) = 90:99; M
 ```{r}
 M = innovation(MA_2, lag = 99)[90:99,1:6]
 rownames(M) = 90:99; M
-
 ```
 Beim $MA(2)$-Prozess entsprechen die ersten beiden Spalten ungefähr den spezifizierten $MA$-Parametern der Zeitreihe. Der Algorithmus sollte also besonders für die Vorhersage von MA-Prozessen gut geeignet sein.
 
@@ -284,17 +291,16 @@ innovation_sim_AR_2 <- innovation_prediction(AR_2)
 innovation_sim_MA_1 <- innovation_prediction(MA_1)
 innovation_sim_MA_2 <- innovation_prediction(MA_2)
 innovation_sim_ARMA_1 <- innovation_prediction(ARMA_1)
-
 ```
 
 ```{r, fig.width = 7, fig.asp = .5}
 plot_mult(AR_1, innovation_sim_AR_1, title = "AR(1)")
-plot_mult(AR_2, innovation_sim_AR_2, title ="AR(2)")
+plot_mult(AR_2, innovation_sim_AR_2, title = "AR(2)")
 plot_mult(MA_1, innovation_sim_MA_1, title ="MA(1)")
-plot_mult(MA_2, innovation_sim_MA_2, title ="MA(2)")
+plot_mult(MA_2, innovation_sim_MA_2, title = "Ma(2)")
 plot_mult(ARMA_1, innovation_sim_ARMA_1, title ="ARMA(1,1)")
 ```
-Man erkennt hier, dass die Ein-Schritt Prognose den Bewegungen der Zeitreihe folgt, die Ausschläge jedoch nicht so stark sind. Dies liegt daran, dass zur Prognose ein gewichtetes Mittel der Vergangenen Differenzen $\mathbf{X_n} - \mathbf{\hat X_n}$ herangezogen wird, was dazu führt, dass die Prognose tendenziell immer zum Mittelwert strebt. Dieses Verhalten, Bewegungen zu antizipieren, aber zu dämpfen sieht man auch an folgendem Beispiel eines vollständig deterministischen periodischen Prozesses:
+Man erkennt hier, dass die Ein-Schritt Prognose den Bewegungen der Zeitreihe folgt. Komischerweise werden bei unserem Beispiel die AR(1) und die ARMA(1,1)-Zeitreihe besser als die MA-Zeitreihen vorhergesagt. Theoretischer  hätten wir dies genau umgekeht erwartet. Die Ausschläge bei den Extremwerden sind bei der Vorhersage ebenfalls nicht so stark wie bei der tatsächlichen Zeitreihe. Dies liegt daran, dass zur Prognose ein gewichtetes Mittel der Vergangenen Differenzen $\mathbf{X_n} - \mathbf{\hat X_n}$ herangezogen wird, was dazu führt, dass die Prognose tendenziell immer zum Mittelwert strebt. Dieses Verhalten, Bewegungen zu antizipieren, aber zu dämpfen sieht man auch an folgendem Beispiel eines vollständig deterministischen periodischen Prozesses:
 
 ```{r}
 X = sin(1:65)
@@ -302,7 +308,14 @@ forc = ts_predict(X, steps = 30)
 ```
 
 ```{r, fig.width = 7, fig.asp = .5}
+plot_timeseries(X,forc,"Sinus-Funktion mit Vorhersage")
+```
+Für die Übersichtlichkeit wird hier einmal für die simultieren AR(2)-, MA(2)- und  ARMA(1,1)-Zeitreehen die Vorhersage durch den Durbin-Levinson- und durch den Innovation-Algorithmus gegenüber gestellt:
 
+```{r, fig.width = 7, fig.asp = .5}
+plot_mult(AR_1, innovation_sim_AR_1,DL1, title = "AR(1)")
+plot_mult(MA_1, innovation_sim_MA_1,DL3, title = "MA(1)")
+plot_mult(ARMA_1, innovation_sim_ARMA_1,DL5, title = "ARMA(1)")
 ```
 
 
@@ -310,7 +323,6 @@ forc = ts_predict(X, steps = 30)
 Nun wollen wir unseren Innovation Vorhersage mit der bestehenden Funktion "forecast" aus dem Paket "itsmr" (https://mparison <- georgeweigt.github.io/itsmr-refman.pdf, Seite 14) vergleichen:
 
 ```{r}
-
 itsmr_prediction_1 <- forecast(AR_2, #Time series data
                              M = NULL, #Data model
                              a = arma(AR_2, p=10, q=0), #ARMA model
@@ -325,71 +337,45 @@ itsmr_prediction_2 <- forecast(MA_2, #Time series data
                              opt = 0, #Display option (0 silent, 1 tabulate, 2 plot and tabulate)
                              alpha = 1)$pred #Level of significance
 innovation_sim_2 <- ts_predict(MA_2, 10)
-
-# itsmr_prediction <- function(X){
-#    inno_prediction <- rep(NA, length(X))
-# 
-#    for(i in 10:(length(X)-1)){
-#      inno_help <- X[1:i]
-#      inno_prediction[i+1] <- forecast(inno_help,
-#                                       M =NULL,
-#                                       a = arma(inno_help, p = 10, q = 0),
-#                                       h = 1,
-#                                       opt = 0)
-#      }
-#    inno_prediction
-# }
 ```
 
 ```{r , fig.width = 7, fig.asp = .5}
-
-
-
 plot_timeseries(AR_2, itsmr_prediction_1, "AR_2 mit forecast")
 plot_timeseries(AR_2, innovation_sim_1, "AR_2 mit ts_predict" )
 plot_timeseries(MA_2, itsmr_prediction_2, "MA_2 mit forecast")
 plot_timeseries(MA_2, innovation_sim_2, "MA_2 mit ts_predict")
 ```
+Hier haben wir leider nicht das gewünsche Ergbenis erhalten. In der Dokumentation der *forecast*-Funktion steht zwar, das die Funktion ebenfalls den gleichen Innovatoin Algorithmus als Grundlage für die Berechnung benutzt, es ist jedoch trotzdem keine gute Übereinstimmung zwischen unseren Plots und den *forecast*-Plots zu erkennen. 
 
-Wir können zunächst festhalten, dass die "forecast"-Funktion dem Nutzer mehr Parameter zur Verfügung stellt. Mit einer geeigneten Wahl von q und p, welche allerdings vom hier vorliegenden Prozess abweicht, 
+## Reale Daten
 
-
-
-##Reale Daten
-
-```{r}
-data_hourly <- as_tibble(read.delim("Luftdaten_stunde_19480101_20201231_05906.txt",
+```{r , fig.width = 7, fig.asp = .5}
+data <- as_tibble(read.delim("Luftdaten_stunde_19480101_20201231_05906.txt",
                              header = T,
                              sep = ";",
                              dec = "."))
 
-data_mon <- as_tibble(read.delim("Luftdaten_monat_18810101_20201231_05906.txt",
-                             header = T,
-                             sep = ";",
-                            dec = "."))
-                             
-data_hourly %>% 
+data %>% 
   select(time = MESS_DATUM, temp = TT_TU) %>%
-  filter((abs(temp) < 50) & (2000010100 <= time) ) -> data_hourly                                                      
-data_mon %>%
-  select(date = MESS_DATUM_BEGINN, temp = MO_TT) %>%
-  filter((abs(temp) < 50) & (20000101 <= date) ) %>% 
-  mutate(date = as.Date(as.character(date), "%Y%m%d"))-> data_mon
+  filter((abs(temp) < 50) & (2000010100 <= time) ) -> data_hourly
+
+data_hourly %>% 
+  separate(time, sep = 6, into = "date") %>% 
+  group_by(date) %>% 
+  summarise(temp = mean(temp)) -> data_mon
 
 
 
-
-data_hourly
-data_mon
-
-plot(data_mon, type  = "l")
-
-
-periodo <- perio(data_mon$temp)
+plot_timeseries(data_hourly$temp[3700:3800])
+```
+An diesem Plott sehen den groben Tagestemperatur Trend. Die X-Achse ist hier in Stunden und in ungefähr 24 Stunden sehen wir ein Tal (Nacht) und ein Peak (Tag) in den Temperaturdaten. 
+```{r, fig.width = 7, fig.asp = .5}
+periodo <- perio(data_hourly$temp[3700:3800])
 
 plot_periodogram(periodo, logscale = T)
-#periodo
 ```
+Das Periodogramm hätten wir uns eigentlich ein wenig anders vorgestellt. Da der betrachtete Zeitraum eine relativ deutliche wiederkehrende Periode aufweißt hätten wir im Periodogramm einen Peak abseits der Null erwartet. Dies ist leider nicht der Fall.
+
 
 Als nächstes betrachten wir einen kleinen Ausschnitt der Daten und versuchen anhand von 100 Datenwerten die einem gewissen Muster folgen eine Vorhersage zu treffen:
 ```{r, fig.width = 7, fig.asp = .5}
