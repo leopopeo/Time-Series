@@ -333,10 +333,10 @@ data_mon
 plot(data_mon, type  = "l")
 
 
-periodo <- perio(data_daily$temp)
+#periodo <- perio(data_daily$temp)
 
-plot_periodogram(periodo, logscale = T)
-periodo
+#plot_periodogram(periodo, logscale = T)
+#periodo
 ```
 
 Als nächstes betrachten wir einen kleinen Ausschnitt der Daten und versuchen anhand von 100 Datenwerten die einem gewissen Muster folgen eine Vorhersage zu treffen:
