@@ -365,13 +365,8 @@ data_hourly %>%
   filter((abs(temp) < 50) & (2000010100 <= time) ) -> data_hourly
 data_mon %>%
   select(date = MESS_DATUM_BEGINN, temp = MO_TT) %>%
-  filter((abs(temp) < 50) & (20140101 <= date) ) %>%
+  filter((abs(temp) < 50) & (20100101 <= date) ) %>%
   mutate(date = as.Date(as.character(date), "%Y%m%d"))-> data_mon
-
-
-plot(data_mon, type  = "l")
-
-
 
 
 periodo <- perio(data_mon$temp)
@@ -400,18 +395,31 @@ plot_predic <- function(series, dl, ...){
     ggtitle(...)
 }
 
-raw <- data_hourly$temp[3700:3800]-mean(data_hourly$temp[3700:3800])
-raw_full <- data_hourly$temp[3700:3830]-mean(data_hourly$temp[3700:3830])
-predic_DL <- DL_prediction(raw,len=30,all=T)
-predic_IN <- ts_predict(raw,steps=30,all=T)
+raw_1 <- data_hourly$temp[3700:3800]-mean(data_hourly$temp[3700:3800])
+raw_full_1 <- data_hourly$temp[3700:3830]-mean(data_hourly$temp[3700:3830])
+predic_DL_1 <- DL_prediction(raw_1,len=30,all=T)
+predic_IN_1 <- ts_predict(raw_1,steps=30,all=T)
 
-plot_predic(raw_full, predic_DL,"Vorhersage Durbin-Levinson")
-plot_predic(raw_full, predic_IN,"Vorhersage Innovation")
+plot_predic(raw_full_1, predic_DL_1,"Vorhersage Durbin-Levinson")
+plot_predic(raw_full_1, predic_IN_1,"Vorhersage Innovation")
 
-acf_plot <- ggplot(tibble(ACF=ACF(raw), Lag=seq_along(ACF(raw))), aes(x=Lag, y=ACF)) +
+
+raw_2 <- data_mon$temp[1:100]-mean(data_mon$temp[1:100])
+raw_full_2 <- data_mon$temp[1:130]-mean(data_mon$temp[1:130])
+predic_DL_2 <- DL_prediction(raw_2,len=30,all=T)
+predic_IN_2 <- ts_predict(raw_2,steps=30,all=T)
+
+plot_predic(raw_full_2, predic_DL_2,"Vorhersage Durbin-Levinson")
+plot_predic(raw_full_2, predic_IN_2,"Vorhersage Innovation")
+
+acf_plot_2 <- ggplot(tibble(ACF=ACF(raw_2), Lag=seq_along(ACF(raw_2))), aes(x=Lag, y=ACF)) +
                 geom_bar(stat="identity") + 
                 ggtitle("ACF-Plot")
-acf_plot
+acf_plot_1 <- ggplot(tibble(ACF=ACF(raw_1), Lag=seq_along(ACF(raw_1))), aes(x=Lag, y=ACF)) +
+                geom_bar(stat="identity") + 
+                ggtitle("ACF-Plot")
+acf_plot_1
+acf_plot_2
 ```
 Wir sehen, dass die Vorhersage durch den *DL_predict* einen sehr starken Ausschlag als ersten Wert hat und auch danach die Zeitreihe nicht so gut vorhersagen kann wie die *ts_predict*-Funktion. Dies legt die Vermutung nahe, dass es sich hier ehr um einen MA-Prozess handel. Dies bestätigt auch der entsprechende ACF-Plot, hier sieht ein schnelles Abfallen der Bar-Plots, was typtisch für einen MA-Prozess ist. Wie bereits oben erklärt können erneut die Maxima nicht sehr gut aufgelöst werden. Es lohnt sich also den entsprechenden ACF-Plot anzuschauen um zu entscheiden welche Prediction-Funktion die Daten besser modellieren kann.  
 
