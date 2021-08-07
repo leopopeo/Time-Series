@@ -41,18 +41,19 @@ und die Polynome  $1 + \phi_1X + ... + \phi_p X^p$ und $1+ \theta_1X + ... + \th
 
 Hier zunächst einige Beispiele für ARMA-Prozesse.
 
-1. Als erstes sehen wir einen ARMA(1,1)-Prozess mit einer kleinen und einer großen Standartabweichung. Je größer die Standartabweichung ist, desto größer sind die Schwankungen um den Mittelwert. Dieser ist bei uns immer mit 0 festgelegt. Anschaulich betrachtet,  wird also  die Skalierung der y-Achse geändert.
+1. Als erstes sehen wir einen ARMA(1,1)-Prozess mit einer kleinen und einer großen Standartabweichung. Je größer die Standartabweichung ist, desto größer sind die Schwankungen des Rauschterms um den Mittelwert. Dieser ist bei uns immer mit 0 festgelegt.
 Der Plot benutzt dabei die Funktion *plot_timeseries* und erzeugt einen einfachen Linienplot der Zeitreihe. 
 ```{r, fig.width = 7, fig.asp = .5}
 set.seed(3)
 arma_klein <- arma_sim(phi = 0.7, theta=0.3,sd=0.1,I=100)
 plot_timeseries(arma_klein)
 
+set.seed(3)
 arma_groß <- arma_sim(phi = 0.7, theta=0.3,sd=1,I=100)
 plot_timeseries(arma_groß)
 ```
 
-2. Hier sehen wir zuerst einen AR(1)-Prozess mit einem kleinen *Phi*-Wert und anschließend mit einem großen. Man sieht sehr schön, dass der *Phi*-Wert mit Glattheit der Zeitreihe zusammenhängt, je größer der Wert, desto glatter ist die Funktion. Das Gleiche würde  bei einem MA(1)-Prozess mit großen und kleinen *Theta*-Werten passieren.
+2. Hier sehen wir zuerst einen AR(1)-Prozess mit einem kleinen *Phi*-Wert und anschließend mit einem großen. Man sieht hier, dass der *Phi*-Wert mit Glattheit der Zeitreihe zusammenhängt, je größer der Wert, desto glatter ist die Funktion. Das Gleiche passiert bei einem MA(1)-Prozess mit großen und kleinen *Theta*-Werten.
 ```{r, fig.width = 7, fig.asp = .5}
 set.seed(3)
 arma_klein <- arma_sim(phi = 0.3,sd=1,I=100)
@@ -63,7 +64,7 @@ plot_timeseries(arma_groß)
 ```
 
 ## Autokovarianz-Funktion
-Die Autokovarianz ist ein Begriff aus der Signalverarbeitung und gibt die Kovarianz einer Funktion bzw. eines Signals mit sich selbst zu einem früheren Zeitpunkt an. Die Funktion gibt also an, wie viel Ähnlichkeit die um eine gewisse Zeitdifferenz verschobene Folge mit der ursprünglichen Folge besitzt. Die Autokovarianz-Funktion ist nach Brookwell et al. (2002) (S. 19) für eine Zeitdifferenz h wie folgt definiert:
+Die Autokovarianz ist ein Begriff aus der Signalverarbeitung und gibt die Kovarianz einer Funktion bzw. eines Signals mit sich selbst zu einem früheren Zeitpunkt an. Die Funktion gibt also an, wie viel Ähnlichkeit die um eine gewisse Zeitdifferenz verschobene Folge mit der ursprünglichen Folge besitzt. Die Autokovarianz-Funktion ist nach Brockwell et al. (2002) (S. 19) für eine Zeitdifferenz h wie folgt definiert:
 
 $$\gamma_x(h):=COV(X_{t+h},X_t) $$
 Die Funktion *ACF* gibt für eine Zeitreihe $x_{1},...,x_{n}$ die geschätzte Sichtprobenkovarianz für die Zeitdifferenz lag = $0$ bis lag = $n-1$ an. Zusätzlich zur Input Zeitreihe kann die lag-Variable individuell angegeben werden. Es kann also die Anzahl der zurückgegebenen Autokovarianzen gewählt werden. Dafür wird folgende Formel genutzt:
@@ -166,20 +167,20 @@ $$\begin{equation}
 Wir können nun die Koeffizienten $\theta_{n,i}$ rekursiv berechnen. $\kappa(i,j)$ ist dabei die Kovarianz.
 $$
 \begin{aligned}
-&v_{0}=\kappa(1,1), \\
-&\theta_{n, n-k}=v_{k}^{-1}\left(\kappa(n+1, k+1)-\sum_{j=0}^{k-1} \theta_{k, k-j} \theta_{n, n-j} v_{j}\right), \quad 0 \leq k<n,\\
-&\ v_{n}=\kappa(n+1, n+1)-\sum_{j=0}^{n-1} \theta_{n, n-j}^{2} v_{j}
+v_{0} &= \kappa(1,1), \\
+\theta_{n, n-k} &= v_{k}^{-1}\left(\kappa(n+1, k+1)-\sum_{j=0}^{k-1} \theta_{k, k-j} \theta_{n, n-j} v_{j}\right), \quad 0 \leq k<n,\\
+v_{n} &= \kappa(n+1, n+1)-\sum_{j=0}^{n-1} \theta_{n, n-j}^{2} v_{j}
 \end{aligned}
 $$
 (ebd. S.73).
-Die Funktion *innovation(X, lag = n)* berechnet auf diese Weise $\mathbf\Theta_n$, welches wir dann für die Vorhersage mit *ts_predict* verwenden können. Mit dem Parameter *lag*  kann dabei das $n$ gewählt werden, bis zu welchem $\theta_{n,i}$ berechnet wird.
+Die Funktion *innovation(X, lag = n)* berechnet auf diese Weise $\mathbf\Theta_n$, welches wir dann für die Vorhersage mit *ts_predict* verwenden können. Mit dem Parameter *lag* $<$ *length(X)*  kann dabei das $n$ gewählt werden, bis zu welchem $\theta_{n,i}$ berechnet wird.
 ```{r}
 X = arma_sim(theta = c(0.5,0.9),I=5,sd=0.01)
 innovation(X, lag = 4)
 ```
 
 ## Innnovation Prediction
-Obige Gleichung können wir nun auch verwenden, um eine $h$-Schritt-Prognose des Prozesses zu machen. Sei dazu $m$ die Länge der Zeitreihe. Dann berechnen wir mit $\hat X_{m+h}$ eine h-Schritt Prognose. Die Ausgabe von ts_predict ist eine Liste mit den Elementen *X_hat*, der Vektor $\mathbf{\hat X_{m+h}}$ der Länge $m+h$ und *theta*, die Innovation-Matrix $\mathbf{ \Theta_n}$. Die Vorhersage mit dem Innovation-Algorithmus eignet sich besonders gut für $MA(q)$-Prozesse mit kleinem $q$. Hier wird die *ts_predict*-Funktion auf einen MA(2)-Prozess angewendet:
+Obige Gleichung können wir nun auch verwenden, um eine $h$-Schritt-Prognose des Prozesses zu machen. Sei dazu $m$ die Länge der Zeitreihe. Dann berechnen wir mit $\hat X_{m+h}$ eine h-Schritt Prognose. Die Ausgabe von ts_predict ist per Default der Vektor $(\hat X_{m+1},..., \hat X_{m+h})$ der Länge $h$ mit den Prognosewerten. Wird *all = TRUE* gesetzt wir der gesamte Vektor $\mathbf{\hat X_{m+h}}$ ausgegeben. Die Vorhersage mit dem Innovation-Algorithmus eignet sich besonders gut für $MA(q)$-Prozesse mit kleinem $q$. Hier wird die *ts_predict*-Funktion auf einen $MA(2)$-Prozess angewendet:
 
 
 ```{r, fig.width = 7, fig.asp = .5}
@@ -193,7 +194,7 @@ plot_timeseries(X, pred = X_hat)
 
 
 ## Periodogramm
-Das Periodogramm einer Zeitreihe $\{x_1,...,x_n\}$ ist deren Spektraldichte. Die Definition ist dabei nach Brockwell et al. (2002) (S.123):
+Das Periodogramm einer Zeitreihe $(X_1,...,X_n)$ ist deren Spektraldichte. Die Definition ist dabei nach Brockwell et al. (2002) (S.123):
 $$
 I_n(\lambda)=\frac{1}{n} \Bigg| \sum \limits_{t=1}^{n}x_{t}e^{-it\lambda} \Bigg| ^2
 $$
@@ -207,7 +208,7 @@ Die Folge ${a_k}$ ist die diskrete Fouriertransformation der Zeitreihe und berec
 $$
 a_k=\frac{1}{\sqrt{n}}\sum \limits_{t=1}^{n}x_t e^{-it\omega_k}
 $$
-Die *perio* implementiert nun den Periodogramm-Algorithmus und gibt für die $\omega$ im oben definierten Intervall den Wert $I_n(\lambda)$ zurück.
+Die Funktion *perio* implementiert nun den Periodogramm-Algorithmus und gibt für die $\omega$ im oben definierten Intervall den Wert $I_n(\lambda)$ zurück.
 Der folgende Code veranschaulicht dies:
 
 ```{r, fig.width = 7, fig.asp = .5}
