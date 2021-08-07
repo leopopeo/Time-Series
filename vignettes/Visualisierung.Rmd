@@ -345,9 +345,11 @@ plot_timeseries(AR_2, innovation_sim_1, "AR_2 mit ts_predict" )
 plot_timeseries(MA_2, itsmr_prediction_2, "MA_2 mit forecast")
 plot_timeseries(MA_2, innovation_sim_2, "MA_2 mit ts_predict")
 ```
-Hier haben wir leider nicht das gewünsche Ergbenis erhalten. In der Dokumentation der *forecast*-Funktion steht zwar, das die Funktion ebenfalls den gleichen Innovatoin Algorithmus als Grundlage für die Berechnung benutzt, es ist jedoch trotzdem keine gute Übereinstimmung zwischen unseren Plots und den *forecast*-Plots zu erkennen. 
+Hier haben wir leider nicht das gewünsche Ergbenis erhalten. In der Dokumentation der *forecast*-Funktion steht zwar, das die Funktion ebenfalls den gleichen Innovatoin Algorithmus als Grundlage für die Berechnung benutzt, es ist jedoch trotzdem keine gute Übereinstimmung zwischen unseren Plots und den *forecast*-Plots zu erkennen. Die Spezifizierung des ARMA-Modells in der *forecast*-Funktion weicht hier vom generierten Prozess ab, jedoch wird das Ergebnis der forecast-Funktion mit anderen Werten für *p* und *q*  noch schlechter. 
 
 ## Reale Daten
+
+Da Temperaturdaten eine starke saisonale Komponente haben eignen sich diese gut für eine Analyse mit einem *ARMA*-Modell. Wir analysieren im Folgenden Temperaturdaten des DWD für Mannheim, einmal auf stündlicher und einmal auf monatlicher Basis.
 
 ```{r , fig.width = 7, fig.asp = .5}
 data_hourly <- as_tibble(read.delim("Luftdaten_stunde_19480101_20201231_05906.txt",
@@ -367,17 +369,20 @@ data_mon %>%
   select(date = MESS_DATUM_BEGINN, temp = MO_TT) %>%
   filter((abs(temp) < 50) & (20100101 <= date) ) %>%
   mutate(date = as.Date(as.character(date), "%Y%m%d"))-> data_mon
+
+
+plot(data_mon, type = "l",main = "Monatliche Daten")
 ```
-An diesem Plott sehen den groben Tagestemperatur Trend. Die X-Achse ist hier in Stunden und in ungefähr 24 Stunden sehen wir ein Tal (Nacht) und ein Peak (Tag) in den Temperaturdaten. 
 ```{r, fig.width = 7, fig.asp = .5}
-periodo <- perio(data_mon$temp)
-
+periodo <- perio((data_mon$temp)-mean(data_mon$temp))
+periodo[67] = 0.1 #f(0) = 7e-30 -> stark verzerrter Plot
 plot_periodogram(periodo, logscale = T)
+
 ```
-Das Periodogramm hätten wir uns eigentlich ein wenig anders vorgestellt. Da der betrachtete Zeitraum eine relativ deutliche wiederkehrende Periode aufweißt hätten wir im Periodogramm einen Peak abseits der Null erwartet. Dies ist leider nicht der Fall.
+Hier sehen wir ein Periodogramm für die um den Mittelwert bereinigten Monatsdaten. Der Peak der jährlichen Periode ist eindeutig zu erkennen (beachte die Logarithmische Skala).
 
 
-Als nächstes betrachten wir einen kleinen Ausschnitt der Daten und versuchen anhand von 100 Datenwerten die einem gewissen Muster folgen eine Vorhersage zu treffen:
+Als nächstes betrachten wir einen kleinen Ausschnitt der Daten und versuchen anhand von 100 Datenwerten eine Vorhersage zu treffen.
 ```{r, fig.width = 7, fig.asp = .5}
 plot_predic <- function(series, dl, ...){
   len <- length(series)
@@ -390,32 +395,47 @@ plot_predic <- function(series, dl, ...){
     ggtitle(...)
 }
 
+
 raw_1 <- data_hourly$temp[3700:3800]-mean(data_hourly$temp[3700:3800])
 raw_full_1 <- data_hourly$temp[3700:3830]-mean(data_hourly$temp[3700:3830])
 predic_DL_1 <- DL_prediction(raw_1,len=30,all=T)
 predic_IN_1 <- ts_predict(raw_1,steps=30,all=T)
-
-plot_predic(raw_full_1, predic_DL_1,"Vorhersage Durbin-Levinson")
-plot_predic(raw_full_1, predic_IN_1,"Vorhersage Innovation")
-
 
 raw_2 <- data_mon$temp[1:100]-mean(data_mon$temp[1:100])
 raw_full_2 <- data_mon$temp[1:130]-mean(data_mon$temp[1:130])
 predic_DL_2 <- DL_prediction(raw_2,len=30,all=T)
 predic_IN_2 <- ts_predict(raw_2,steps=30,all=T)
 
-plot_predic(raw_full_2, predic_DL_2,"Vorhersage Durbin-Levinson")
-plot_predic(raw_full_2, predic_IN_2,"Vorhersage Innovation")
 
-acf_plot_2 <- ggplot(tibble(ACF=ACF(raw_2), Lag=seq_along(ACF(raw_2))), aes(x=Lag, y=ACF)) +
-                geom_bar(stat="identity") + 
-                ggtitle("ACF-Plot")
 acf_plot_1 <- ggplot(tibble(ACF=ACF(raw_1), Lag=seq_along(ACF(raw_1))), aes(x=Lag, y=ACF)) +
                 geom_bar(stat="identity") + 
                 ggtitle("ACF-Plot")
+acf_plot_2 <- ggplot(tibble(ACF=ACF(raw_2), Lag=seq_along(ACF(raw_2))), aes(x=Lag, y=ACF)) +
+                geom_bar(stat="identity") + 
+                ggtitle("ACF-Plot")
+
+```
+
+Im Folgenden sehen wir zunächst für die stündlichen Werte neben der Zeitreihe (blau) je eine Vorhersage für *t=101* bis *t=131* mit dem Durbin-Levinson Algorithmus und dem Innovation-Algorithmus (rot).
+```{r, fig.width = 7, fig.asp = .5}
+
+
+plot_predic(raw_full_1, predic_DL_1,"Vorhersage Durbin-Levinson")
+plot_predic(raw_full_1, predic_IN_1,"Vorhersage Innovation")
+```
+Während die Vorhersage des Durbin-Levinson-Algorithmus stark von den realisierten Werten abweicht, entspricht die Vorhersage des Innovation-Algorithmus vor allem in den ersten Schritten sehr gut den realisierten Werten. 
+
+Betrachten wir nun die selbe Vorhersagen für die Monatsdaten.
+```{r, fig.width = 7, fig.asp = .5}
+plot_predic(raw_full_2, predic_DL_2,"Vorhersage Durbin-Levinson")
+plot_predic(raw_full_2, predic_IN_2,"Vorhersage Innovation")
+```
+Hier geht die Vorhersage mit Durbin-Levinson schnell gegen den Mittelwert, ohne die Schwankungen zu antizipieren. Im Gegensatz dazu erkennt der Innovation-Algorithmus das Periodische Verhalten der Temperaturschwankungen deutlich besser.
+
+In beiden Beispielen liefert der Innovation-Algorithmus eine bessere Vorhersage als der Durbin-Levinson-Algorithmus. Dies legt die Vermutung nahe, dass es sich hier eher um einen MA-Prozess handelt. Die entsprechenden ACF-Plots bestätigen dies. 
+```{r, fig.width = 7, fig.asp = .5}
 acf_plot_1
 acf_plot_2
 ```
-Wir sehen, dass die Vorhersage durch den *DL_predict* einen sehr starken Ausschlag als ersten Wert hat und auch danach die Zeitreihe nicht so gut vorhersagen kann wie die *ts_predict*-Funktion. Dies legt die Vermutung nahe, dass es sich hier ehr um einen MA-Prozess handel. Dies bestätigt auch der entsprechende ACF-Plot, hier sieht ein schnelles Abfallen der Bar-Plots, was typtisch für einen MA-Prozess ist. Wie bereits oben erklärt können erneut die Maxima nicht sehr gut aufgelöst werden. Es lohnt sich also den entsprechenden ACF-Plot anzuschauen um zu entscheiden welche Prediction-Funktion die Daten besser modellieren kann.  
-
+Man erkennt das starke Fallen der ACF mit dem lag, was typtisch für einen MA-Prozess ist. Wie bereits oben erklärt können erneut die Maxima nicht sehr gut aufgelöst werden. Es lohnt sich also den entsprechenden ACF-Plot anzuschauen um zu entscheiden welche Prediction-Funktion die Vorhersage besser schätzen kann.  
 
