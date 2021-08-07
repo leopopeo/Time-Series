@@ -4,6 +4,7 @@
 #'
 #'@param timeseries Ein numerischer Vektor als Zeitreihe.
 #'@param pred Optionaler Vektor einer Vorhersage der Zeitreihe
+#'@param ...  Optional
 #'@return Plot der Zeitreihe.
 #'@examples
 #' #Erstelle eine Zeitreihe
@@ -13,11 +14,12 @@
 #'@export
 
 #Neu von Niklas, oberer hat bei mir nicht funktioniert??
-plot_timeseries <- function(timeseries, pred = NULL){
+plot_timeseries <- function(timeseries, pred = NULL, title = "Zeitreihe mit Vorhersage"){
   #Eingabe ueberpruefen
   stopifnot("Der Eingabevektor timeseries ist nicht numerisch." = is.numeric(timeseries))
   stopifnot("Der Vektor timeseries muss wenigstens die Laenge 1 haben." = length(timeseries) > 0)
   stopifnot("Der Eingabevektor pred ist nicht numerisch oder NULL." = (is.numeric(pred) | is.null(pred)))
+  stopifnot("title muss ein character-Vektor der Länge 1 sein" = is.character(title) & length(title) == 1)
   if (is.null(pred)){
     #Timeseries plotten
     tibble2plot <- tibble::tibble(Wert = timeseries, Zeit = seq_along(timeseries))
@@ -25,7 +27,9 @@ plot_timeseries <- function(timeseries, pred = NULL){
     lay <- ggplot2::geom_line(color="#6a93b0")
     point <- ggplot2::geom_point(color="black")
     labs <- ggplot2::ggtitle("Zeitreihe")
-    plt <- plt_base + lay + labs + point + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5,size=15))
+    title = ggplot2::ggtitle(title)
+    theme <- ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5,size=15))
+    plt <- plt_base + lay + labs + point + title + theme
     plt
   }
   else{
@@ -44,8 +48,9 @@ plot_timeseries <- function(timeseries, pred = NULL){
     lay2 <- ggplot2::geom_line(ggplot2::aes(colour = factor(Group)))
     point <- ggplot2::geom_point(data=tibble2plot, ggplot2::aes(x=Zeit,y=Wert))
     labs <- ggplot2::labs(colour = "")
-    title <- ggplot2::ggtitle("Zeitreihe mit Vorhersage")
-    plt <- plt_base + lay1 + lay2 + title + labs + point + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5,size=15))
+    title <- ggplot2::ggtitle(title)
+    theme <- ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5,size=15))
+    plt <- plt_base + lay1 + lay2 + title + labs + point + theme
     plt
   }
 }

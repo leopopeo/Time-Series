@@ -34,10 +34,9 @@ arma_sim <- function(phi = 0, theta = 0, sd=1, I){
 
   # phi
   stopifnot("Phi muss ein numerischer Vektor oder NULL sein." = is.numeric(phi) | is.null(phi))
-
+  stopifnot("AR-Teil muss stationaer sein." = sum(phi) < 1)
   # theta
   stopifnot("Theta muss ein numerischer Vektor oder NULL sein." = is.numeric(theta) | is.null(theta))
-
   # sd
   stopifnot("Die Standardabweichung sd muss ein numerischer Vektor der Länge 1 sein." = length(sd) == 1 & is.numeric(sd))
 

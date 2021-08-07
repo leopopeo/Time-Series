@@ -2,7 +2,7 @@ test_that("Eingabe testen", {
   #Phi
   expect_error(arma_sim(phi=c("a"),sd=1,I=100), "Phi muss ein numerischer Vektor oder NULL sein.")
   expect_error(arma_sim(phi=NA,sd=1,I=100), "Phi muss ein numerischer Vektor oder NULL sein.")
-
+  expect_error(arma_sim(phi = 10, sd = 1, I = 100), "AR-Teil muss stationaer sein.")
   #Theta
   expect_error(arma_sim(theta=c("a"),sd=1,I=100), "Theta muss ein numerischer Vektor oder NULL sein.")
   expect_error(arma_sim(theta=NA,sd=1,I=100), "Theta muss ein numerischer Vektor oder NULL sein.")
