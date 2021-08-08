@@ -20,7 +20,7 @@ library(tidyverse)
 library(ggplot2)
 library(itsmr)
 ```
-Im Folgenden geben wir einige Beispiele und Anwendungen der Funktionen des Pakets *Time Series*. Im ersten Teil werden wir dazu eine Simulationsstudie durchführen und im zweiten Teil auf reale Daten analysieren:
+Im Folgenden geben wir einige Beispiele und Anwendungen der Funktionen des Pakets *Time Series* an. Im ersten Teil werden wir dazu eine Simulationsstudie durchführen und im zweiten Teil reale Daten analysieren:
 
 **1. Simulationsstudie**
 
@@ -37,15 +37,15 @@ Im Folgenden geben wir einige Beispiele und Anwendungen der Funktionen des Paket
  
  
 # Simulationsstudie
-In dieser kurzen Simulationsstudio werden die Fähigkeiten des Paketes durch kleine Veränderungen der Parameter veranschaulicht. 
+In dieser Simulationsstudio werden die Fähigkeiten des Paketes durch kleine Veränderungen der Funktions-Parameter veranschaulicht. 
 
 ## Autokovarianz-Funktion
 
-In diesem Teil soll die Funktion *acf* getestet werden. Dazu wird ein AR(1)-Prozess mithilfe der Funktion *arma_sim* simuliert. Für diesen Prozess ist es leicht möglich die "wahre" theoretische Autokovarianz-Funktion zu berechnen.
+In diesem Teil soll die Funktion *acf* getestet werden. Dazu wird ein AR(1)-Prozess mithilfe der Funktion *arma_sim* simuliert. Für diesen Prozess ist es leicht möglich die "wahre", theoretische Autokovarianz-Funktion zu berechnen.
 
 ### Theoretische ACF eines AR(1)-Prozesses
 
-Wir nehmen an, dass die Zeitreihe der folgenden Vorraussetztung genügt, wobei $\epsilon$ "white noise" ist:
+Wir nehmen an, dass die Zeitreihe der folgenden Vorraussetzung genügt, wobei $\epsilon$ "white noise" ist:
 
 $$
 X_t=\phi X_{t-1}+\epsilon_t
@@ -61,6 +61,7 @@ $$
 \gamma(h)=Cov(X_{t},X_{t-h})=Cov(\phi X_{t-1},X_{t-h})+Cov(\epsilon_t,X_{t-h})=\phi\gamma(h-1)+0=... = \phi^h \gamma(0)
 $$
 Es gilt also:
+
 $$
 \gamma(1)=Cov(X_{t},X_{t-1})=...=\phi \gamma_0
 $$
@@ -93,7 +94,7 @@ Es ist die typische langsam abflachende Autokovarianzfunktion eines AR(1) zu erk
 
 ### Vergleich von theoretischer mit geschätzter ACF
 
-Wir simulieren nun Daten mit oben beschriebenen Eigenschaften und schätzen die ACF-Werte ab. Wir wollen testen, wie sich die Zeitreihe mit unterschiedlichen Längen verhält. Dabei wollen wir untersuchen ab welcher Stichprobengröße sich der geschätze ACF-Wert dem theoretischen ACF annähert und betrachten dabei jeweils die ersten 50 Werte. Wir erstellen dafür eine Funktion, welche die simulierten ACFs zusammen mit den theoretischen plottet. 
+Wir simulieren nun Daten mit den oben beschriebenen Eigenschaften und schätzen die ACF-Werte ab. Dafür testen wir, wie sich die Zeitreihe mit unterschiedlichen Längen verhält. Dabei wollen wir untersuchen, ab welcher Stichprobengröße sich der geschätze ACF-Wert dem theoretischen ACF annähert und betrachten dabei jeweils die ersten 50 Werte. Wir erstellen dafür eine Funktion, welche die simulierten ACFs zusammen mit den theoretischen plottet. 
 
 ```{r , fig.width = 7, fig.asp = .5}
 set.seed(13)
@@ -149,12 +150,11 @@ acf_diff_plot <- function(n){
 #acf_diff_plot(100)
 ```
 
-
-Der obige Vergleich zeigt deutlich, dass sich die geschätzte ACF der theoretischen ACF des AR(1)-Prozesses bei größerer Länge annähert. Die Übereinstiummung nimmt bis zu einer Länge der AR(1)-Reihe von 1000 sichtbar zu. Ab diesem Zeitpunkt oszilliert die Differenz auf erstaunlicherweise relativ hohem Niveau. Wir nehmen an, dass diese Oszillation durch den zugrundeliegenden Zufallsprozess erzeugt wird.  
+Der obige Vergleich zeigt deutlich, dass sich die geschätzte ACF der theoretischen ACF des AR(1)-Prozesses bei größerer Länge annähert. Die Übereinstiummung nimmt bis zu einer Länge der AR(1)-Reihe von 1000 sichtbar zu. Ab diesem Zeitpunkt oszilliert die Differenz erstaunlicherweise auf relativ hohem Niveau. Wir nehmen an, dass diese Oszillation durch den zugrundeliegenden Zufallsprozess erzeugt wird.  
 
 ## Durbin-Levinson Algorithmus
 
-In diesem Abschnitt befassen wir uns etwas näher mit dem Durbin-Levinson Algorithmus und wollen uns seiner Vorhersagen bezüglich der ARMA-Zeitreihen anschauen und auch, welchen Einfluss die Parameter $\phi$ und $\theta$ haben und für welche Zeitreihen der Durbin-Levinson Algorithmus aussagekräftig ist. Hierfür erstellen wir eine Prediciton-Funktion, welche uns für die vorherigen $n$ Werte den $n+1$ Wert vorhersagt:
+In diesem Abschnitt befassen wir uns mit dem Durbin-Levinson Algorithmus und wollen uns seiner Vorhersagen bezüglich der ARMA-Zeitreihen anschauen. Außerdem analyisieren wir, welchen Einfluss die Parameter $\phi$ und $\theta$ haben und für welche Zeitreihen der Durbin-Levinson Algorithmus sich besonders gut eignet. Hierfür erstellen wir eine Prediciton-Funktion, welche uns für die vorherigen $n$ Werte den $n+1$ Wert vorhersagt:
 
 ```{r}
 DL_Helper <- function(X){
@@ -170,8 +170,8 @@ DL_Helper <- function(X){
 }
 ```
 
-Nun simulieren wir Daten mit verschiedenen Eigenschaften und beobachten, welche Auswirkungen die $\phi$ und $\theta$ bei gleichbleibender Stichprobengröße haben und für welche Zeitreihen der DLA akkurat ist.
-Hierfür betrachten wir uns sowohl AR(1) und AR(2), als auch MA(1), MA(2) und ARMA(1)-Zeitreihen:
+Nun simulieren wir Daten mit verschiedenen Eigenschaften und beobachten, welche Auswirkungen sich bei der Änderung der $\phi$ und $\theta$ bei gleichbleibender Stichprobengröße ergeben und für welche Zeitreihen der DLA akkurat ist.
+Hierfür betrachten wir AR(1), AR(2), MA(1), MA(2) und ARMA(1)-Zeitreihen:
 
 ```{r}
 set.seed(42)
@@ -184,7 +184,7 @@ ARMA_1 <- arma_sim(phi = 0.6, theta = 0.4, sd = 0.1, I = 100)
 
 ```
 
-Im folgenden berechnen wir nun die Vorhersagen der gegebenen ARMA-Zeitreihen, anhand des DL Algorithmus:
+Im folgenden berechnen wir die Vorhersagen der gegebenen ARMA-Zeitreihen anhand des DL Algorithmus:
 
 ```{r}
 DL1 <- DL_Helper(AR_1)
@@ -196,6 +196,7 @@ DL5 <- DL_Helper(ARMA_1)
 
 Wir betrachten im folgenden immer Ein-Schritt-Prognosen.
 Zur Beurteilung der Vorhersagegüte ziehen wir den $MSE$ heran, welcher definiert ist als 
+
 $$
 MSE(X,\hat X) := \frac{1}{n}\sum_{i = 1}^{n} (X_i - \hat X_i)^2.
 $$
@@ -235,9 +236,9 @@ MSE(ARMA_1[-(1:9)], DL5[-(1:9)])
 plot_mult(series = ARMA_1, forecast1 = DL5, title = "ARMA(1)")
 ```
 
-Wie man bereits optisch erkennt, kann der Durbin-Levinson Algorithmus bereits mit wenigen Inputs sehr gute Vorhersagen treffen. Der $MSE = 4.88e-3$ ist beim $AR(2)$ Prozess am größten, bei den anderen liegt er sehr nahe beieinander. Die beste Vorhersage nach $MSE$ liefert der Durbin-Levinson-Algorithmus beim $MA(2)$-Prozess mit $MSE = 1.78e-3$. Auffallend ist, dass der Durbin-Levinson Algorithmus entgegen unseren Erwartungen für die $MA$-Prozesse besser ist als für die $AR$-Prozesse. Außerdem verringert sich die Ungenauigkeit des Algorithmus je mehr Input dieser bekommt, was schön zu erkennen ist, da bereits bei 60+ die Vorhersage fast exakt mit der Zeitreihe übereinstimmt.
+Die Plots verdeutlichen, dass der Durbin-Levinson Algorithmus bereits mit wenigen Inputs sehr gute Vorhersagen trifft. Der $MSE = 4.88e-3$ ist beim $AR(2)$ Prozess am größten, bei den anderen liegt er sehr nahe beieinander. Die beste Vorhersage nach $MSE$ liefert der Durbin-Levinson-Algorithmus beim $MA(2)$-Prozess mit $MSE = 1.78e-3$. Auffallend ist, dass der Durbin-Levinson Algorithmus entgegen unseren Erwartungen für die $MA$-Prozesse besser ist als für die $AR$-Prozesse. Außerdem verringert sich die Ungenauigkeit des Algorithmus, je mehr Input dieser bekommt. Die ist schön zu erkennen, da bereits bei 60+ die Vorhersage fast exakt mit der Zeitreihe übereinstimmt.
 
-Jetzt wollen wir noch überprüfen, wie gut der Algorithmus damit klarkommt, wenn er mit seinen Vorhersagen weiterrechnet. 
+Jetzt wollen wir noch überprüfen, welche Ergebnisse der Algorithmus liefert, wenn er mit seinen Vorhersagen weiterrechnet. 
 
 ```{r}
 DL_Helper_Flaw <- function(X){
@@ -266,11 +267,13 @@ plot_mult(MA_1, forecast1 =DL_Flaw2, title ="MA(1)")
 MSE(ARMA_1[-(1:9)], DL_Flaw3[-(1:9)])
 plot_mult(ARMA_1, forecast1 = DL_Flaw3,title ="ARMA(1,1)")
 ```
-Auch hier ist der $MSE$ beim $MA(1)$-Prozess mit $2.00e-3$ am geringsten. Obwohl er optisch die Peaks nicht so gut erfasst wie beim $AR(1)$-Prozess. Die Vorhersage ist insbesondere immer flacher und nicht so Spitz wie in unserer tatsächlichen Zeitreihe, was unter anderem damit zusammenhängen kann, dass die ACF Funktion selbst starke Peaks erzeugt und der DLA nicht mit dem Rauschen klarkommt, was erklären würde, weswegen er nicht so stark ausschlägt, wie der Innovation Algorithmus. Der deutlich größere $MSE$ beim $ARMA(1,1)$-Prozess wird vermutlich hauptsächlich durch den großen Vorhersagefehler bei ca. *Lag = 40* verursacht. 
+
+Auch hier ist der $MSE$ beim $MA(1)$-Prozess mit $2.00e-3$ am geringsten. Obwohl er optisch die Peaks nicht so gut erfasst, wie beim $AR(1)$-Prozess. Die Vorhersage ist insbesondere immer flacher und nicht so spitz wie in unserer tatsächlichen Zeitreihe. Das hängt unter anderem damit zusammen, dass die ACF Funktion selbst starke Peaks erzeugt und der DLA nicht mit dem Rauschen klarkommt. Folglich schlägt der DLA nicht so stark aus, wie der Innovation Algorithmus. Der deutlich größere $MSE$ beim $ARMA(1,1)$-Prozess wird hauptsächlich durch den großen Vorhersagefehler bei ca. *Lag = 40* verursacht. 
 
 
 ## Innovation
 Wir betrachten zunächst die letzten Zeilen und ersten Spalten der Innovationmatrix für den AR(1) und den MA(2) - Prozess.
+
 ```{r}
 M = innovation(AR_1, lag = 99)[90:99,1:6]
 rownames(M) = 90:99; M
@@ -280,13 +283,14 @@ rownames(M) = 90:99; M
 M = innovation(MA_2, lag = 99)[90:99,1:6]
 rownames(M) = 90:99; M
 ```
-Beim $MA(2)$-Prozess entsprechen die ersten beiden Spalten ungefähr den spezifizierten $MA$-Parametern der Zeitreihe. Der Algorithmus sollte also besonders für die Vorhersage von MA-Prozessen gut geeignet sein.
+
+Beim $MA(2)$-Prozess entsprechen die ersten beiden Spalten ungefähr den spezifizierten $MA$-Parametern der Zeitreihe. Der Algorithmus sollte also besonders gut für die Vorhersage von MA-Prozessen geeignet sein.
 
 ## Innovation Prediction
 
 Dieser Abschnitt veranschaulicht die Vorhersagegenauigkeit des Innovation Algorithmus. Um einen Vergleich mit dem Durbin-Levinson Algortihmus zu gewährleisten, nutzen wir die analoge Methodik, sowie die selben Zeitreihen, wie oben:
 
-Hierfür erstellen wir eine Prediciton-Funktion, welche uns für die vorherigen $n$ Werte den $n+1$ Wert vorhersagt:
+Hierfür erstellen wir eine Prediciton-Funktion, welche uns für die vorherigen $n$ Werte den $n+1.$ Wert vorhersagt:
 
 ```{r}
 innovation_prediction <- function(X){
@@ -325,8 +329,9 @@ plot_mult(MA_2, innovation_sim_MA_2, title = "MA(2)")
 MSE(ARMA_1[-(1:10)], innovation_sim_ARMA_1[-(1:10)])
 plot_mult(ARMA_1, innovation_sim_ARMA_1, title ="ARMA(1,1)")
 ```
-Zunächst können wir festhalten, dass die Ein-Schritt-Prognose mit dem Innovation-Algorithmus für alle Prozesse einen größeren $MSE$ liefert als mit Durbin-Levinson.
-Bei den $MA$-Prozessen ist der $MSE$ geringer als bei den Prozessen mit $AR$-Anteil. Dies entspricht auch nach Brockwell unseren Erwartungen. Die Ausschläge bei den Extremwerden sind bei der Vorhersage ebenfalls nicht so stark wie bei der tatsächlichen Zeitreihe. Dies liegt daran, dass zur Prognose ein gewichtetes Mittel der Vergangenen Differenzen $\mathbf{X_n} - \mathbf{\hat X_n}$ herangezogen wird, was dazu führt, dass die Prognose tendenziell immer zum Mittelwert strebt. Dieses Verhalten der Vorhersage mit Innovation, Bewegungen zu antizipieren, aber zu dämpfen, sieht man besonders gut an folgendem Beispiel eines vollständig deterministischen periodischen Prozesses:
+
+Zunächst können wir festhalten, dass die Ein-Schritt-Prognose des Innovation-Algorithmus für alle Prozesse einen größeren $MSE$ liefert als mit Durbin-Levinson.
+Bei den $MA$-Prozessen ist der $MSE$ geringer als bei den Prozessen mit $AR$-Anteil. Dies entspricht auch nach Brockwell unseren Erwartungen. Die Ausschläge der Extremwerte sind bei der Vorhersage ebenfalls nicht so stark, wie bei der tatsächlichen Zeitreihe. Dies liegt daran, dass zur Prognose ein gewichtetes Mittel der vergangenen Differenzen $\mathbf{X_n} - \mathbf{\hat X_n}$ herangezogen wird, was dazu führt, dass die Prognose tendenziell immer zum Mittelwert strebt. Dieses Verhalten der Vorhersage des Innovation Algorithmus, Bewegungen zu antizipieren, aber zu dämpfen, sieht man besonders gut an folgendem Beispiel eines vollständig deterministischen, periodischen Prozesses:
 
 ```{r}
 X = sin(1:65)
@@ -336,7 +341,8 @@ forc = ts_predict(X, steps = 30)
 ```{r, fig.width = 7, fig.asp = .5}
 plot_timeseries(X,forc,"Sinus-Funktion mit Vorhersage")
 ```
-Zur Übersicht stellen wir hier noch einmal für den $AR(1)$-, $MA(1)$- und  $ARMA(1,1)$-Prozess jeweils die Vorhersage mit dem Durbin-Levinson- und dem Innovation-Algorithmus sowie die jeweilgen $MSE$s gegenüber.
+
+Zur besseren Übersichtlichkeit stellen wir hier für die$AR(1)$-, $MA(1)$- und  $ARMA(1,1)$-Prozesse die Vorhersage des Durbin-Levinson- und des Innovation-Algorithmus sowie die $MSE$s gegenüber.
 
 ```{r, fig.width = 7, fig.asp = .5}
 MSE(AR_1[-(1:10)], innovation_sim_AR_1[-(1:10)])
@@ -352,11 +358,10 @@ MSE(ARMA_1[-(1:10)], DL5[-(1:10)])
 plot_mult(ARMA_1, innovation_sim_ARMA_1,DL5, title = "ARMA(1)")
 ```
 
+Nun wollen wir unseren Innovation-Vorhersage mit der bestehenden Funktion "forecast" aus dem Paket "itsmr" (https://mparison <- georgeweigt.github.io/itsmr-refman.pdf, Seite 14) vergleichen:
+Zunächst betrachten wir das Ergebnis einer Ein-Schritt-Prognose der forecast-Funktion mit unserer ts_predict-Funktion eines $MA(1)$-Prozesses.
+Der kleine $MSE$ von $9.73e-3$ ist bei der *forecast*-Prognose nur geringfügig kleiner als bei unserer Funktion *ts_predict* ($MSE = 10.8e-3$).
 
-
-Nun wollen wir unseren Innovation Vorhersage mit der bestehenden Funktion "forecast" aus dem Paket "itsmr" (https://mparison <- georgeweigt.github.io/itsmr-refman.pdf, Seite 14) vergleichen:
-Zunächst einmal betrachten wir das Ergebnis einer Ein-Schritt-Prognose der forecast-Funktion mit unserer ts_predict funktion für den $MA(1)$-Prozess.
-Der $MSE = 9.73e-3$ ist bei der Prognose mit *forecast* nicht viel geringer als mit unserer Funktion *ts_predict* ($MSE = 10.8e-3$).
 ```{r, fig.width = 7, fig.asp = .5}
 #Funktion zur Ein-Schritt-Prognose mit forecast
 forecast_prediction <- function(X, p = 0, q = 0){
@@ -394,9 +399,11 @@ MSE(ARMA_1[-(1:11)], innovation_sim_ARMA_1[-(1:11)])
 MSE(ARMA_1[-(1:11)], itsmr_onestep_ARMA[-(1:11)])
 plot_mult(ARMA_1, innovation_sim_ARMA_1, itsmr_onestep_ARMA, "ARMA(1). ts_predict red, forecast green.")
 ```
-Der $MSE$ der Ein-Schritt-Prognose ist bei allen drei Prozessen für *forecast* und *ts_predict* nahe beieinander. Für den ARMA-Prozess ist unser Algorithmus nach $MSE$ besser.
 
-Betrachten wir nun im folgenden noch eine mehr-Schritt Prognose.
+Der $MSE$ der Ein-Schritt-Prognose ist bei allen drei Prozessen für *forecast* und *ts_predict* nahe beieinander. Für den ARMA-Prozess ist unser Algorithmus - gemessem am $MSE$ - besser.
+
+Betrachten wir nun im folgenden noch eine Mehr-Schritt Prognose.
+
 ```{r}
 itsmr_prediction_1 <- forecast(AR_2, #Time series data
                              M = NULL, #Data model
@@ -420,11 +427,12 @@ plot_timeseries(AR_2, innovation_sim_1, "AR_2 mit ts_predict" )
 plot_timeseries(MA_2, itsmr_prediction_2, "MA_2 mit forecast")
 plot_timeseries(MA_2, innovation_sim_2, "MA_2 mit ts_predict")
 ```
-Für eine mehr-Schritt-Prognose haben wir leider nicht das erwartete Ergebnis erhalten. In der Dokumentation der *forecast*-Funktion steht zwar, das die Funktion ebenfalls den gleichen Innovatoin Algorithmus als Grundlage für die Berechnung benutzt, es ist jedoch trotzdem keine gute Übereinstimmung zwischen unserer Vorhersage und der *forecast*-Vorhersage zu erkennen. Auch für andere Werte *p*  und  *q*  in *forecast* ergibt sich kein besseres Ergebnis.
+
+Für eine Mehr-Schritt-Prognose haben wir leider nicht das erwartete Ergebnis erhalten. In der Dokumentation der *forecast*-Funktion steht zwar, dass die Funktion ebenfalls den gleichen Innovation Algorithmus als Grundlage für die Berechnung benutzt. Es ist jedoch keine gute Übereinstimmung zwischen unserer Vorhersage und der *forecast*-Vorhersage zu erkennen. Auch für eine Änderung der Werte *p*  und  *q*  in *forecast* ergibt sich kein besseres Ergebnis.
 
 ## Reale Daten
 
-Da Temperaturdaten eine starke saisonale Komponente haben eignen sich diese gut für eine Analyse mit einem *ARMA*-Modell. Wir analysieren im Folgenden Temperaturdaten des DWD für Mannheim, einmal auf stündlicher und einmal auf monatlicher Basis.
+Da Temperaturdaten eine starke saisonale Komponente haben, eignen sich diese für eine Analyse mit einem *ARMA*-Modell. Wir analysieren im folgenden Temperaturdaten des Deutschen Wetterdienstes (DWD) für Mannheim: auf stündlicher sowie auf monatlicher Basis.
 
 ```{r , fig.width = 7, fig.asp = .5}
 data_hourly <- as_tibble(read.delim("Luftdaten_stunde_19480101_20201231_05906.txt",
@@ -454,10 +462,11 @@ periodo[67] = 0.1 #f(0) = 7e-30 -> stark verzerrter Plot
 plot_periodogram(periodo, logscale = T)
 
 ```
+
 Hier sehen wir ein Periodogramm für die um den Mittelwert bereinigten Monatsdaten. Der Peak der jährlichen Periode ist eindeutig zu erkennen (beachte die Logarithmische Skala).
 
-
 Als nächstes betrachten wir einen kleinen Ausschnitt der Daten und versuchen anhand von 100 Datenwerten eine Vorhersage zu treffen.
+
 ```{r, fig.width = 7, fig.asp = .5}
 plot_predic <- function(series, dl, ...){
   len <- length(series)
@@ -491,7 +500,8 @@ acf_plot_2 <- ggplot(tibble(ACF=ACF(raw_2), Lag=seq_along(ACF(raw_2))), aes(x=La
 
 ```
 
-Im Folgenden sehen wir zunächst für die stündlichen Werte neben der Zeitreihe (blau) je eine Vorhersage für *t=101* bis *t=131* mit dem Durbin-Levinson Algorithmus und dem Innovation-Algorithmus (rot).
+Im Folgenden sehen wir zunächst für die stündlichen Werte neben der Zeitreihe (in blau) je eine Vorhersage für *t=101* bis *t=131* durch den Durbin-Levinson Algorithmus und dem Innovation-Algorithmus (in rot).
+
 ```{r, fig.width = 7, fig.asp = .5}
 
 
@@ -500,23 +510,26 @@ plot_predic(raw_full_1, predic_DL_1,"Vorhersage Durbin-Levinson")
 MSE(raw_full_1[-(1:100)], predic_IN_1[-(1:100)])
 plot_predic(raw_full_1, predic_IN_1,"Vorhersage Innovation")
 ```
-Während die Vorhersage des Durbin-Levinson-Algorithmus stark von den realisierten Werten abweicht, entspricht die Vorhersage des Innovation-Algorithmus vor allem in den ersten Schritten sehr gut den realisierten Werten. 
 
+Während die Vorhersage des Durbin-Levinson-Algorithmus stark von den realisierten Werten abweicht, ist die Vorhersage des Innovation-Algorithmus vor allem in den ersten Schritten sehr gut. 
 
 Betrachten wir nun die selbe Vorhersagen für die Monatsdaten.
+
 ```{r, fig.width = 7, fig.asp = .5}
 MSE(raw_full_2[-(1:100)], predic_DL_2[-(1:100)])
 plot_predic(raw_full_2, predic_DL_2,"Vorhersage Durbin-Levinson")
 MSE(raw_full_2[-(1:100)], predic_IN_2[-(1:100)])
 plot_predic(raw_full_2, predic_IN_2,"Vorhersage Innovation")
 ```
-Hier geht die Vorhersage mit Durbin-Levinson schnell gegen den Mittelwert, ohne die Schwankungen zu antizipieren. Im Gegensatz dazu erkennt der Innovation-Algorithmus das Periodische Verhalten der Temperaturschwankungen deutlich besser.
 
+Hier läuft die Vorhersage des Durbin-Levinson schnell gegen den Mittelwert, ohne die Schwankungen zu antizipieren. Im Gegensatz dazu erkennt der Innovation-Algorithmus das periodische Verhalten der Temperaturschwankungen deutlich besser.
 
-In beiden Beispielen liefert der Innovation-Algorithmus eine bessere Vorhersage als der Durbin-Levinson-Algorithmus. Dies legt die Vermutung nahe, dass es sich hier eher um einen MA-Prozess handelt. Die entsprechenden ACF-Plots bestätigen dies. 
+In beiden Beispielen liefert der Innovation-Algorithmus eine bessere Vorhersage, als der Durbin-Levinson-Algorithmus. Dies legt die Vermutung nahe, dass es sich hier eher um einen MA-Prozess handelt. Die entsprechenden ACF-Plots bestätigen dies:
+
 ```{r, fig.width = 7, fig.asp = .5}
 acf_plot_1
 acf_plot_2
 ```
-Man erkennt das starke Fallen der ACF mit dem lag, was typtisch für einen MA-Prozess ist. Wie bereits oben erklärt können erneut die Maxima nicht sehr gut aufgelöst werden. Es lohnt sich also den entsprechenden ACF-Plot anzuschauen um zu entscheiden welche Prediction-Funktion die Vorhersage besser schätzen kann.  
+
+Man erkennt das starke Fallen der ACF mit dem Lag, was typisch für einen MA-Prozess ist. Wie bereits oben erklärt können die Maxima nicht sehr gut vorhergesagt werden. Es lohnt sich also den entsprechenden ACF-Plot anzuschauen um zu entscheiden welche Prediction-Funktion die Vorhersage besser schätzen kann.  
 
