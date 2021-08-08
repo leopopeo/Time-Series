@@ -194,7 +194,11 @@ DL4 <- DL_Helper(MA_2)
 DL5 <- DL_Helper(ARMA_1)
 ```
 
-Um nun die Genauigkeit des Durbin-Levinson Algorithmus zu überprüfen, plotten wir die ursprüngliche Zeitreihe und die Vorhersage durch den Durbin-Levinson Algorithmus zu vergleichen.
+Wir betrachten im folgenden immer Ein-Schritt-Prognosen.
+Zur Beurteilung der Vorhersagegüte ziehen wir den $MSE$ heran, welcher definiert ist als 
+$$
+MSE(X,\hat X) := \frac{1}{n}\sum_{i = 1}^{n} (X_i - \hat X_i)^2.
+$$
 
 ```{r, fig.width = 7, fig.asp = .5}
 
@@ -376,19 +380,19 @@ itsmr_onestep_ARMA <- forecast_prediction(MA_1, p = 1, q = 1)
 
 MSE(AR_1[-(1:11)], innovation_sim_AR_1[-(1:11)])
 MSE(AR_1[-(1:11)], itsmr_onestep_AR[-(1:11)])
-plot_mult(AR_1, innovation_sim_AR_1, itsmr_onestep_AR, "ts_predict red, forecast green.")
+plot_mult(AR_1, innovation_sim_AR_1, itsmr_onestep_AR, "AR(1). ts_predict red, forecast green.")
 ```
 
 ```{r , fig.width = 7, fig.asp = .5}
 MSE(MA_1[-(1:11)], innovation_sim_MA_1[-(1:11)])
 MSE(MA_1[-(1:11)], itsmr_onestep_MA[-(1:11)])
-plot_mult(MA_1, innovation_sim_MA_1, itsmr_onestep_MA, "ts_predict red, forecast green.")
+plot_mult(MA_1, innovation_sim_MA_1, itsmr_onestep_MA, "MA(1). ts_predict red, forecast green.")
 ```
 
 ```{r , fig.width = 7, fig.asp = .5}
 MSE(ARMA_1[-(1:11)], innovation_sim_ARMA_1[-(1:11)])
 MSE(ARMA_1[-(1:11)], itsmr_onestep_ARMA[-(1:11)])
-plot_mult(ARMA_1, innovation_sim_ARMA_1, itsmr_onestep_ARMA, "ts_predict red, forecast green.")
+plot_mult(ARMA_1, innovation_sim_ARMA_1, itsmr_onestep_ARMA, "ARMA(1). ts_predict red, forecast green.")
 ```
 Der $MSE$ der Ein-Schritt-Prognose ist bei allen drei Prozessen für *forecast* und *ts_predict* nahe beieinander. Für den ARMA-Prozess ist unser Algorithmus nach $MSE$ besser.
 
@@ -416,7 +420,7 @@ plot_timeseries(AR_2, innovation_sim_1, "AR_2 mit ts_predict" )
 plot_timeseries(MA_2, itsmr_prediction_2, "MA_2 mit forecast")
 plot_timeseries(MA_2, innovation_sim_2, "MA_2 mit ts_predict")
 ```
-Hier haben wir leider nicht das gewünsche Ergbenis erhalten. In der Dokumentation der *forecast*-Funktion steht zwar, das die Funktion ebenfalls den gleichen Innovatoin Algorithmus als Grundlage für die Berechnung benutzt, es ist jedoch trotzdem keine gute Übereinstimmung zwischen unserer Vorhersage und der *forecast*-Vorhersage zu erkennen. Die Spezifizierung des ARMA-Modells in der *forecast*-Funktion weicht hier vom generierten Prozess ab, auch für andere Werte *p*  und  *q*  in *forecast* ergibt sich kein besseres Ergebnis.
+Für eine mehr-Schritt-Prognose haben wir leider nicht das erwartete Ergebnis erhalten. In der Dokumentation der *forecast*-Funktion steht zwar, das die Funktion ebenfalls den gleichen Innovatoin Algorithmus als Grundlage für die Berechnung benutzt, es ist jedoch trotzdem keine gute Übereinstimmung zwischen unserer Vorhersage und der *forecast*-Vorhersage zu erkennen. Auch für andere Werte *p*  und  *q*  in *forecast* ergibt sich kein besseres Ergebnis.
 
 ## Reale Daten
 
