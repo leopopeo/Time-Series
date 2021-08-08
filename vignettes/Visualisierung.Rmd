@@ -210,18 +210,28 @@ plot_mult <- function(series, forecast1, forecast2 = NULL,  title = "Zeitreihe")
     plt <- a+b+c+d+e
     plt
 }
+
+MSE <- function(X_true, X_pred){
+  n = length(X_true)
+  return(1/n*sum((X_true-X_pred)^2))
+}
 ```
 
 
 ```{r, fig.width = 7, fig.asp = .5}
+MSE(AR_1[-(1:9)], DL1[-(1:9)])
 plot_mult(series = AR_1, forecast1 =  DL1,  title = "AR(1)")
+MSE(AR_2[-(1:9)], DL2[-(1:9)])
 plot_mult(series = AR_2, forecast1 = DL2, title = "AR(2)")
+MSE(MA_1[-(1:9)], DL3[-(1:9)])
 plot_mult(series = MA_1, forecast1 = DL3, title = "MA(1)")
+MSE(MA_2[-(1:9)], DL4[-(1:9)])
 plot_mult(series = MA_2, forecast1 = DL4, title = "MA(2)")
+MSE(ARMA_1[-(1:9)], DL5[-(1:9)])
 plot_mult(series = ARMA_1, forecast1 = DL5, title = "ARMA(1)")
 ```
 
-Wie man erkennen kann, kann der Durbin-Levinson Algorithmus bereits mit wenigen Inputs sehr gute Vorhersagen treffen, die man insbesondere am AR(1) und ARMA(1) erkennt, was in der Theorie auch übereinstimmt. Auffallend ist außerdem, dass der Durbin-Levinson Algorithmus auch bei unserer MA-Zeitreihe auch sehr passable Vorhersagen erstellt, wofür eigentlich der Innovation besser funktionieren sollte. Außerdem verringert sich die Ungenauigkeit des Algorithmus je mehr Input dieser bekommt, was schön zu erkennen ist, da bereits bei 60+ die Vorhersage fast exakt mit der Zeitreihe übereinstimmt.
+Wie man bereits optisch erkennt, kann der Durbin-Levinson Algorithmus bereits mit wenigen Inputs sehr gute Vorhersagen treffen. Der $MSE = 4.88e-3$ ist beim $AR(2)$ Prozess am größten, bei den anderen liegt er sehr nahe beieinander. Die beste Vorhersage nach $MSE$ liefert der Durbin-Levinson-Algorithmus beim $MA(2)$-Prozess mit $MSE = 1.78e-3$. Auffallend ist, dass der Durbin-Levinson Algorithmus entgegen unseren Erwartungen für die $MA$-Prozesse besser ist als für die $AR$-Prozesse. Außerdem verringert sich die Ungenauigkeit des Algorithmus je mehr Input dieser bekommt, was schön zu erkennen ist, da bereits bei 60+ die Vorhersage fast exakt mit der Zeitreihe übereinstimmt.
 
 Jetzt wollen wir noch überprüfen, wie gut der Algorithmus damit klarkommt, wenn er mit seinen Vorhersagen weiterrechnet. 
 
@@ -245,13 +255,15 @@ DL_Flaw3 <- DL_Helper_Flaw(ARMA_1)
 ```
 
 ```{r, fig.width = 7, fig.asp = .5}
+MSE(AR_1[-(1:9)], DL_Flaw1[-(1:9)])
 plot_mult(AR_1, forecast1 = DL_Flaw1, title = "AR(1)")
+MSE(MA_1[-(1:9)], DL_Flaw2[-(1:9)])
 plot_mult(MA_1, forecast1 =DL_Flaw2, title ="MA(1)")
+MSE(ARMA_1[-(1:9)], DL_Flaw3[-(1:9)])
 plot_mult(ARMA_1, forecast1 = DL_Flaw3,title ="ARMA(1,1)")
 ```
+Auch hier ist der $MSE$ beim $MA(1)$-Prozess mit $2.00e-3$ am geringsten. Obwohl er optisch die Peaks nicht so gut erfasst wie beim $AR(1)$-Prozess. Die Vorhersage ist insbesondere immer flacher und nicht so Spitz wie in unserer tatsächlichen Zeitreihe, was unter anderem damit zusammenhängen kann, dass die ACF Funktion selbst starke Peaks erzeugt und der DLA nicht mit dem Rauschen klarkommt, was erklären würde, weswegen er nicht so stark ausschlägt, wie der Innovation Algorithmus. Der deutlich größere $MSE$ beim $ARMA(1,1)$-Prozess wird vermutlich hauptsächlich durch den großen Vorhersagefehler bei ca. *Lag = 40* verursacht. 
 
-Auch hier schneidet der Durbin-Levinson solide ab, obwohl man beim MA(1) erkennt, dass dieser vor Allem bei den Peaks deutlich ungenauer ist, als bei den anderen beiden Prozessen, was auch mit unserer Theorie aus dem Brockwell übereinstimmt.
-Die Vorhersage ist insbesondere immer flacher und nicht so Spitz wie in unserer tatsächlichen Zeitreihe, was unter anderem damit zusammenhängen kann, dass die ACF Funktion selbst starke Peaks erzeugt und der DLA nicht mit dem Rauschen klarkommt, was erklären würde, weswegen er nicht so stark ausschlägt, wie der Innovation Algorithmus.
 
 ## Innovation
 Wir betrachten zunächst die letzten Zeilen und ersten Spalten der Innovationmatrix für den AR(1) und den MA(2) - Prozess.
@@ -293,13 +305,24 @@ innovation_sim_ARMA_1 <- innovation_prediction(ARMA_1)
 ```
 
 ```{r, fig.width = 7, fig.asp = .5}
+
+MSE(AR_1[-(1:10)], innovation_sim_AR_1[-(1:10)])
 plot_mult(AR_1, innovation_sim_AR_1, title = "AR(1)")
+
+MSE(AR_2[-(1:10)], innovation_sim_AR_2[-(1:10)])
 plot_mult(AR_2, innovation_sim_AR_2, title = "AR(2)")
+
+MSE(MA_1[-(1:10)], innovation_sim_MA_1[-(1:10)])
 plot_mult(MA_1, innovation_sim_MA_1, title ="MA(1)")
-plot_mult(MA_2, innovation_sim_MA_2, title = "Ma(2)")
+
+MSE(MA_2[-(1:10)], innovation_sim_MA_2[-(1:10)])
+plot_mult(MA_2, innovation_sim_MA_2, title = "MA(2)")
+
+MSE(ARMA_1[-(1:10)], innovation_sim_ARMA_1[-(1:10)])
 plot_mult(ARMA_1, innovation_sim_ARMA_1, title ="ARMA(1,1)")
 ```
-Man erkennt hier, dass die Ein-Schritt Prognose den Bewegungen der Zeitreihe folgt. Komischerweise werden bei unserem Beispiel die AR(1) und die ARMA(1,1)-Zeitreihe besser als die MA-Zeitreihen vorhergesagt. Theoretischer  hätten wir dies genau umgekeht erwartet. Die Ausschläge bei den Extremwerden sind bei der Vorhersage ebenfalls nicht so stark wie bei der tatsächlichen Zeitreihe. Dies liegt daran, dass zur Prognose ein gewichtetes Mittel der Vergangenen Differenzen $\mathbf{X_n} - \mathbf{\hat X_n}$ herangezogen wird, was dazu führt, dass die Prognose tendenziell immer zum Mittelwert strebt. Dieses Verhalten, Bewegungen zu antizipieren, aber zu dämpfen sieht man auch an folgendem Beispiel eines vollständig deterministischen periodischen Prozesses:
+Zunächst können wir festhalten, dass die Ein-Schritt-Prognose mit dem Innovation-Algorithmus für alle Prozesse einen größeren $MSE$ liefert als mit Durbin-Levinson.
+Bei den $MA$-Prozessen ist der $MSE$ geringer als bei den Prozessen mit $AR$-Anteil. Dies entspricht auch nach Brockwell unseren Erwartungen. Die Ausschläge bei den Extremwerden sind bei der Vorhersage ebenfalls nicht so stark wie bei der tatsächlichen Zeitreihe. Dies liegt daran, dass zur Prognose ein gewichtetes Mittel der Vergangenen Differenzen $\mathbf{X_n} - \mathbf{\hat X_n}$ herangezogen wird, was dazu führt, dass die Prognose tendenziell immer zum Mittelwert strebt. Dieses Verhalten der Vorhersage mit Innovation, Bewegungen zu antizipieren, aber zu dämpfen, sieht man besonders gut an folgendem Beispiel eines vollständig deterministischen periodischen Prozesses:
 
 ```{r}
 X = sin(1:65)
@@ -309,11 +332,19 @@ forc = ts_predict(X, steps = 30)
 ```{r, fig.width = 7, fig.asp = .5}
 plot_timeseries(X,forc,"Sinus-Funktion mit Vorhersage")
 ```
-Für die Übersichtlichkeit wird hier einmal für die simultieren AR(2)-, MA(2)- und  ARMA(1,1)-Zeitreehen die Vorhersage durch den Durbin-Levinson- und durch den Innovation-Algorithmus gegenüber gestellt:
+Zur Übersicht stellen wir hier noch einmal für den $AR(1)$-, $MA(1)$- und  $ARMA(1,1)$-Prozess jeweils die Vorhersage mit dem Durbin-Levinson- und dem Innovation-Algorithmus sowie die jeweilgen $MSE$s gegenüber.
 
 ```{r, fig.width = 7, fig.asp = .5}
+MSE(AR_1[-(1:10)], innovation_sim_AR_1[-(1:10)])
+MSE(AR_1[-(1:10)], DL1[-(1:10)])
 plot_mult(AR_1, innovation_sim_AR_1,DL1, title = "AR(1)")
+
+MSE(MA_1[-(1:10)], innovation_sim_MA_1[-(1:10)])
+MSE(MA_1[-(1:10)], DL3[-(1:10)])
 plot_mult(MA_1, innovation_sim_MA_1,DL3, title = "MA(1)")
+
+MSE(ARMA_1[-(1:10)], innovation_sim_ARMA_1[-(1:10)])
+MSE(ARMA_1[-(1:10)], DL5[-(1:10)])
 plot_mult(ARMA_1, innovation_sim_ARMA_1,DL5, title = "ARMA(1)")
 ```
 
@@ -419,7 +450,9 @@ Im Folgenden sehen wir zunächst für die stündlichen Werte neben der Zeitreihe
 ```{r, fig.width = 7, fig.asp = .5}
 
 
+MSE(raw_full_1[-(1:100)], predic_DL_1[-(1:100)])
 plot_predic(raw_full_1, predic_DL_1,"Vorhersage Durbin-Levinson")
+MSE(raw_full_1[-(1:100)], predic_IN_1[-(1:100)])
 plot_predic(raw_full_1, predic_IN_1,"Vorhersage Innovation")
 ```
 Während die Vorhersage des Durbin-Levinson-Algorithmus stark von den realisierten Werten abweicht, entspricht die Vorhersage des Innovation-Algorithmus vor allem in den ersten Schritten sehr gut den realisierten Werten. 
@@ -427,7 +460,9 @@ Während die Vorhersage des Durbin-Levinson-Algorithmus stark von den realisiert
 
 Betrachten wir nun die selbe Vorhersagen für die Monatsdaten.
 ```{r, fig.width = 7, fig.asp = .5}
+MSE(raw_full_2[-(1:100)], predic_DL_2[-(1:100)])
 plot_predic(raw_full_2, predic_DL_2,"Vorhersage Durbin-Levinson")
+MSE(raw_full_2[-(1:100)], predic_IN_2[-(1:100)])
 plot_predic(raw_full_2, predic_IN_2,"Vorhersage Innovation")
 ```
 Hier geht die Vorhersage mit Durbin-Levinson schnell gegen den Mittelwert, ohne die Schwankungen zu antizipieren. Im Gegensatz dazu erkennt der Innovation-Algorithmus das Periodische Verhalten der Temperaturschwankungen deutlich besser.
