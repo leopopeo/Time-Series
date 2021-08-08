@@ -49,9 +49,9 @@ arma_sim <- function(phi = 0, theta = 0, sd=1, I){
   p <-  length(phi)
   q <- length(theta)
   X <-  rep(0, p)
-  Z <-  rnorm(q, sd=sd)
+  Z <-  stats::rnorm(q, sd=sd)
   for (i in 1:I){
-    Z <- c(Z, rnorm(n = 1, sd=sd))
+    Z <- c(Z, stats::rnorm(n = 1, sd=sd))
     X <- c(X, reg(X, phi) + reg(Z[-length(Z)], theta) + Z[i+q])
   }
   X[(p+1):length(X)]
