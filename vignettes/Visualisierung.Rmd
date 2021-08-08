@@ -351,18 +351,59 @@ plot_mult(ARMA_1, innovation_sim_ARMA_1,DL5, title = "ARMA(1)")
 
 
 Nun wollen wir unseren Innovation Vorhersage mit der bestehenden Funktion "forecast" aus dem Paket "itsmr" (https://mparison <- georgeweigt.github.io/itsmr-refman.pdf, Seite 14) vergleichen:
+Zunächst einmal betrachten wir das Ergebnis einer Ein-Schritt-Prognose der forecast-Funktion mit unserer ts_predict funktion für den $MA(1)$-Prozess.
+Der $MSE = 9.73e-3$ ist bei der Prognose mit *forecast* nicht viel geringer als mit unserer Funktion *ts_predict* ($MSE = 10.8e-3$).
+```{r, fig.width = 7, fig.asp = .5}
+#Funktion zur Ein-Schritt-Prognose mit forecast
+forecast_prediction <- function(X, p = 0, q = 0){
+   inno_prediction <- rep(NA, length(X))
 
+   for(i in 10:(length(X)-1)){
+     inno_help <- X[1:i]
+     inno_prediction[i+1] <- forecast(inno_help,
+                                      M = NULL,
+                                      a = arma(inno_help, p = p, q = q),
+                                      h = 1,
+                                      opt = 0,
+                                      alpha = 1)$pred
+   }
+   inno_prediction
+}
+
+itsmr_onestep_AR <- forecast_prediction(AR_1, p = 1, q = 0)
+itsmr_onestep_MA <- forecast_prediction(MA_1, p = 0, q = 1)
+itsmr_onestep_ARMA <- forecast_prediction(MA_1, p = 1, q = 1)
+
+MSE(AR_1[-(1:11)], innovation_sim_AR_1[-(1:11)])
+MSE(AR_1[-(1:11)], itsmr_onestep_AR[-(1:11)])
+plot_mult(AR_1, innovation_sim_AR_1, itsmr_onestep_AR, "ts_predict red, forecast green.")
+```
+
+```{r , fig.width = 7, fig.asp = .5}
+MSE(MA_1[-(1:11)], innovation_sim_MA_1[-(1:11)])
+MSE(MA_1[-(1:11)], itsmr_onestep_MA[-(1:11)])
+plot_mult(MA_1, innovation_sim_MA_1, itsmr_onestep_MA, "ts_predict red, forecast green.")
+```
+
+```{r , fig.width = 7, fig.asp = .5}
+MSE(ARMA_1[-(1:11)], innovation_sim_ARMA_1[-(1:11)])
+MSE(ARMA_1[-(1:11)], itsmr_onestep_ARMA[-(1:11)])
+plot_mult(ARMA_1, innovation_sim_ARMA_1, itsmr_onestep_ARMA, "ts_predict red, forecast green.")
+```
+Der $MSE$ der Ein-Schritt-Prognose ist bei allen drei Prozessen für *forecast* und *ts_predict* nahe beieinander. Für den ARMA-Prozess ist unser Algorithmus nach $MSE$ besser.
+
+Betrachten wir nun im folgenden noch eine mehr-Schritt Prognose.
 ```{r}
 itsmr_prediction_1 <- forecast(AR_2, #Time series data
                              M = NULL, #Data model
-                             a = arma(AR_2, p=10, q=0), #ARMA model
+                             a = arma(AR_2, p=2, q=0), #ARMA model
                              h = 10, #Steps ahead
                              opt = 0, #Display option (0 silent, 1 tabulate, 2 plot and tabulate)
                              alpha = 1)$pred #Level of significance
 innovation_sim_1 <- ts_predict(AR_2, 10)
 itsmr_prediction_2 <- forecast(MA_2, #Time series data
                              M = NULL, #Data model
-                             a = arma(MA_2, p=0, q=10), #ARMA model
+                             a = arma(MA_2, p=2, q=0), #ARMA model
                              h = 10, #Steps ahead
                              opt = 0, #Display option (0 silent, 1 tabulate, 2 plot and tabulate)
                              alpha = 1)$pred #Level of significance
@@ -375,7 +416,7 @@ plot_timeseries(AR_2, innovation_sim_1, "AR_2 mit ts_predict" )
 plot_timeseries(MA_2, itsmr_prediction_2, "MA_2 mit forecast")
 plot_timeseries(MA_2, innovation_sim_2, "MA_2 mit ts_predict")
 ```
-Hier haben wir leider nicht das gewünsche Ergbenis erhalten. In der Dokumentation der *forecast*-Funktion steht zwar, das die Funktion ebenfalls den gleichen Innovatoin Algorithmus als Grundlage für die Berechnung benutzt, es ist jedoch trotzdem keine gute Übereinstimmung zwischen unseren Plots und den *forecast*-Plots zu erkennen. Die Spezifizierung des ARMA-Modells in der *forecast*-Funktion weicht hier vom generierten Prozess ab, jedoch wird das Ergebnis der forecast-Funktion mit anderen Werten für *p* und *q*  noch schlechter. 
+Hier haben wir leider nicht das gewünsche Ergbenis erhalten. In der Dokumentation der *forecast*-Funktion steht zwar, das die Funktion ebenfalls den gleichen Innovatoin Algorithmus als Grundlage für die Berechnung benutzt, es ist jedoch trotzdem keine gute Übereinstimmung zwischen unserer Vorhersage und der *forecast*-Vorhersage zu erkennen. Die Spezifizierung des ARMA-Modells in der *forecast*-Funktion weicht hier vom generierten Prozess ab, auch für andere Werte *p*  und  *q*  in *forecast* ergibt sich kein besseres Ergebnis.
 
 ## Reale Daten
 
