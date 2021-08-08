@@ -35,7 +35,6 @@ Im Folgenden geben wir einige Beispiele und Anwendungen der Funktionen des Paket
 * Temperaturdaten aus Mannheim
 
  
- 
 # Simulationsstudie
 In dieser Simulationsstudio werden die Fähigkeiten des Paketes durch kleine Veränderungen der Funktions-Parameter veranschaulicht. 
 
@@ -94,7 +93,7 @@ Es ist die typische langsam abflachende Autokovarianzfunktion eines AR(1) zu erk
 
 ### Vergleich von theoretischer mit geschätzter ACF
 
-Wir simulieren nun Daten mit den oben beschriebenen Eigenschaften und schätzen die ACF-Werte ab. Dafür testen wir, wie sich die Zeitreihe mit unterschiedlichen Längen verhält. Dabei wollen wir untersuchen, ab welcher Stichprobengröße sich der geschätze ACF-Wert dem theoretischen ACF annähert und betrachten dabei jeweils die ersten 50 Werte. Wir erstellen dafür eine Funktion, welche die simulierten ACFs zusammen mit den theoretischen plottet. 
+Wir simulieren nun Daten mit den oben beschriebenen Eigenschaften und schätzen die ACF-Werte ab. Dafür testen wir, wie sich die Zeitreihe mit unterschiedlichen Längen verhält. Dabei wollen wir untersuchen, ab welcher Stichprobengröße sich der geschätzte ACF-Wert dem theoretischen ACF annähert und betrachten dabei jeweils die ersten 50 Werte. Wir erstellen dafür eine Funktion, welche die simulierten ACFs zusammen mit den theoretischen plottet. 
 
 ```{r , fig.width = 7, fig.asp = .5}
 set.seed(13)
@@ -150,7 +149,7 @@ acf_diff_plot <- function(n){
 #acf_diff_plot(100)
 ```
 
-Der obige Vergleich zeigt deutlich, dass sich die geschätzte ACF der theoretischen ACF des AR(1)-Prozesses bei größerer Länge annähert. Die Übereinstiummung nimmt bis zu einer Länge der AR(1)-Reihe von 1000 sichtbar zu. Ab diesem Zeitpunkt oszilliert die Differenz erstaunlicherweise auf relativ hohem Niveau. Wir nehmen an, dass diese Oszillation durch den zugrundeliegenden Zufallsprozess erzeugt wird.  
+Der obige Vergleich zeigt deutlich, dass sich die geschätzte ACF der theoretischen ACF des AR(1)-Prozesses bei größerer Länge annähert. Die Übereinstimmung nimmt bis zu einer Länge der AR(1)-Reihe von 1000 sichtbar zu. Ab diesem Zeitpunkt oszilliert die Differenz erstaunlicherweise auf relativ hohem Niveau. Wir nehmen an, dass diese Oszillation durch den zugrundeliegenden Zufallsprozess erzeugt wird.  
 
 ## Durbin-Levinson Algorithmus
 
@@ -271,7 +270,7 @@ plot_mult(ARMA_1, forecast1 = DL_Flaw3,title ="ARMA(1,1)")
 Auch hier ist der $MSE$ beim $MA(1)$-Prozess mit $2.00e-3$ am geringsten. Obwohl er optisch die Peaks nicht so gut erfasst, wie beim $AR(1)$-Prozess. Die Vorhersage ist insbesondere immer flacher und nicht so spitz wie in unserer tatsächlichen Zeitreihe. Das hängt unter anderem damit zusammen, dass die ACF Funktion selbst starke Peaks erzeugt und der DLA nicht mit dem Rauschen klarkommt. Folglich schlägt der DLA nicht so stark aus, wie der Innovation Algorithmus. Der deutlich größere $MSE$ beim $ARMA(1,1)$-Prozess wird hauptsächlich durch den großen Vorhersagefehler bei ca. *Lag = 40* verursacht. 
 
 
-## Innovation
+## Innovation Algorithmus
 Wir betrachten zunächst die letzten Zeilen und ersten Spalten der Innovationmatrix für den AR(1) und den MA(2) - Prozess.
 
 ```{r}
