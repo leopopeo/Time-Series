@@ -10,7 +10,7 @@
 #'  #Erstelle eine Zeitreihe
 #'  X = arma_sim(phi=0.3,sd=1,I=1000)
 #'
-#'  DL_prediction(x,len=10)
+#'  DL_prediction(X,len=10)
 #'@export
 DL_prediction <- function(x,len=1,all=FALSE){
 

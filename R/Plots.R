@@ -4,13 +4,13 @@
 #'
 #'@param timeseries Ein numerischer Vektor als Zeitreihe.
 #'@param pred Optionaler Vektor einer Vorhersage der Zeitreihe
-#'@param ...  Optional
+#'@param title  Optional Character as Title
 #'@return Plot der Zeitreihe.
 #'@examples
 #' #Erstelle eine Zeitreihe
 #' X = arma_sim(phi = c(0.5, 0.1), theta = c(-0.2), sd = 0.01, I = 100)
 #' f = ts_predict(X, 10)
-#' plot_timeseries(X, f)
+#' plot_timeseries(X, f, title = "Vorhersage")
 #'@export
 
 #Neu von Niklas, oberer hat bei mir nicht funktioniert??
