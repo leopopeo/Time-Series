@@ -11,7 +11,7 @@ plot_timeseries(timeseries, pred = NULL, title = "Zeitreihe mit Vorhersage")
 
 \item{pred}{Optionaler Vektor einer Vorhersage der Zeitreihe}
 
-\item{...}{Optional}
+\item{title}{Optional Character as Title}
 }
 \value{
 Plot der Zeitreihe.
@@ -23,5 +23,5 @@ Diese Funktion plottet eine gegebene Timeseries (deutsch: Zeitreihe).
 #Erstelle eine Zeitreihe
 X = arma_sim(phi = c(0.5, 0.1), theta = c(-0.2), sd = 0.01, I = 100)
 f = ts_predict(X, 10)
-plot_timeseries(X, f)
+plot_timeseries(X, f, title = "Vorhersage")
 }

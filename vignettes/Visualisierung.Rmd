@@ -129,17 +129,17 @@ Als zusätzliche Veranschaulichung zeigt der folgende Plot den Zusammenhang zwis
 ```{r , fig.width = 7, fig.asp = .5}
 set.seed(13)
 acf_diff_plot <- function(n){
-        res <- tibble(Länge=n,Differenz=numeric(n))
-        zähler <- 1
+        res <- tibble(Laenge=n,Differenz=numeric(n))
+        zaehler <- 1
         for(i in 1:n){
           a <- ACF(arma_sim(phi=0.9,I=i*50, sd =1))
           diff <- sum(abs(a[1:50]-true_acf))
-          res$Länge[zähler] <- i*50
-          res$Differenz[zähler] <- diff
-          zähler <- zähler+1
+          res$Laenge[zaehler] <- i*50
+          res$Differenz[zaehler] <- diff
+          zaehler <- zaehler+1
         }
 
-        acf_plot <- ggplot(res,aes(x=Länge,y=Differenz)) +
+        acf_plot <- ggplot(res,aes(x=Laenge,y=Differenz)) +
           geom_bar(stat='identity', position='dodge') +
           ggtitle("Differenz der simulierten und theoretischen Daten")
           
