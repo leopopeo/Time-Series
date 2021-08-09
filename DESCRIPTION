@@ -15,5 +15,5 @@ Suggests:
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Imports: 
-    tibble,
-    ggplot2
+    tidyverse
+    itsmr
