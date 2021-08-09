@@ -1,7 +1,7 @@
 #'Time Series Plot
 #'
 #'@description Diese Funktion plottet eine gegebene Timeseries (deutsch: Zeitreihe).
-#'
+#'@import tidyverse
 #'@param timeseries Ein numerischer Vektor als Zeitreihe.
 #'@param pred Optionaler Vektor einer Vorhersage der Zeitreihe
 #'@param title  Optional Character as Title
