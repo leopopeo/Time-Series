@@ -1,11 +1,4 @@
-
-#Parameter setzen für die Beispiele unten. NICHT TEIL DER ENTGÜLTIGEN VERSION.
-set.seed(1)
-phi = c(0.8)
-theta = c(0.8)
-sd = 0.2
-I = 100
-
+#Hilfsfunktion
 reg = function(X, coeff){
   n <- length(coeff)
   sum(coeff*X[length(X):(length(X)-(n-1))])
@@ -30,7 +23,7 @@ reg = function(X, coeff){
 
 #Generator-Funktion
 arma_sim <- function(phi = 0, theta = 0, sd=1, I){
-  #Hier ueberpruefung wir die Eingabewerte auf ihre Richtigkeit
+  #Hier Ueberpruefung wir die Eingabewerte auf ihre Richtigkeit
 
   # phi
   stopifnot("Phi muss ein numerischer Vektor oder NULL sein." = is.numeric(phi) | is.null(phi))

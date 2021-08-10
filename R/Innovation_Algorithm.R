@@ -12,8 +12,7 @@ theta_sum <- function(theta, v, n, k){
 
 #'Innovation Algorithm
 #'
-#'@description  Beschreibung
-#'Der Innovation ist ein Vorhersage-Algorithmus, sagt fuer eine Zeitreihe also weitere Werte vorher.
+#'@description Der Innovation ist ein Vorhersage-Algorithmus, sagt fuer eine Zeitreihe also weitere Werte vorher.
 #'
 #'Details
 #'

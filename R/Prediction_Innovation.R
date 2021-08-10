@@ -1,4 +1,3 @@
-#library(itsmr)
 
 #Hilfsfunktionen
 regress <- function(X, X_hat, theta, n) {
@@ -28,8 +27,6 @@ estimate <- function(X,
 #'
 #'@description
 #'N-Schritt Prognose mithilfe des Innovation Algorithmus.
-#'
-#'Details
 #'
 #'@param X Eine stationaere Zeitreihe.
 #'@param steps Anzahl N der Schritte der Prognose.
