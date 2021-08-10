@@ -3,7 +3,7 @@
 #'@description Diese Funktion plottet eine gegebene Timeseries (deutsch: Zeitreihe).
 #'@param timeseries Ein numerischer Vektor als Zeitreihe.
 #'@param pred Optionaler Vektor einer Vorhersage der Zeitreihe
-#'@param title  Optional Character as Title
+#'@param title  Optional Character als Titel.
 #'@return Plot der Zeitreihe.
 #'@examples
 #' #Erstelle eine Zeitreihe
@@ -12,7 +12,6 @@
 #' plot_timeseries(X, f, title = "Vorhersage")
 #'@export
 
-#Neu von Niklas, oberer hat bei mir nicht funktioniert??
 plot_timeseries <- function(timeseries, pred = NULL, title = "Zeitreihe mit Vorhersage"){
   #Eingabe ueberpruefen
   stopifnot("Der Eingabevektor timeseries ist nicht numerisch." = is.numeric(timeseries))
@@ -58,9 +57,9 @@ plot_timeseries <- function(timeseries, pred = NULL, title = "Zeitreihe mit Vorh
 #'
 #'@description Diese Funktion plottet eine gegebenes Periodogram.
 #'
-#'@param periodogram Ein numerischer Vektor welcher ein Periodogram einer Zeitreihe enthaelt
+#'@param periodogram Ein numerischer Vektor welcher ein Periodogram einer Zeitreihe enthaelt.
 #'@param logscale Wenn TRUE wird die Y-Achse logarithmisch skaliert.
-#'@return Plot des Periodograms in Abhaengigkeit der Fourier Frequenzen
+#'@return Plot des Periodogramms in Abhaengigkeit der Fourier Frequenzen.
 #'@examples
 #' #Erstelle ein Periodogram einer Zeitreihe
 #' X = perio(arma_sim(phi = c(0.5, 0.1), theta = c(-0.2), sd = 0.01, I = 100))
@@ -76,7 +75,7 @@ plot_periodogram <- function(periodogram, logscale = F){
   k <- floor((-(n-1)/2):(n/2))
   freq <- 2*pi*k/n
 
-  #Periodogram plotten
+  #Periodogramm plotten
   tibble2plot <- tibble::tibble(Wert = periodogram, Fourierfrequenz = freq)
   plt_base <- ggplot2::ggplot(data = tibble2plot,mapping = ggplot2::aes(x = Fourierfrequenz, y = Wert))
   lay <- ggplot2::geom_line(color="#6a93b0")
