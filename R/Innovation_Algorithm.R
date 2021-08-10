@@ -1,18 +1,8 @@
-
 #Implementierung des Innovations Algorithmus
-#innovations_algorithm <- function(timeseries,){
-  #Eingabe ueberpruefen
-  #Timeseries timeseries ueberpruefen
-
-
-
   #Rekursive Berechnung der Koeffizienten Theta_n_1,..., Theta_n_n
-
   #Berechnung des mittleren quadratischen Abweichung des ersten Elements
 
-
 #Hilfsfunktion
-
 theta_sum <- function(theta, v, n, k){
   if (k == 0) return(0)
   x = NULL
@@ -22,17 +12,15 @@ theta_sum <- function(theta, v, n, k){
   return(sum(x))
 }
 
-
 #'Innovation Algorithm
 #'
 #'@description  Beschreibung
-#'Der Innovations Algorithmus bestimmt fuer eine gewisse Zeitreihe die folgenden Werte der Zeitreihe, ist also fuer die Vorhersagung zustaendig.
-#'
+#'Der Innovation ist ein Vorhersage-Algorithmus, sagt fuer eine Zeitreihe also weitere Werte vorher.
 #'
 #'Details
 #'
-#'@param ts Die Zeitreihe, welche uebergeben wird
-#'@param small_theta Optional eine Innovation-Matrix aus einer vorherigen Berechnung
+#'@param ts Die Zeitreihe, welche uebergeben wird.
+#'@param small_theta Optional eine Innovation-Matrix aus einer vorherigen Berechnung.
 #'@param lag Der Index n bis zu welchem die Matrix berechnet werden soll.
 #'
 #'@return n x n Matrix mit den Innovation-Koeffizienten theta.
@@ -50,16 +38,12 @@ innovation <- function(ts,
   stopifnot("Eingabe ist nicht numerisch!" = is.numeric(ts))
   stopifnot("Die Länge des Vektors muss größer als 1 sein!" = length(ts) > 1)
 
-  #small_theta ???????
-
   #lag
   stopifnot("lag muss >= 1 sein!" =  lag >= 1)
   stopifnot("lag muss NULL oder ein Integer Wert sein!"  = (is.null(lag) |
                                                               is.numeric(lag)))
   stopifnot("lag muss NULL oder ein Integer Wert sein!" = length(lag) == 1)
   stopifnot("lag muss NULL oder ein Integer Wert sein!" = lag %% 1 == 0)
-
-
 
   #Berechnung
   theta <- matrix(0, lag, lag)
@@ -78,78 +62,3 @@ innovation <- function(ts,
   }
   return(theta)
 }
-
-
-# innovation2 <- function(ts,lag.max=NA)
-# {
-#   #1 Check Inputs:
-#   #ts Check
-#   if( all(!is.numeric(ts),!(class(ts)=="arma")) ) stop("ts must be numeric vector or object of class arma!")
-#   if(is.numeric(ts)) x <- ts
-#   if(class(ts)=="arma") x <- ts$arma
-#
-#   # lag.max Check
-#   if( all(!is.numeric(lag.max),!is.na(lag.max)) ) stop("lag.max must be integer or NA!")
-#   if(length(lag.max)!=1) stop("length of lag.max must equal 1")
-#   if(length(x)<=1) stop("length of ts must be greater than 1")
-#   n <- length(x)
-#   if( is.na(lag.max) ) lag.max <- n-1
-#   if( lag.max%%1!=0 ) stop("lag.max must be integer or NA!")
-#   if(lag.max > n-1 | lag.max <= 0) stop("lag.max must be between 1 and length(ts)-1")
-#
-#
-#   theta <- matrix(rep(0,(lag.max)*(lag.max)),nrow = lag.max)
-#   #acf vec
-#   acf_vec <- ACF(ts)
-#   #mean squared errors v
-#   v <- acf_vec[1]
-#   if (acf_vec[1]==0) stop("Variance cant be zero")
-#
-#   thetasum <- function(theta,i,k,v)
-#   {
-#     if(k==0)
-#       return(0)
-#     theta_k <- theta[k,k:1]
-#     theta_i <- theta[i,i:(i-k+1)]
-#     v_ <- v[1:k]
-#     sum(v_*theta_k*theta_i)
-#   }
-#   #Thetas calculate
-#   for (i in seq(lag.max))
-#   {
-#     for (k in seq(0,i-1))
-#     {
-#       theta[i,i-k] <- 1/v[k+1]*(acf_vec[i-k+1] - thetasum(theta,i,k,v))
-#     }
-#     v[i+1] <- acf_vec[1]-thetasum(theta,i,i,v)
-#   }
-#
-#   list("theta"=theta,"mean_sqd_error"=v[2:length(v)])
-# }
-
-
-########################Test
-
-
-# X = arima.sim(n = 500, list(
-#   ar = c(0.8897,-0.4858),
-#   ma = c(-0.2279, 0.2488)
-# ), sd = sqrt(0.1796))
-#
-#
-#
-#
-#
-# R = innovation(X, lag = 200)
-#
-# start_time1 <- Sys.time()
-# S1 = innovation(X, lag =  400)
-# end_time1 <- Sys.time()
-#
-# start_time2 <- Sys.time()
-# S2 = innovation(X, R, lag = 400)
-# end_time2 <- Sys.time()
-#
-#
-# print(end_time1 - start_time1)
-# print(end_time2 - start_time2)
