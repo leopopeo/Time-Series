@@ -2,8 +2,8 @@
 #'
 #' \code{ACF} berechnet eine Naeherung an die Autokovarianz-Funktion der Datenreihe X = x_1,...,x_n. Fuer mehr Informationen rufe die Vignette auf.
 #'
-#'@param x Eingabevektor der die beobachteten Daten enthaelt
-#'@param lag Zeitdifferenz der Datenreihe welche die Funktion beruecksichtigen soll. Der Default Wert ist die komplette Zeitreihe mit einem Wert weniger als Observationen in der Zeitreihe
+#'@param x Eingabevektor der die beobachteten Daten enthaelt.
+#'@param lag Zeitdifferenz der Datenreihe, welche die Funktion beruecksichtigen soll. Der Default-Wert ist die komplette Zeitreihe mit einem Wert weniger als die Anzahl der Beobachtungen der Zeitreihe.
 #'
 #'@return Der Rueckgabewert ist ein Vektor fuer die Abschaetzung der Autokorrelationsfunktion.
 #'@examples
@@ -17,7 +17,7 @@
 ACF <- function(x, lag = NULL) {
   n <- length(x)
 
-  #Eingabewerte überprüfen
+  #Eingabewerte überpruefen
   stopifnot("Eingabe ist kein numerischer Vektor!" = is.numeric(x))
   stopifnot("Die Länge des Vektors muss größer als 1 sein!" = n > 1)
 
@@ -33,7 +33,7 @@ ACF <- function(x, lag = NULL) {
     "lag liegt nicht im richtigen Bereich. Der richtige Bereich liegt zwischen -n und n!" = (-n <= lag &
                                                                                                lag <= n)
   )
-  # Definitionsbereich von lag abweichend von Brockwell aber notwendig, damit innovation funktioniert
+  # Definitionsbereich von lag abweichend von Brockwell aber notwendig, damit innovation funktioniert.
 
   #Berechnung
 
@@ -54,8 +54,3 @@ ACF <- function(x, lag = NULL) {
   })
   unname(res)
 }
-
-
-
-
-

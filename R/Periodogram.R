@@ -1,8 +1,8 @@
 #'Periodogramm
 #'
-#'\code{perio} bestimmt die spektrale Dichte des Signals. Dadurch kann die dominaten Frequenzen einer Zeitreihe identifiziert werden. Fuer mehr Informationen rufe die Vignette auf.
+#'\code{perio} bestimmt die spektrale Dichte des Signals. Dadurch koennen die dominanten Frequenzen einer Zeitreihe identifiziert werden. Fuer mehr Informationen rufe die Vignette auf.
 #'
-#'@param y Eingabevektor, der die beobachteten Daten enthaelt
+#'@param y Eingabevektor, der die beobachteten Daten enthaelt.
 #'@return Vektor, der die Periodogrammwerte bzw. die Zeitreihe bei den Fourierfrequenzen enthaelt.
 #'@examples
 #'  #Erstelle eine Zeitreihe
@@ -26,9 +26,7 @@ perio <- function(y){
     for(i in 1:n){
       sum <- sum + y[i]*exp(as.complex(-1i)*i*2*pi*w/n)
     }
-    Res[1+w+ceiling(n/2)] <- (1/n)*abs(sum)^2 #der Faktor:1+w+ceiling(n/2) wird gebraucht um den Vektor Res nacheinander ab dem Index 1 aufzufüllen
+    Res[1+w+ceiling(n/2)] <- (1/n)*abs(sum)^2 #der Faktor:1+w+ceiling(n/2) wird gebraucht um den Vektor Res nacheinander ab dem Index 1 aufzufuellen
   }
   Res
 }
-
-

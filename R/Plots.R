@@ -8,7 +8,7 @@
 #'Diese Funktion plottet eine gegebene Timeseries (deutsch: Zeitreihe).
 #'@param timeseries Ein numerischer Vektor als Zeitreihe.
 #'@param pred Optionaler Vektor einer Vorhersage der Zeitreihe
-#'@param title  Optional Character as Title
+#'@param title Optional Character als Titel.
 #'@return Plot der Zeitreihe.
 #'@examples
 #' #Erstelle eine Zeitreihe
@@ -17,13 +17,12 @@
 #' plot_timeseries(X, f, title = "Vorhersage")
 #'@export
 
-#Neu von Niklas, oberer hat bei mir nicht funktioniert??
 plot_timeseries <- function(timeseries, pred = NULL, title = "Zeitreihe mit Vorhersage"){
   #Eingabe ueberpruefen
   stopifnot("Der Eingabevektor timeseries ist nicht numerisch." = is.numeric(timeseries))
   stopifnot("Der Vektor timeseries muss wenigstens die Laenge 1 haben." = length(timeseries) > 0)
   stopifnot("Der Eingabevektor pred ist nicht numerisch oder NULL." = (is.numeric(pred) | is.null(pred)))
-  stopifnot("title muss ein character-Vektor der Länge 1 sein" = is.character(title) & length(title) == 1)
+  stopifnot("title muss ein character-Vektor der Länge 1 sein." = is.character(title) & length(title) == 1)
   if (is.null(pred)){
     #Timeseries plotten
     tibble2plot <- tibble::tibble(Wert = timeseries, Zeit = seq_along(timeseries))
@@ -46,7 +45,6 @@ plot_timeseries <- function(timeseries, pred = NULL, title = "Zeitreihe mit Vorh
 
     tibble2plot <- rbind(value_tbl, pred_tbl)
 
-
     plt_base <- ggplot2::ggplot(data = tibble2plot, mapping = ggplot2::aes(x = Zeit, y = Wert))
     lay1 <- ggplot2::geom_line(color = "#F8766D")
     lay2 <- ggplot2::geom_line(ggplot2::aes(colour = factor(Group)))
@@ -61,13 +59,13 @@ plot_timeseries <- function(timeseries, pred = NULL, title = "Zeitreihe mit Vorh
 
 #'Periodogramm Plot
 #'
-#'@description Diese Funktion plottet eine gegebenes Periodogram.
+#'@description Diese Funktion plottet eine gegebenes Periodogramm.
 #'
-#'@param periodogram Ein numerischer Vektor welcher ein Periodogram einer Zeitreihe enthaelt
+#'@param periodogram Ein numerischer Vektor, welcher ein Periodogram einer Zeitreihe enthaelt.
 #'@param logscale Wenn TRUE wird die Y-Achse logarithmisch skaliert.
-#'@return Plot des Periodograms in Abhaengigkeit der Fourier Frequenzen
+#'@return Plot des Periodogramms in Abhaengigkeit der Fourier Frequenzen.
 #'@examples
-#' #Erstelle ein Periodogram einer Zeitreihe
+#' #Erstelle ein Periodogramm einer Zeitreihe
 #' X = perio(arma_sim(phi = c(0.5, 0.1), theta = c(-0.2), sd = 0.01, I = 100))
 #' plot_periodogram(X)
 #'@export
@@ -81,7 +79,7 @@ plot_periodogram <- function(periodogram, logscale = F){
   k <- floor((-(n-1)/2):(n/2))
   freq <- 2*pi*k/n
 
-  #Periodogram plotten
+  #Periodogramm plotten
   tibble2plot <- tibble::tibble(Wert = periodogram, Fourierfrequenz = freq)
   plt_base <- ggplot2::ggplot(data = tibble2plot,mapping = ggplot2::aes(x = Fourierfrequenz, y = Wert))
   lay <- ggplot2::geom_line(color="#6a93b0")
@@ -92,4 +90,3 @@ plot_periodogram <- function(periodogram, logscale = F){
   plt <- plt_base + lay + labs + point + trans+ ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5,size=15))
   plt
 }
-

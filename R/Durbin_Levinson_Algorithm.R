@@ -2,9 +2,9 @@
 #'
 #'\code{DLA} berechnet durch die rekursive Durbin-Levinson Methode die Gewichtung der Phi's fuer eine uebergebene Zeitreihe. Fuer mehr Informationen rufe die Vignette auf.
 #'
-#'@param x Eingabevektor, der die beobachteten Daten enthaelt
-#'@param len Horizont der Vorhersage
-#'@return Vektor, welcher die Gewichtung der Phi's enthaelt
+#'@param x Eingabevektor, der die beobachteten Daten enthaelt.
+#'@param len Horizont der Vorhersage.
+#'@return Vektor, welcher die Gewichtung der Phi's enthaelt.
 #'@examples
 #'  #Erstelle eine Zeitreihe
 #'  X = arma_sim(phi=0.3,sd=1,I=1000)
@@ -17,7 +17,7 @@ DLA <- function(x, len = NULL) {
 
   #Eingabewerte überprüfen
   stopifnot("Eingabe ist nicht numerisch!" = is.numeric(x))
-  stopifnot("Die Länge des Vektors muss größer als 1 sei!" = length(x) > 1)
+  stopifnot("Die Länge des Vektors muss größer als 1 sein!" = length(x) > 1)
   stopifnot("len muss NULL oder ein Integer Wert sein!"  = (is.null(len) |
                                                         is.numeric(len)))
   if (is.null(len))
@@ -41,5 +41,3 @@ DLA <- function(x, len = NULL) {
   }
   Phi
 }
-
-
