@@ -19,7 +19,7 @@ ACF <- function(x, lag = NULL) {
 
   #Eingabewerte überpruefen
   stopifnot("Eingabe ist kein numerischer Vektor!" = is.numeric(x))
-  stopifnot("Die Länge des Vektors muss größer als 1 sein!" = n > 1)
+  stopifnot("Die Laenge des Vektors muss groeßer als 1 sein!" = n > 1)
 
   stopifnot("lag muss NULL oder ein Integer Wert sein!" = (is.null(lag) |
                                                              is.numeric(lag)))

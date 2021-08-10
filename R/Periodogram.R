@@ -14,9 +14,9 @@
 perio <- function(y){
   n <- length(y)
 
-  #Eingabewerte überprüfen
+  #Eingabewerte ueberpruefen
   stopifnot("Eingabe ist nicht numerisch!" = is.numeric(y))
-  stopifnot("Die Länge des Vektors muss größer als 1 sein!" = n > 1)
+  stopifnot("Die Laenge des Vektors muss groeßer als 1 sein!" = n > 1)
 
   #Berechnung
   Res <- double(n)

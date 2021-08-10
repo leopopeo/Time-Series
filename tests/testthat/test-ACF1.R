@@ -3,7 +3,7 @@ test_that("Eingabe testen", {
   expect_error(ACF(c("a","b")), "Eingabe ist kein numerischer Vektor!")
   expect_error(ACF(NA), "Eingabe ist kein numerischer Vektor!")
   expect_error(ACF(NULL), "Eingabe ist kein numerischer Vektor!")
-  expect_error(ACF(c(3)), "Die Länge des Vektors muss größer als 1 sein!")
+  expect_error(ACF(c(3)), "Die Laenge des Vektors muss groeßer als 1 sein!")
 
   #Test der lag Eingabe
   expect_error(ACF(c(3,4,5,1), lag=1.1), "lag muss NULL oder ein Integer Wert sein!")

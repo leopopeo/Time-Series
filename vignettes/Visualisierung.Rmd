@@ -533,3 +533,15 @@ acf_plot_2
 
 Man erkennt das starke Fallen der ACF mit dem Lag, was typisch für einen MA-Prozess ist. Wie bereits oben erklärt können die Maxima nicht sehr gut vorhergesagt werden. Es lohnt sich also den entsprechenden ACF-Plot anzuschauen um zu entscheiden welche Prediction-Funktion die Vorhersage besser schätzen kann.  
 
+
+
+### Quellen
+Brockwell, Peter J. und Davis, Richard A. (2002): *Introduction to Time Series and Forecasting* (2nd Edition), Springer: New York (u.a.).
+
+
+https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/kl/historical/ Station 5906. Zuletzt abgerufen am 8.8.2021.
+
+https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/monthly/kl/historical/ Station 5906. Zuletzt abgerufen am 8.8.2021.
+
+
+

@@ -22,7 +22,7 @@ plot_timeseries <- function(timeseries, pred = NULL, title = "Zeitreihe mit Vorh
   stopifnot("Der Eingabevektor timeseries ist nicht numerisch." = is.numeric(timeseries))
   stopifnot("Der Vektor timeseries muss wenigstens die Laenge 1 haben." = length(timeseries) > 0)
   stopifnot("Der Eingabevektor pred ist nicht numerisch oder NULL." = (is.numeric(pred) | is.null(pred)))
-  stopifnot("title muss ein character-Vektor der Länge 1 sein." = is.character(title) & length(title) == 1)
+  stopifnot("title muss ein character-Vektor der Laenge 1 sein." = is.character(title) & length(title) == 1)
   if (is.null(pred)){
     #Timeseries plotten
     tibble2plot <- tibble::tibble(Wert = timeseries, Zeit = seq_along(timeseries))

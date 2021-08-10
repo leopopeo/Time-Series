@@ -1,8 +1,8 @@
 #'Durbin Levionson Prediction
 #'
-#'\code{DL_prediction} benutzt den Durbin-Levinson_Algorithmus (\code{DLA}), um eine Vorhersage fuer die Zeitreihe zu treffen. Mit dem \code{len} Parameter kann die Anzahl der zu vorhersagenden Werten getroffen werden. Für mehr Informationen rufe die Vignette "Time-Series" auf.
+#'\code{DL_prediction} benutzt den Durbin-Levinson_Algorithmus (\code{DLA}), um eine Vorhersage fuer die Zeitreihe zu treffen. Mit dem \code{len} Parameter kann die Anzahl der zu vorhersagenden Werten getroffen werden. Fuer mehr Informationen rufe die Vignette "Time-Series" auf.
 #'
-#'@param x Eingabevektor der die beobachteten Daten enthält.
+#'@param x Eingabevektor der die beobachteten Daten enthaelt.
 #'@param len Anzahl der vorherzusagenden Werte.
 #'@param all logical-Wert der angibt, ob nur die vorhergesagten Werte oder die alte Zeitreihe plus die vorhergesagten Werte zurueckgegeben werden. Der Default-Wert ist Ersteres.
 #'@return Vektor mit den vorhgesagten Werten.
@@ -15,9 +15,9 @@
 DL_prediction <- function(x,len=1,all=FALSE){
 
   laenge <- length(x)
-  #Eingabewerte überprüfen
+  #Eingabewerte ueberpruefen
   stopifnot("Eingabe ist nicht numerisch!" = is.numeric(x))
-  stopifnot("Die Länge des Vektors muss größer als 1 sein!" = length(x) > 1)
+  stopifnot("Die Laenge des Vektors muss groeßer als 1 sein!" = length(x) > 1)
   stopifnot("len muss NULL oder ein Integer Wert sein!"  = (is.null(laenge) |
                                                               is.numeric(laenge)))
 

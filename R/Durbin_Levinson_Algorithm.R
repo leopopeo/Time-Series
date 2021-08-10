@@ -17,7 +17,7 @@ DLA <- function(x, len = NULL) {
 
   #Eingabewerte überprüfen
   stopifnot("Eingabe ist nicht numerisch!" = is.numeric(x))
-  stopifnot("Die Länge des Vektors muss größer als 1 sein!" = length(x) > 1)
+  stopifnot("Die Laenge des Vektors muss groeßer als 1 sein!" = length(x) > 1)
   stopifnot("len muss NULL oder ein Integer Wert sein!"  = (is.null(len) |
                                                         is.numeric(len)))
   if (is.null(len))

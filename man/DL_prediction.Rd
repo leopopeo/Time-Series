@@ -7,7 +7,7 @@
 DL_prediction(x, len = 1, all = FALSE)
 }
 \arguments{
-\item{x}{Eingabevektor der die beobachteten Daten enthält.}
+\item{x}{Eingabevektor der die beobachteten Daten enthaelt.}
 
 \item{len}{Anzahl der vorherzusagenden Werte.}
 
@@ -17,7 +17,7 @@ DL_prediction(x, len = 1, all = FALSE)
 Vektor mit den vorhgesagten Werten.
 }
 \description{
-\code{DL_prediction} benutzt den Durbin-Levinson_Algorithmus (\code{DLA}), um eine Vorhersage fuer die Zeitreihe zu treffen. Mit dem \code{len} Parameter kann die Anzahl der zu vorhersagenden Werten getroffen werden. Für mehr Informationen rufe die Vignette "Time-Series" auf.
+\code{DL_prediction} benutzt den Durbin-Levinson_Algorithmus (\code{DLA}), um eine Vorhersage fuer die Zeitreihe zu treffen. Mit dem \code{len} Parameter kann die Anzahl der zu vorhersagenden Werten getroffen werden. Fuer mehr Informationen rufe die Vignette "Time-Series" auf.
 }
 \examples{
  #Erstelle eine Zeitreihe

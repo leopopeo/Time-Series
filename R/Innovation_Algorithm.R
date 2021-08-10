@@ -30,7 +30,7 @@ innovation <- function(ts,
   #Eingabewerte testen
   laen <- length(ts)
 
-  #Eingabewerte überpruefen
+  #Eingabewerte ueberpruefen
   #ts
   stopifnot("Eingabe ist nicht numerisch!" = is.numeric(ts))
   stopifnot("Die Laenge des Vektors muss groeßer als 1 sein!" = length(ts) > 1)

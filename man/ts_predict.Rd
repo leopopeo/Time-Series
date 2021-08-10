@@ -11,7 +11,7 @@ ts_predict(X, steps = 1, all = FALSE)
 
 \item{steps}{Anzahl N der Schritte der Prognose.}
 
-\item{all}{Wenn FALSE wird nur der Vorhersagevektor der Laenge steps ausgegeben. Andernfalls auch alle bis dahin berechneten X_hat}
+\item{all}{Wenn FALSE wird nur der Vorhersagevektor der Laenge steps ausgegeben. Andernfalls auch alle bis dahin berechneten X_hat.}
 }
 \value{
 Numerischer Vektor der Vorhersage. Wenn all = FALSE, werden nur die vorhergesagten N Werte zurueckgegeben, andernfalls der ganze Vektor X_hat.
