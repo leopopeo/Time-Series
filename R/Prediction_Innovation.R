@@ -33,11 +33,11 @@ estimate <- function(X,
 #'
 #'Details
 #'
-#'@param X Eine Stationäre Zeitreihe Zeitreihe
-#'@param steps Anzahl N der Schritte der Prognose
-#'@param all Wenn FALSe wird nur der Vorhersagevektor der L?nge steps ausgegeben. Andernfalls auch alle bis dahin berechneten X_hat
+#'@param X Eine stationäre Zeitreihe.
+#'@param steps Anzahl N der Schritte der Prognose.
+#'@param all Wenn FALSE wird nur der Vorhersagevektor der Laenge steps ausgegeben. Andernfalls auch alle bis dahin berechneten X_hat
 #'
-#'@return Numerischer Vektor der Vorhersage. WEnn all=FALSE, werden nur die Vorhergesagten N Werte zurückgegeben, andernfalls der ganz Vektor X_hat
+#'@return Numerischer Vektor der Vorhersage. Wenn all = FALSE, werden nur die vorhergesagten N Werte zurückgegeben, andernfalls der ganze Vektor X_hat.
 #'
 #'@examples X = arma_sim(phi = c(0.5, 0.1), theta = c(-0.2), sd = 0.01, I = 100)
 #'ts_predict(X, 4)
