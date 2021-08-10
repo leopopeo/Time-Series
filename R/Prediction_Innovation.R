@@ -30,7 +30,7 @@ estimate <- function(X,
 #'
 #'@param X Eine stationaere Zeitreihe.
 #'@param steps Anzahl N der Schritte der Prognose.
-#'@param all Wenn FALSE wird nur der Vorhersagevektor der Laenge steps ausgegeben. Andernfalls auch alle bis dahin berechneten X_hat
+#'@param all Wenn FALSE wird nur der Vorhersagevektor der Laenge steps ausgegeben. Andernfalls auch alle bis dahin berechneten X_hat.
 #'
 #'@return Numerischer Vektor der Vorhersage. Wenn all = FALSE, werden nur die vorhergesagten N Werte zurueckgegeben, andernfalls der ganze Vektor X_hat.
 #'
