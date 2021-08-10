@@ -1,6 +1,4 @@
-#Implementierung des Innovations Algorithmus
-  #Rekursive Berechnung der Koeffizienten Theta_n_1,..., Theta_n_n
-  #Berechnung des mittleren quadratischen Abweichung des ersten Elements
+#Implementierung des Innovation Algorithmus
 
 #Hilfsfunktion
 theta_sum <- function(theta, v, n, k){

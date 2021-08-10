@@ -30,5 +30,3 @@ perio <- function(y){
   }
   Res
 }
-
-

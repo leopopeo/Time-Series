@@ -43,7 +43,6 @@ estimate <- function(X,
 #'@export
 
 #Implementierung des Innovations Algorithmus
-
 ts_predict <- function(X, steps=1, all = FALSE) {
   #Eingabe ueberpruefen
   #X
