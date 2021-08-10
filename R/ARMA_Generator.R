@@ -41,8 +41,8 @@ arma_sim <- function(phi = 0, theta = 0, sd=1, I){
   stopifnot("Die Standardabweichung sd muss ein numerischer Vektor der Länge 1 sein." = length(sd) == 1 & is.numeric(sd))
 
   # I
-  stopifnot("I muss ein numerischer Vektor der Länge 1 sein" = is.numeric(I) & length(I)==1)
-  stopifnot("I muss ein Interger Wert sein" = I %% 1 == 0)
+  stopifnot("I muss ein numerischer Vektor der Länge 1 sein." = is.numeric(I) & length(I)==1)
+  stopifnot("I muss ein Interger Wert sein." = I %% 1 == 0)
   stopifnot("I muss größer als 0 sein!" = I > 0)
 
   #Berechnung
@@ -56,24 +56,3 @@ arma_sim <- function(phi = 0, theta = 0, sd=1, I){
   }
   X[(p+1):length(X)]
 }
-
-#start evtl nicht als Argument sondern als Zufallsvektor in Fkt erstellen
-#
-#Y1 = gen(phi, theta, sd, I)
-# plot(Y1, type ="l")
-#
-# Y2 = arima.sim(n = I,
-#                list(ar = phi,
-#                     ma = theta,
-#                     sd = sd))
-# lines(Y2, col = "red")
-#
-#
-#
-# arima(Y1, order = c(length(phi), 0, length(theta)),
-#       optim.control = list(maxit = 1000))
-# arima(Y2, order = c(length(phi), 0, length(theta)),
-#       optim.control = list(maxit = 1000))
-# c(phi, theta)
-
-
