@@ -17,7 +17,6 @@ innovation(ts, small_theta = matrix(0, lag, lag), lag = 1)
 n x n Matrix mit den Innovation-Koeffizienten theta.
 }
 \description{
-Beschreibung
 Der Innovation ist ein Vorhersage-Algorithmus, sagt fuer eine Zeitreihe also weitere Werte vorher.
 
 Details

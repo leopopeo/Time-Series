@@ -18,8 +18,6 @@ Numerischer Vektor der Vorhersage. Wenn all = FALSE, werden nur die vorhergesagt
 }
 \description{
 N-Schritt Prognose mithilfe des Innovation Algorithmus.
-
-Details
 }
 \examples{
 X = arma_sim(phi = c(0.5, 0.1), theta = c(-0.2), sd = 0.01, I = 100)
