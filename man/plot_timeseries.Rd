@@ -19,6 +19,9 @@ Plot der Zeitreihe.
 \description{
 Diese Funktion plottet eine gegebene Timeseries (deutsch: Zeitreihe).
 }
+\details{
+#'@import ggplot2
+}
 \examples{
 #Erstelle eine Zeitreihe
 X = arma_sim(phi = c(0.5, 0.1), theta = c(-0.2), sd = 0.01, I = 100)
