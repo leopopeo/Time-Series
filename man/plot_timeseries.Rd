@@ -11,7 +11,7 @@ plot_timeseries(timeseries, pred = NULL, title = "Zeitreihe mit Vorhersage")
 
 \item{pred}{Optionaler Vektor einer Vorhersage der Zeitreihe}
 
-\item{title}{Optional Character as Title}
+\item{title}{Optional Character als Titel.}
 }
 \value{
 Plot der Zeitreihe.

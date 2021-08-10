@@ -7,14 +7,14 @@
 ts_predict(X, steps = 1, all = FALSE)
 }
 \arguments{
-\item{X}{Eine Stationäre Zeitreihe Zeitreihe}
+\item{X}{Eine stationaere Zeitreihe.}
 
-\item{steps}{Anzahl N der Schritte der Prognose}
+\item{steps}{Anzahl N der Schritte der Prognose.}
 
-\item{all}{Wenn FALSe wird nur der Vorhersagevektor der L?nge steps ausgegeben. Andernfalls auch alle bis dahin berechneten X_hat}
+\item{all}{Wenn FALSE wird nur der Vorhersagevektor der Laenge steps ausgegeben. Andernfalls auch alle bis dahin berechneten X_hat}
 }
 \value{
-Numerischer Vektor der Vorhersage. WEnn all=FALSE, werden nur die Vorhergesagten N Werte zurückgegeben, andernfalls der ganz Vektor X_hat
+Numerischer Vektor der Vorhersage. Wenn all = FALSE, werden nur die vorhergesagten N Werte zurueckgegeben, andernfalls der ganze Vektor X_hat.
 }
 \description{
 N-Schritt Prognose mithilfe des Innovation Algorithmus.

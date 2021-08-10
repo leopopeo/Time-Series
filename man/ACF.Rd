@@ -7,9 +7,9 @@
 ACF(x, lag = NULL)
 }
 \arguments{
-\item{x}{Eingabevektor der die beobachteten Daten enthaelt}
+\item{x}{Eingabevektor der die beobachteten Daten enthaelt.}
 
-\item{lag}{Zeitdifferenz der Datenreihe welche die Funktion beruecksichtigen soll. Der Default Wert ist die komplette Zeitreihe mit einem Wert weniger als Observationen in der Zeitreihe}
+\item{lag}{Zeitdifferenz der Datenreihe, welche die Funktion beruecksichtigen soll. Der Default-Wert ist die komplette Zeitreihe mit einem Wert weniger als die Anzahl der Beobachtungen der Zeitreihe.}
 }
 \value{
 Der Rueckgabewert ist ein Vektor fuer die Abschaetzung der Autokorrelationsfunktion.
