@@ -235,3 +235,7 @@ x <- arma_sim(phi = c(0.2,-0.6),I=1000,sd=0.01)
 periodo <- perio(x)
 plot_periodogram(periodo) 
 ```
+
+
+### Quellen
+Brockwell, Peter J. und Davis, Richard A. (2002): *Introduction to Time Series and Forecasting* (2nd Edition), Springer: New York (u.a.).
